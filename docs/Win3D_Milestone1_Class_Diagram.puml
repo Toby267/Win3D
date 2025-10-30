@@ -1,0 +1,68 @@
+@startuml overview
+
+'abstraction of the raylib windows I will be drawing into
+'handles interaction between the screen and the bitmap/byte array/raylib texture thing that renderer will draw into.
+class Screen {
+
+}
+
+'implements the graphics rendering pipeline, consisiting of its different stages
+class Renderer {
+    +setScene()
+    +DrawCall()
+}
+'bitmap that stores the 'rendered' graphics, the screen thread still has to read from this though
+class BitMap3D {
+    -int width
+    -int height
+    -byte[] bitmap
+    -double[][] zBuffer
+    +setPixel()
+    +DrawLine()
+}
+'graphics rendering pipeline classes that the renderer will be composed of
+class GeometryProcessor {}
+class Rasterizer {}
+class PixelProcesser {}
+
+'stores objects and lights and a camera
+class Scene {
+    -Object3D[] objects
+    +addObject()
+}
+
+'stores objects imported from blender in the wavefront (.obj) format
+'if i want to add a pbr texture to it, i do that in code
+class Object3D {
+    -Matrix scale
+    -Matrix translation
+    -.obj_Data
+    +setScale()
+    +setTranslation()
+}
+
+'utillity classes
+class Triangle {
+    -int[] vertexIndeces
+    -Colour colour 
+}
+class Matrix {
+
+}
+class Vector {
+
+}
+
+Screen <-- Renderer
+Renderer *-- GeometryProcessor
+Renderer *-- Rasterizer
+Renderer *-- PixelProcesser
+Renderer *-- BitMap3D
+Renderer o-- Scene
+Scene o-- Object3D
+Object3D <-- Triangle
+GeometryProcessor <-- Matrix
+GeometryProcessor <-- Vector
+
+
+@enduml
