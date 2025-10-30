@@ -9,3 +9,9 @@ file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/
 add_executable(Win3D "${MY_SOURCES}")
 target_include_directories(Win3D PUBLIC "${CMAKE_SOURCE_DIR}/include")
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="./resources/")
+
+add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/raylib-5.0)
+
+target_link_libraries("${CMAKE_PROJECT_NAME}" PRIVATE 
+	raylib_static
+)
