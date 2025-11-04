@@ -4,7 +4,6 @@
 
 class Renderer {
 private:
-    //attributes
     int width, height;
 
     Window* window;
@@ -18,6 +17,7 @@ public:
     //getters/setters
 
     //public methods
+    void test();
 
 private:
     //private methods

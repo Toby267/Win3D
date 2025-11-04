@@ -4,10 +4,10 @@
 
 struct Matrix {
 private:
-    double **v;
+    Vector **v;
 public:
-    Matrix(int rows, int columns, double a[]);
-    Matrix(Vector a[]);
+    Matrix(int rows, int columns, double **a);
+    ~Matrix();
 
     int columns();
     int rows();
