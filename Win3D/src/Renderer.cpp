@@ -1,9 +1,7 @@
 #include "Renderer.hpp"
 #include "util/Vector.hpp"
 
-#include <exception>
 #include <iostream>
-#include <stdexcept>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
@@ -47,14 +45,13 @@ Renderer::~Renderer() {
 
 
 void Renderer::test() {
-    // Vector camera = Vector::unitNormal(
-        // Vector(1, 0, 0, 1),
-        // Vector(0, 0, 0, 1),
-        // Vector(0, 1, 0, 1)
-    // );
+    Vector camera = Vector::unitNormal(
+        Vector(1, 0, 0, 1),
+        Vector(0, 0, 0, 1),
+        Vector(0, 1, 0, 1)
+    );
 
-    // std::cout << "camera: " << camera << '\n';
-
+    std::cout << "camera: " << camera << '\n';
     Vector a = Vector(1, 2, 3);
     Vector b = Vector(4, 5, 6);
     Vector c = Vector(5, 7, 9);
@@ -80,9 +77,9 @@ void Renderer::test() {
     std::cout << f << " * " << g << " = " << f*g << '\n';
     Vector i = Vector::crossProduct(f, g);
     std::cout << f << " X " << g << " = " << i << '\n';
-    // std::cout << f << " . " << g << " = ";
-    // std::cout <<  Vector::dotProduct(f, g) << '\n';
-    // std::cout << "magnitude of " << a << ": " << a.magnitude() << '\n';
+    std::cout << f << " . " << g << " = ";
+    std::cout <<  Vector::dotProduct(f, g) << '\n';
+    std::cout << "magnitude of " << a << ": " << a.magnitude() << '\n';
 
     //exceptions:
     // std::cout << a[3];

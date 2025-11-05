@@ -1,12 +1,13 @@
 #include "util/Vector.hpp"
 
 #include <cmath>
+#include <cstring>
 #include <iostream>
 #include <ostream>
 #include <stdexcept>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
+// * ------------------------------- [ CONSTRUCTORS/DESCTUCTOR/RULE OF 5 ] ------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Vector::Vector(int length) {
@@ -41,8 +42,50 @@ Vector::Vector(double a, double b, double c, double d) {
     v[2] = c;
     v[3] = d;
 }
+
+//copy constructor
+Vector::Vector(const Vector& other) {
+    _length = other._length;
+    v = new double[_length];
+    memcpy(v, other.v, sizeof(double)*_length);
+}
+//copy assignment operator
+Vector& Vector::operator=(const Vector& other) {
+    if (this != &other) {
+        if (v) delete[] v;
+    
+        _length = other._length;
+        v = new double[_length];
+        memcpy(v, other.v, sizeof(double)*_length);
+    }
+
+    return *this;
+}
+//move constructor
+Vector::Vector(Vector&& other) noexcept {
+    _length = other._length;
+    v = other.v;
+
+    other._length = 0;
+    other.v = nullptr;
+}
+//move assignment operator
+Vector& Vector::operator=(Vector&& other) noexcept {
+    if (this != &other) {
+        if (v) delete[] v;
+    
+        _length = other._length;
+        v = other.v;
+        
+        other._length = 0;
+        other.v = nullptr;
+    }
+
+    return *this;
+}
+//destructor
 Vector::~Vector() {
-    delete[] v;
+    if (v) delete[] v;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,8 +179,7 @@ Vector Vector::crossProduct(Vector lhs, Vector rhs) {
     //  | b | x | e | = | -(af - cd) | or | (cd - af) |
     //  | c |   | f |   |  (ae - bd) |    | (ae - bd) |
     //
-
-    Vector vector(lhs.length());
+    Vector vector(lhs._length);
     vector[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];
     vector[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];
     vector[2] = lhs[0] * rhs[1] - lhs[1] * rhs[0];

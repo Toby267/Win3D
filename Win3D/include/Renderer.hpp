@@ -2,6 +2,7 @@
 
 #include "Window.hpp"
 
+//TODO: make this a singleton when turning it into a library, as only one instance of raylib ever exists.
 class Renderer {
 private:
     int width, height;

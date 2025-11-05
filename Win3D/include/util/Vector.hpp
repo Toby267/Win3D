@@ -7,13 +7,18 @@ private:
     double *v;
     int _length;
 public:
-    //constructors/destructor
+    //constructors/destructor/rule of 5
     Vector(int length);
     Vector(int length, double a[]);
     Vector(double a, double b);
     Vector(double a, double b, double c);
     Vector(double a, double b, double c, double d);
-    ~Vector();
+
+    Vector(const Vector& rhs);                  //copy constructor
+    Vector& operator=(const Vector& rhs);       //copy assignment operator
+    Vector(Vector&& rhs) noexcept;              //move constructor
+    Vector& operator=(Vector&& rhs) noexcept;   //move assignment operator
+    ~Vector();                                  //destructor
 
     //getters/setters
     double x();
