@@ -1,11 +1,24 @@
 #pragma once
 
+#include <ostream>
 #include <sys/types.h>
 
 struct Colour {
-    u_int8_t r, g, b, a;
+    int r, g, b, a;
 
-    Colour(u_int8_t r, u_int8_t g, u_int8_t b, u_int8_t a);
-    Colour(u_int8_t r, u_int8_t g, u_int8_t b);
+    Colour(int r, int g, int b, int a);
+    Colour(int r, int g, int b);
     Colour();
+
+    Colour operator+(const Colour& other) const;
+    Colour operator-(const Colour& other) const;
+    Colour operator*(const Colour& other) const;
+    Colour operator/(const Colour& other) const;
+    
+    Colour operator+(const double& other) const;
+    Colour operator-(const double& other) const;
+    Colour operator*(const double& other) const;
+    Colour operator/(const double& other) const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Colour& c);
 };

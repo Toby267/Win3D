@@ -12,12 +12,20 @@ Renderer::Renderer(int width, int height) : window(width, height), bitmap(width,
     while (window.isAlive()) {
         int num = rand() % 3;
 
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                Colour c(num == 0 ? 255 : 0, num == 1 ? 255 : 0, num == 2 ? 255 : 0, 255);
-                bitmap.setPixel(x, y, 0, c);
-            }
-        }
+        // int x = 0, y = 0;
+        // double ySlope = (double)height / (double)width;
+        // while (x != 2*width) {
+            // y = ySlope * x;
+            // bitmap.DrawLine(Vector(x, 0, 0), Vector(0, y, 0), Colour(255, 0, 0, 255), Colour(0, 255, 0, 255));
+            // x ++;
+        // }
+        
+        for (int j = 0; j < height; j++)
+            bitmap.DrawLine(Vector(0, j, 0), Vector(width-1, j, 0), Colour(255, 0, 0, 255), Colour(0, 255, 0, 255));
+
+        // for (int i = 0; i < width; i++)
+            // bitmap.DrawLine(Vector(i, 0, 0), Vector(i, height-1, 0), Colour(255, 0, 0, 255), Colour(0, 255, 0, 255));
+
         window.update(bitmap.getFrameBuffer());
         
         std::this_thread::sleep_for(std::chrono::seconds(1));

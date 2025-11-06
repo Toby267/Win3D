@@ -1,6 +1,7 @@
 #pragma once
 
 #include "util/Colour.hpp"
+#include "util/Vector.hpp"
 
 class Bitmap3D {
 private:
@@ -15,4 +16,5 @@ public:
 
     void setPixel(int x, int y, int z, Colour c);
     unsigned char* getFrameBuffer();
+    void DrawLine(Vector start, Vector end, Colour c, Colour c2);
 };

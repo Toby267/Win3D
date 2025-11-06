@@ -13,7 +13,7 @@ Window::Window(int width, int height) {
     this->width = width;
     this->height = height;
     this->hasUpdated.store(false);
-    this->shouldStop = false;
+    this->shouldStop.store(false);
     this->frameBuffer = new unsigned char[width*height*4];
     
     t = std::thread(&Window::run, this, &frameBuffer[0], width, height);
@@ -39,7 +39,7 @@ void Window::close() {
 }
 
 bool Window::isAlive() {
-    return t.joinable();
+    return !shouldStop.load();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -71,4 +71,5 @@ void Window::run(unsigned char* bmap, int width, int height) {
         }
     }
     CloseWindow();
+    close();
 }
