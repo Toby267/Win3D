@@ -2,14 +2,29 @@
 #include "util/Vector.hpp"
 #include "util/Matrix.hpp"
 
+#include <alloca.h>
+#include <cstddef>
 #include <iostream>
+
+// static int allocationCount = 0;
+
+// void* operator new(size_t size) {
+//     allocationCount ++;
+//     return malloc(size);
+// }
+// void operator delete(void* ptr) noexcept{
+//     allocationCount --;
+//     free(ptr);
+// }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Renderer::Renderer(int width, int height) {
+    // std::cout << "allocation count: " << allocationCount << '\n';
     test();
+    // std::cout << "allocation count: " << allocationCount << '\n';
     return;
     
     window = new Window(width, height);
@@ -46,6 +61,7 @@ Renderer::~Renderer() {
 
 
 void Renderer::test() {
+    // std::cout << "allocation count: " << allocationCount << '\n';
     Vector camera = Vector::unitNormal(
         Vector(1, 0, 0, 1),
         Vector(0, 0, 0, 1),
@@ -59,8 +75,10 @@ void Renderer::test() {
     Vector d = Vector(3, 4, 5);
     Vector e = Vector(6, 8, 10);
     Vector f = Vector(2, -3, 4);
+
     Vector g = Vector(5, 6, 10);
     Vector h = Vector(1, 2, 3);
+
 
     std::cout << "Setting v[1]=5 in " << h;
     h[1] = 5;
@@ -118,4 +136,5 @@ void Renderer::test() {
     std::cout << "...multiplying by the column vector " << v << "T gives\n" << m*v;
     std::cout << "Given the following two vectors:\n" << r << '\n' << s;
     std::cout << "multiplying them gives: \n" << r*s;
+    // std::cout << "allocation count: " << allocationCount << '\n';
 }
