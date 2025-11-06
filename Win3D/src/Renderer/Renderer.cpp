@@ -1,32 +1,14 @@
-#include "Renderer.hpp"
+#include "Renderer/Renderer.hpp"
 #include "util/Vector.hpp"
 #include "util/Matrix.hpp"
 
-#include <alloca.h>
-#include <cstddef>
 #include <iostream>
-
-// static int allocationCount = 0;
-
-// void* operator new(size_t size) {
-//     allocationCount ++;
-//     return malloc(size);
-// }
-// void operator delete(void* ptr) noexcept{
-//     allocationCount --;
-//     free(ptr);
-// }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Renderer::Renderer(int width, int height) {
-    // std::cout << "allocation count: " << allocationCount << '\n';
-    test();
-    // std::cout << "allocation count: " << allocationCount << '\n';
-    return;
-    
     window = new Window(width, height);
     zBuffer = new double[width*height];
 
