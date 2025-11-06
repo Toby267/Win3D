@@ -1,17 +1,16 @@
 @startuml overview
 
-'abstraction of the raylib windows I will be drawing into
-'handles interaction between the screen and the bitmap/byte array/raylib texture thing that renderer will draw into.
-class Screen {
+'========================================== BOILER PLATE ==========================================
 
-}
+class Screen {}
+Screen <-- Renderer
 
-'implements the graphics rendering pipeline, consisiting of its different stages
+'========================================== RENDERER ==========================================
+
 class Renderer {
     +setScene()
-    +DrawCall()
+    -DrawCall()
 }
-'bitmap that stores the 'rendered' graphics, the screen thread still has to read from this though
 class BitMap3D {
     -int width
     -int height
@@ -20,49 +19,63 @@ class BitMap3D {
     +setPixel()
     +DrawLine()
 }
-'graphics rendering pipeline classes that the renderer will be composed of
 class GeometryProcessor {}
 class Rasterizer {}
 class PixelProcesser {}
 
-'stores objects and lights and a camera
+Renderer *-- GeometryProcessor
+Renderer *-- Rasterizer
+Renderer *-- PixelProcesser
+Renderer *-- BitMap3D
+Renderer o-- Scene
+
+GeometryProcessor <-- VertexShader
+GeometryProcessor <-- Tesselator
+
+'========================================== SCENE ==========================================
 class Scene {
     -Object3D[] objects
     +addObject()
 }
-
-'stores objects imported from blender in the wavefront (.obj) format
-'if i want to add a pbr texture to it, i do that in code
 class Object3D {
     -Matrix scale
     -Matrix translation
-    -.obj_Data
+    -double[] vertices
+    -double[] indeces
+    -double[] colours
     +setScale()
     +setTranslation()
+    +getData()
 }
-
-'utillity classes
 class Triangle {
     -int[] vertexIndeces
     -Colour colour 
 }
+interface Light {
+    -Vector position
+    -Vector Direction
+    -Colour colour
+    -int intensity
+}
+class PointLight {}
+class SpotLight {}
+class SunLight {}
+class AreaLight {}
+
+Scene o-- Object3D
+Scene o-- Light
+Object3D <-- Triangle
+Light <-- PointLight
+Light <-- SpotLight
+Light <-- SunLight
+Light <-- AreaLight
+
+'========================================== UTILITY ==========================================
 class Matrix {
 
 }
 class Vector {
 
 }
-
-Screen <-- Renderer
-Renderer *-- GeometryProcessor
-Renderer *-- Rasterizer
-Renderer *-- PixelProcesser
-Renderer *-- BitMap3D
-Renderer o-- Scene
-Scene o-- Object3D
-Object3D <-- Triangle
-GeometryProcessor <-- Matrix
-GeometryProcessor <-- Vector
-
 
 @enduml
