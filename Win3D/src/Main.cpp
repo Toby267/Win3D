@@ -1,4 +1,4 @@
-#include "Renderer/Renderer.hpp"
+#include "renderer/Renderer.hpp"
 
 int main(int argc, char *argv[]) {
     Renderer* r = new Renderer(1280, 720);

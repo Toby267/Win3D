@@ -1,4 +1,4 @@
-#include "Renderer/Window.hpp"
+#include "renderer/Window.hpp"
 
 #include "raylib.h"
 #include <cstring>
@@ -21,7 +21,7 @@ Window::Window(int width, int height) {
 
 Window::~Window() {
     close();
-    delete frameBuffer;
+    delete[] frameBuffer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
