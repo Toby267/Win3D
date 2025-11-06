@@ -2,27 +2,39 @@
 
 #include "Vector.hpp"
 
-struct Matrix {
+class Matrix {
 private:
-    Vector **v;
+    Vector *m;
+    int rows, columns;
+
 public:
-    Matrix(int rows, int columns, double **a);
-    ~Matrix();
+    //constructors/destructor/rule of 5
+    Matrix(int _rows, int _columns);
+    Matrix(int _rows, int _columns, double a[]);
+    Matrix(int rows, Vector a[]);
 
-    int columns();
-    int rows();
+    Matrix(const Matrix& other);                    //copy constructor
+    Matrix& operator=(const Matrix& other);         //copy assignment operator
+    Matrix(Matrix&& other) noexcept;                //move constructor
+    Matrix& operator=(Matrix&& other) noexcept;     //move assignment operator
+    ~Matrix();                                      //destructor
 
-    // double& operator[][](int i, int j) const;
+    //getters/setters
+    int getColumns();
+    int getRows();
+
+    //operator overloads
+    Vector& operator[](int i) const;
     Matrix operator*(const Matrix& other) const;
-    Matrix operator*(const Vector& other) const;
+    Vector operator*(const Vector& other) const;
+    friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 
+    //public methods
     static Matrix translate(double x, double y, double z);
     static Matrix scale(double x, double y, double z);
-    static Matrix identity(double x, double y, double z);
-    static Matrix project(double x, double y, double z);
-    static Matrix roll(double x, double y, double z);
-    static Matrix pitch(double x, double y, double z);
-    static Matrix yaw(double x, double y, double z);
-
-    std::string toString();
+    static Matrix identity(int size);
+    static Matrix project(double d);
+    static Matrix roll(double rad);
+    static Matrix pitch(double rad);
+    static Matrix yaw(double rad);
 };

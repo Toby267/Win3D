@@ -1,5 +1,6 @@
 #include "Renderer.hpp"
 #include "util/Vector.hpp"
+#include "util/Matrix.hpp"
 
 #include <iostream>
 
@@ -65,7 +66,7 @@ void Renderer::test() {
     h[1] = 5;
     std::cout << "gives " << h << '\n';
 
-    std::cout << "Length of " << a << " is " << a.length() << '\n';
+    std::cout << "Length of " << a << " is " << a.getLength() << '\n';
     std::cout << "Given v = " << a << ", v[0] is " << a[0] << ", v[1] is " << a[1] << ", and v[2] is " << a[2] << '\n';
 
     std::cout << a << " + " << b << " = " << a+b << '\n';
@@ -85,4 +86,36 @@ void Renderer::test() {
     // std::cout << a[3];
     // std::cout << a[-1];
     // a[-1] = 3;
+
+    Matrix r = Matrix(3, (Vector[]){
+        Vector{1, 2},
+        Vector{3, 4},
+        Vector{5, 6}
+    });
+
+    Matrix s = Matrix(2, 3, (double[]){
+        1, 2, 3,
+        4, 5, 6,
+    });
+
+    Matrix m = Matrix(2, 2, (double[]){
+        1, 2,
+        3, 4
+    });
+
+    Matrix v = Matrix(2, 1, (double[]){
+        10,
+        20
+    });
+
+    Matrix n = Matrix(2, 2, (double[]){
+        5, 6,
+        7, 8
+    });
+
+    std::cout << "Columns and Rows of the following matrix are " << r.getColumns() << ", " << r.getRows() << "\n" << r;
+    std::cout << "Given the matrix: " << m;
+    std::cout << "...multiplying by the column vector " << v << "T gives\n" << m*v;
+    std::cout << "Given the following two vectors:\n" << r << '\n' << s;
+    std::cout << "multiplying them gives: \n" << r*s;
 }
