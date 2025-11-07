@@ -21,4 +21,6 @@ struct Colour {
     Colour operator/(const double& other) const;
 
     friend std::ostream& operator<<(std::ostream& os, const Colour& c);
+
+    static Colour red(), green(), blue();
 };
