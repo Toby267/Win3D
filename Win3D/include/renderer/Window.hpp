@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <thread>
 
 /**
@@ -24,7 +25,7 @@ public:
     ~Window();
 
     //public methods
-    void update(unsigned char* renderBuffer);
+    void update(std::shared_ptr<unsigned char[]> renderBuffer);
     void close();
     bool isAlive();
 

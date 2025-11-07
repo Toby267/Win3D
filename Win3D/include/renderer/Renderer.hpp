@@ -2,14 +2,15 @@
 
 #include "Bitmap3D.hpp"
 #include "Window.hpp"
+#include <memory>
 
 //TODO: make this a singleton when turning it into a library, as only one instance of raylib ever exists.
 class Renderer {
 private:
     int width, height;
 
-    Window window;
-    Bitmap3D bitmap;
+    std::unique_ptr<Window> window;
+    std::unique_ptr<Bitmap3D> bitmap;
 
 public:
     //constructors/destructor
@@ -20,4 +21,5 @@ public:
 
 private:
     //private methods
+    void drawCall();
 };

@@ -3,38 +3,44 @@
 
 #include <cfloat>
 #include <cstdlib>
-#include <iostream>
+#include <memory>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Bitmap3D::Bitmap3D(int width, int height)
-    : width(width), height(height)
+    : width(width), height(height), frameBuffer(std::make_unique<unsigned char[]>(width*height*4)), zBuffer(std::make_unique<double[]>(width*height))
 {
-    frameBuffer = new unsigned char[width*height*4];
-    zBuffer = new double[width*height];
 
     for (int i = 0; i < width*height; i++)
         zBuffer[i] = -DBL_MAX;
-}
-
-Bitmap3D::~Bitmap3D() {
-    delete[] frameBuffer;
-    delete[] zBuffer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned char* Bitmap3D::getFrameBuffer() {
+std::shared_ptr<unsigned char[]> Bitmap3D::getFrameBuffer() {
     return frameBuffer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Colour Bitmap3D::getCol(int x, int y) {
+    if (x >= width || x < 0 || y >= height || y < 0) return Colour(-1, -1, -1, -1);
+    int i = 4 * (y * width + x);
+
+    Colour c = Colour();
+    c.r = frameBuffer[i + 0];
+    c.g = frameBuffer[i + 1];
+    c.b = frameBuffer[i + 2];
+    c.a = frameBuffer[i + 3];
+
+    return c;
+}
 
 void Bitmap3D::drawPixel(int x, int y, int z, Colour c) {
     if (x >= width || x < 0 || y >= height || y < 0) return;
