@@ -12,6 +12,8 @@ Renderer::Renderer(int width, int height) : window(width, height), bitmap(width,
     while (window.isAlive()) {
         int num = rand() % 3;
 
+        bitmap.drawTriangle(Vector(0, height-1, 0), Vector(width/2.0, 0, 0), Vector(width-1, height-1, 0), Colour(255, 0, 0), Colour(0, 255, 0), Colour(0, 0, 255));
+
         // int x = 0, y = 0;
         // double ySlope = (double)height / (double)width;
         // while (x != 2*width) {
@@ -20,11 +22,11 @@ Renderer::Renderer(int width, int height) : window(width, height), bitmap(width,
             // x ++;
         // }
         
-        for (int j = 0; j < height; j++)
-            bitmap.DrawLine(Vector(0, j, 0), Vector(width-1, j, 0), Colour(255, 0, 0, 255), Colour(0, 255, 0, 255));
+        // for (int j = 0; j < height; j++)
+            // bitmap.drawLine(Vector(0, j, 0), Vector(width-1, j, 0), Colour(255, 0, 0, 255), Colour(0, 255, 0, 255));
 
         // for (int i = 0; i < width; i++)
-            // bitmap.DrawLine(Vector(i, 0, 0), Vector(i, height-1, 0), Colour(255, 0, 0, 255), Colour(0, 255, 0, 255));
+            // bitmap.DrawLine(Vector(i,c 0, 0), Vector(i, height-1, 0), Colour(255, 0, 0, 255), Colour(0, 255, 0, 255));
 
         window.update(bitmap.getFrameBuffer());
         

@@ -19,13 +19,13 @@ public:
     Vector& operator=(const Vector& other);       //copy assignment operator
     Vector(Vector&& other) noexcept;              //move constructor
     Vector& operator=(Vector&& other) noexcept;   //move assignment operator
-    ~Vector();                                  //destructor
+    ~Vector();                                    //destructor
 
     //getters/setters
-    double x() const;
-    double y() const;
-    double z() const;
-    double w() const;
+    double& x();
+    double& y();
+    double& z();
+    double& w();
     int getLength() const;
     double magnitude() const;
 

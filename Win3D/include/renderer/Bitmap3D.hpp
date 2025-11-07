@@ -11,10 +11,16 @@ private:
     double* zBuffer;
 
 public:
+    //constructors/destructor
     Bitmap3D(int width, int height);
     ~Bitmap3D();
 
-    void setPixel(int x, int y, int z, Colour c);
+    //getters/setters
     unsigned char* getFrameBuffer();
-    void DrawLine(Vector start, Vector end, Colour c, Colour c2);
+
+    //public methods
+    void drawPixel(int x, int y, int z, Colour c);
+    void drawLine(Vector start, Vector end, Colour c1, Colour c2);
+    void drawTriangle(Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3, Vector n1, Vector n2, Vector n3);
+    void drawTriangle(Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3); //only use while developing the 3D one
 };

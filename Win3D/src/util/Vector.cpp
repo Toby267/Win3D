@@ -99,16 +99,16 @@ Vector::~Vector() {
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-double Vector::x() const {
+double& Vector::x() {
     return v[0];
 }
-double Vector::y() const {
+double& Vector::y() {
     return v[1];
 }
-double Vector::z() const {
+double& Vector::z() {
     return v[2];
 }
-double Vector::w() const {
+double& Vector::w() {
     return v[3];
 }
 
