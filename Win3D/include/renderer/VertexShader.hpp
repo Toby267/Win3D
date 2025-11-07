@@ -1,5 +1,8 @@
 #pragma once
 
+#include "scene/Scene.hpp"
+#include "renderer/Bitmap3D.hpp"
+
 /**
  * Takes in the vertex coordinates, uv coordniates, triangle indeces (indeces of the vertex coordinates array), normals encapsulated as an object3D,
  * along with matrix for translation, scale, rotate, and skew, and transforms the object into world space, and calculates the colour at each vertex based on the lights in the scene
@@ -11,6 +14,6 @@
  */
 class VertexShader {
 public:
-    
+    static void draw(const Scene& scene, Bitmap3D& bitmap);
     
 };
