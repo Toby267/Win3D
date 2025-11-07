@@ -25,7 +25,7 @@ public:
     ~Window();
 
     //public methods
-    void update(std::shared_ptr<unsigned char[]> renderBuffer);
+    void update(std::unique_ptr<unsigned char[]>& renderBuffer);
     void close();
     bool isAlive();
 

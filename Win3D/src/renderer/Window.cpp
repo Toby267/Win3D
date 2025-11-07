@@ -28,7 +28,7 @@ Window::~Window() {
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Window::update(std::shared_ptr<unsigned char[]> renderBuffer) {
+void Window::update(std::unique_ptr<unsigned char[]>& renderBuffer) {
     memcpy(frameBuffer, renderBuffer.get(), sizeof(unsigned char) * width * height * 4);
     hasUpdated.store(true);
 }

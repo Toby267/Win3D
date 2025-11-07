@@ -8,7 +8,7 @@ class Bitmap3D {
 private:
     int width, height;
 
-    std::shared_ptr<unsigned char[]> frameBuffer;
+    std::unique_ptr<unsigned char[]> frameBuffer;
     std::unique_ptr<double[]> zBuffer;
 
 public:
@@ -16,7 +16,7 @@ public:
     Bitmap3D(int width, int height);
 
     //getters/setters
-    std::shared_ptr<unsigned char[]> getFrameBuffer();
+    std::unique_ptr<unsigned char[]>& getFrameBuffer();
 
     //public methods
     Colour getCol(int x, int y);

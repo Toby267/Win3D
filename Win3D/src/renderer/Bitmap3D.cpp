@@ -21,7 +21,7 @@ Bitmap3D::Bitmap3D(int width, int height)
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-std::shared_ptr<unsigned char[]> Bitmap3D::getFrameBuffer() {
+std::unique_ptr<unsigned char[]>& Bitmap3D::getFrameBuffer() {
     return frameBuffer;
 }
 
