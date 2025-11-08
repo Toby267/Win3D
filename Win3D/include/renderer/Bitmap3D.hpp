@@ -19,6 +19,8 @@ public:
     std::unique_ptr<unsigned char[]>& getFrameBuffer();
 
     //public methods
+    void clear();
+
     Colour getCol(int x, int y);
     void drawPixel(int x, int y, int z, Colour c);
     void drawLine(Vector start, Vector end, Colour c1, Colour c2);

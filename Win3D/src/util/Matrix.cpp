@@ -191,6 +191,9 @@ Matrix Matrix::project(double d) {
         Vector{0, 0, -(1/d), 0}
     });
 }
+Matrix Matrix::rotation(double roll, double pitch, double yaw) {
+    return Matrix::roll(roll) * Matrix::pitch(pitch) * Matrix::yaw(yaw);
+}
 Matrix Matrix::roll(double rad) {
     double ca = std::cos(rad);
     double sa = std::sin(rad);

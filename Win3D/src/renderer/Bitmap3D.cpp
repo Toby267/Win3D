@@ -3,6 +3,7 @@
 
 #include <cfloat>
 #include <cstdlib>
+#include <iostream>
 #include <memory>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,6 +29,18 @@ std::unique_ptr<unsigned char[]>& Bitmap3D::getFrameBuffer() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Bitmap3D::clear() {
+    for (int i = 0; i < width*height; i++) {
+        zBuffer[i] = -DBL_MAX;
+
+        frameBuffer[4*i + 0] = 0;
+        frameBuffer[4*i + 1] = 0;
+        frameBuffer[4*i + 2] = 0;
+        frameBuffer[4*i + 3] = 255;
+    }
+}
+
 
 Colour Bitmap3D::getCol(int x, int y) {
     if (x >= width || x < 0 || y >= height || y < 0) return Colour(-1, -1, -1, -1);
@@ -55,6 +68,8 @@ void Bitmap3D::drawPixel(int x, int y, int z, Colour c) {
 }
 
 void Bitmap3D::drawLine(Vector start, Vector end, Colour c1, Colour c2) {
+    std::cout << "drawing line\n";
+    
     int x1 = start.x(), y1 = start.y(), z1 = start.z();
     int x2 = end.x(),   y2 = end.y(),   z2 = end.z();
 
@@ -122,9 +137,39 @@ void Bitmap3D::drawLine(Vector start, Vector end, Colour c1, Colour c2) {
             drawPixel(x1, y1, z1, c1);
         }
     }
+
+    std::cout << "finished drawing line\n";
 }
 
 void Bitmap3D::drawTriangle(Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
+    if (v1.x() > v2.x()) {
+        Vector vTemp = v1;
+        v1 = v2;
+        v2 = vTemp;
+
+        Colour cTemp = c1;
+        c1 = c2;
+        c2 = cTemp;
+    }
+    if (v2.x() > v3.x()) {
+        Vector vTemp = v2;
+        v2 = v3;
+        v3 = vTemp;
+
+        Colour cTemp = c2;
+        c2 = c3;
+        c3 = cTemp;
+    }
+    if (v1.x() > v2.x()) {
+        Vector vTemp = v1;
+        v1 = v2;
+        v2 = vTemp;
+
+        Colour cTemp = c1;
+        c1 = c2;
+        c2 = cTemp;
+    }
+    
     const double error = 0.01;
     Vector v1ToV2 = v2-v1, v1ToV3 = v3-v1, v2ToV3 = v3-v2;
     Vector dBydx12 = v1ToV2 / (v1ToV2.x() + error);
@@ -147,17 +192,18 @@ void Bitmap3D::drawTriangle(Vector v1, Vector v2, Vector v3, Colour c1, Colour c
     double dbBydx23 = c2ToC3.b / (v2ToV3.x() + error);
     double daBydx23 = c2ToC3.a / (v2ToV3.x() + error);
 
+
     for (double x = 0; x < v1ToV2.x(); x++) {
-        Vector vertex1 = v1 + Vector(x, dBydx12.y() * x, dBydx12.z() * x);
-        Vector vertex2 = v1 + Vector(x, dBydx13.y() * x, dBydx13.z() * x);
+        Vector vertex1 = v1 + Vector(x, dBydx12.y() * x, dBydx12.z() * x, 1);
+        Vector vertex2 = v1 + Vector(x, dBydx13.y() * x, dBydx13.z() * x, 1);
         Colour colour1 = c1 + Colour(drBydx12 * x, dgBydx12 * x, dbBydx12 * x, daBydx12 * x);
         Colour colour2 = c1 + Colour(drBydx13 * x, dgBydx13 * x, dbBydx13 * x, daBydx13 * x);
         drawLine(vertex1, vertex2, colour1, colour2);
     }
     for (double x = 0; x < v2ToV3.x(); x++) {
         double x2 = v1ToV2.x() + x;
-        Vector vertex1 = v2 + Vector(x, dBydx23.y() * x, dBydx23.z() * x);
-        Vector vertex2 = v1 + Vector(x2, dBydx13.y() * x2, dBydx13.z() * x2);
+        Vector vertex1 = v2 + Vector(x, dBydx23.y() * x, dBydx23.z() * x, 1);
+        Vector vertex2 = v1 + Vector(x2, dBydx13.y() * x2, dBydx13.z() * x2, 1);
         Colour colour1 = c2 + Colour(drBydx23 * x, dgBydx23 * x, dbBydx23 * x, daBydx23 * x);
         Colour colour2 = c1 + Colour(drBydx13 * x2, dgBydx13 * x2, dbBydx13 * x2, daBydx13 * x2);
         drawLine(vertex1, vertex2, colour1, colour2);

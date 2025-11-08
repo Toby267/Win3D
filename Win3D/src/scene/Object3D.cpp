@@ -1,15 +1,34 @@
 #include "scene/Object3D.hpp"
 
-Object3D::Object3D() {};
-
 Object3D::Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles)
     : vertices(vertices), colours(colours), triangles(triangles) { }
 
-Object3D::Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles, Matrix scale, Matrix translation)
-    : vertices(vertices), colours(colours), triangles(triangles), scale(scale), translation(translation) { }
+void Object3D::transform() {
+    for (Vector& vertex : vertices) {
+        vertex = affineTransform * vertex;
+    }
+}
 
-Object3D Object3D::cube(Matrix scale, Matrix translation)
-{
+void Object3D::draw(Bitmap3D& bmap) {
+    for (Vector t : triangles) {
+        bmap.drawTriangle(vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
+    }
+}
+
+void Object3D::setScale(Matrix s) {
+    scale = s;
+    affineTransform = translation * rotation * scale;
+}
+void Object3D::setTranslation(Matrix t) {
+    translation = t;
+    affineTransform = translation * rotation * scale;
+}
+void Object3D::setRotation(Matrix r) {
+    rotation = r;
+    affineTransform = translation * rotation * scale;
+}
+
+Object3D Object3D::cube() {
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> triangles;
@@ -45,5 +64,5 @@ Object3D Object3D::cube(Matrix scale, Matrix translation)
     triangles.emplace_back(0, 4, 1);
     triangles.emplace_back(1, 4, 5);
 
-    return Object3D(vertices, colours, triangles, scale, translation);
+    return Object3D(vertices, colours, triangles);
 }

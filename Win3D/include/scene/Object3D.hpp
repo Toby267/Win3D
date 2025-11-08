@@ -19,17 +19,22 @@ private:
     std::vector<Colour> colours;
     std::vector<Vector> triangles;
     std::vector<Vector> uvCoordinates;
-   
 
-    Matrix scale       = Matrix(4, 4);
-    Matrix translation = Matrix(4, 4);
+    Matrix scale       = Matrix::scale(1, 1, 1);
+    Matrix translation = Matrix::translate(0, 0, 0);
+    Matrix rotation    = Matrix::rotation(0, 0, 0);
+
+    Matrix affineTransform = translation * scale * rotation;
 
 public:
-    Object3D();
     Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles);
-    Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles, Matrix scale, Matrix translation);
 
-    static Object3D cube(Matrix scale, Matrix translation);
+    void transform();
+    void draw(Bitmap3D& bmap);
 
-    void draw(Bitmap3D bmap);
+    void setScale(Matrix s);
+    void setTranslation(Matrix t);
+    void setRotation(Matrix r);
+
+    static Object3D cube();
 };
