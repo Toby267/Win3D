@@ -42,10 +42,10 @@ Object3D Object3D::cube() {
     vertices.emplace_back( 1,  1, -1, 1);
     vertices.emplace_back( 1,  1,  1, 1);
 
-    colours.emplace_back(Colour::red());
-    colours.emplace_back(Colour::red());
-    colours.emplace_back(Colour::red());
-    colours.emplace_back(Colour::red());
+    colours.emplace_back(Colour::blue());
+    colours.emplace_back(Colour::blue());
+    colours.emplace_back(Colour::blue());
+    colours.emplace_back(Colour::blue());
     colours.emplace_back(Colour::red());
     colours.emplace_back(Colour::red());
     colours.emplace_back(Colour::red());

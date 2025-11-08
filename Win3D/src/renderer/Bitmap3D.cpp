@@ -60,6 +60,8 @@ void Bitmap3D::drawPixel(int x, int y, int z, Colour c) {
     z -= 20000;
     if (zBuffer[y*width + x] > z) return;
 
+    zBuffer[y*width + x] = z;
+    
     int i = 4 * (y * width + x);
     frameBuffer[i + 0] = c.r;
     frameBuffer[i + 1] = c.g;
