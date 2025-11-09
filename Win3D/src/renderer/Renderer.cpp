@@ -17,7 +17,7 @@ Renderer::Renderer(int width, int height) :
 {
     std::shared_ptr<Object3D> cube = std::make_shared<Object3D>(Object3D::cube());
     cube->setScale(Matrix::scale(100, 100, 100));
-    cube->setTranslation(Matrix::translate(width/2.0, height/2.0, 0));
+    cube->setTranslation(Matrix::translate(width/2.0, height/2.0, -500));
     scene.addObject(cube);
 
     double alpha = 0.0;

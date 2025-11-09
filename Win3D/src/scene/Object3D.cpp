@@ -1,4 +1,5 @@
 #include "scene/Object3D.hpp"
+#include <iostream>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
@@ -26,6 +27,9 @@ void Object3D::setRotation(Matrix r) {
     rotation = r;
     affineTransform = translation * rotation * scale;
 }
+void Object3D::setCamera(Camera* camera) {
+    cameraRef = camera;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
@@ -34,6 +38,20 @@ void Object3D::setRotation(Matrix r) {
 void Object3D::transform() {
     for (Vector& vertex : vertices) {
         vertex = affineTransform * vertex;
+    }
+}
+void Object3D::project() {
+    for (Vector& vertex : vertices) {
+        std::cout << "\nvertex: " << vertex << '\n';
+        vertex = cameraRef->getProjection() * vertex;
+        std::cout << "vertex: " << vertex << '\n';
+        vertex = vertex / vertex.w();
+        std::cout << "vertex: " << vertex << '\n';
+    }
+}
+void Object3D::applyViewportTransformation(Matrix transformationMatrix) {
+    for (Vector& vertex : vertices) {
+        vertex = transformationMatrix * vertex;
     }
 }
 void Object3D::draw(Bitmap3D& bmap) {

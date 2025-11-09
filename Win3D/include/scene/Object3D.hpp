@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "Camera.hpp"
 #include "renderer/Bitmap3D.hpp"
 
 #include "util/Matrix.hpp"
@@ -26,6 +27,8 @@ private:
 
     Matrix affineTransform = translation * scale * rotation;
 
+    Camera* cameraRef;
+
 public:
     //constructors/destructor
     Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles);
@@ -35,8 +38,12 @@ public:
     void setTranslation(Matrix t);
     void setRotation(Matrix r);
 
+    void setCamera(Camera* camera);
+
     //public methods
     void transform();
+    void project();
+    void applyViewportTransformation(Matrix transformationMatrix);
     void draw(Bitmap3D& bmap);
 
     //static methods
