@@ -29,7 +29,7 @@ public:
     Vector operator*(const Vector& other) const;
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 
-    //public methods
+    //static methods
     static Matrix translate(double x, double y, double z);
     static Matrix scale(double x, double y, double z);
     static Matrix identity(int size);

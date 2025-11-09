@@ -14,6 +14,6 @@
  */
 class VertexShader {
 public:
+    //public methods
     static void draw(const Scene& scene, Bitmap3D& bitmap);
-    
 };

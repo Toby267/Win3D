@@ -38,7 +38,7 @@ public:
     Vector operator-(const Vector& other) const;
     friend std::ostream& operator<<(std::ostream& os, const Vector& v);
 
-    //public methods
+    //static methods
     static Vector crossProduct(Vector lhs, Vector rhs);
     static double dotProduct(Vector lhs, Vector rhs);
 

@@ -27,14 +27,18 @@ private:
     Matrix affineTransform = translation * scale * rotation;
 
 public:
+    //constructors/destructor
     Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles);
 
-    void transform();
-    void draw(Bitmap3D& bmap);
-
+    //getters/setters
     void setScale(Matrix s);
     void setTranslation(Matrix t);
     void setRotation(Matrix r);
 
+    //public methods
+    void transform();
+    void draw(Bitmap3D& bmap);
+
+    //static methods
     static Object3D cube();
 };

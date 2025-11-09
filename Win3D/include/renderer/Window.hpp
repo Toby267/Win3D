@@ -8,7 +8,6 @@
  *
  * The window has its own thread for drawing to the windows based on the byte array.
  */
-
 class Window {
 private:
     //attributes

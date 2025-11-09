@@ -17,13 +17,13 @@ public:
 
     //getters/setters
     const std::vector<unsigned char>& getFrameBuffer();
+    Colour getCol(int x, int y);
 
     //public methods
     void clear();
 
-    Colour getCol(int x, int y);
-    void drawPixel(int x, int y, int z, Colour c);
-    void drawLine(Vector start, Vector end, Colour c1, Colour c2);
     void drawTriangle(Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3, Vector n1, Vector n2, Vector n3);
     void drawTriangle(Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3); //only use while developing the 3D one
+    void drawLine(Vector start, Vector end, Colour c1, Colour c2);
+    void drawPixel(int x, int y, int z, Colour c);
 };

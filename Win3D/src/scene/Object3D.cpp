@@ -1,19 +1,18 @@
 #include "scene/Object3D.hpp"
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Object3D::Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles)
-    : vertices(vertices), colours(colours), triangles(triangles) { }
+    : vertices(vertices), colours(colours), triangles(triangles)
+{
 
-void Object3D::transform() {
-    for (Vector& vertex : vertices) {
-        vertex = affineTransform * vertex;
-    }
 }
 
-void Object3D::draw(Bitmap3D& bmap) {
-    for (Vector t : triangles) {
-        bmap.drawTriangle(vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
-    }
-}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Object3D::setScale(Matrix s) {
     scale = s;
@@ -27,6 +26,26 @@ void Object3D::setRotation(Matrix r) {
     rotation = r;
     affineTransform = translation * rotation * scale;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Object3D::transform() {
+    for (Vector& vertex : vertices) {
+        vertex = affineTransform * vertex;
+    }
+}
+void Object3D::draw(Bitmap3D& bmap) {
+    for (Vector t : triangles) {
+        bmap.drawTriangle(vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
+    }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Object3D Object3D::cube() {
     std::vector<Vector> vertices;
