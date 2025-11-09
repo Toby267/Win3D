@@ -228,6 +228,7 @@ Matrix Matrix::yaw(double rad) {
     });
 }
 //returns the orthographic projection matrix assuming y is up, x is right, and z is into the screen
+//the canonical view matrix of the renderer is from (-1, -1, -1) to (1, 1, 1)
 Matrix Matrix::orthographic(double l, double b, double n, double r, double t, double f) {
     double xs = 2.0/(r-l);
     double ys = 2.0/(t-b);

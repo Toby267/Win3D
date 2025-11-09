@@ -13,7 +13,7 @@ Bitmap3D::Bitmap3D(int width, int height)
     : width(width), height(height)
 {
     frameBuffer = std::vector<unsigned char>(width*height*4, 0);
-    zBuffer = std::vector<double>(width*height, -DBL_MAX);
+    zBuffer = std::vector<double>(width*height, DBL_MAX);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -30,7 +30,7 @@ const std::vector<unsigned char>& Bitmap3D::getFrameBuffer() {
 
 void Bitmap3D::clear() {
     for (int i = 0; i < width*height; i++) {
-        zBuffer[i] = -DBL_MAX;
+        zBuffer[i] = DBL_MAX;
 
         frameBuffer[4*i + 0] = 0;
         frameBuffer[4*i + 1] = 0;
@@ -180,8 +180,8 @@ void Bitmap3D::drawLine(Vector start, Vector end, Colour c1, Colour c2) {
 
 void Bitmap3D::drawPixel(int x, int y, int z, Colour c) {
     if (x >= width || x < 0 || y >= height || y < 0) return;
-    z -= 20000;
-    if (zBuffer[y*width + x] > z) return;
+    z += 20000;
+    if (zBuffer[y*width + x] < z) return;
 
     zBuffer[y*width + x] = z;
     

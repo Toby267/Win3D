@@ -3,7 +3,6 @@
 #include "renderer/VertexShader.hpp"
 #include "util/Matrix.hpp"
 
-#include <iostream>
 #include <memory>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,10 +20,10 @@ Renderer::Renderer(int width, int height) :
     double alpha = 0.0;
     while (window.isAlive()) {
         alpha += std::numbers::pi/256;
-        cube->setRotation(Matrix::rotation(alpha, alpha, alpha));
+        cube->setRotation(Matrix::rotation(0, -std::numbers::pi/16, -std::numbers::pi/16));
 
         drawCall();
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        // std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }
 
