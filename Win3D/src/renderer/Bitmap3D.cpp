@@ -4,25 +4,23 @@
 #include <cfloat>
 #include <cstdlib>
 #include <iostream>
-#include <memory>
+#include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Bitmap3D::Bitmap3D(int width, int height)
-    : width(width), height(height), frameBuffer(std::make_unique<unsigned char[]>(width*height*4)), zBuffer(std::make_unique<double[]>(width*height))
+    : width(width), height(height), frameBuffer(width*height*4, 0), zBuffer(width*height, -DBL_MAX)
 {
-
-    for (int i = 0; i < width*height; i++)
-        zBuffer[i] = -DBL_MAX;
+    
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<unsigned char[]>& Bitmap3D::getFrameBuffer() {
+const std::vector<unsigned char>& Bitmap3D::getFrameBuffer() {
     return frameBuffer;
 }
 

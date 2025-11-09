@@ -42,14 +42,14 @@ Object3D Object3D::cube() {
     vertices.emplace_back( 1,  1, -1, 1);
     vertices.emplace_back( 1,  1,  1, 1);
 
-    colours.emplace_back(Colour::blue());
-    colours.emplace_back(Colour::blue());
-    colours.emplace_back(Colour::blue());
-    colours.emplace_back(Colour::blue());
     colours.emplace_back(Colour::red());
     colours.emplace_back(Colour::red());
     colours.emplace_back(Colour::red());
     colours.emplace_back(Colour::red());
+    colours.emplace_back(Colour::cyan());
+    colours.emplace_back(Colour::cyan());
+    colours.emplace_back(Colour::cyan());
+    colours.emplace_back(Colour::cyan());
 
     triangles.emplace_back(0, 1, 2);
     triangles.emplace_back(1, 3, 2);

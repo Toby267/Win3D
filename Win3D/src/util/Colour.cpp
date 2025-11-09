@@ -81,6 +81,9 @@ std::ostream& operator<<(std::ostream& os, const Colour& c) {
     return os;
 }
 
-Colour Colour::red()   { return Colour(255,   0,   0); }
-Colour Colour::green() { return Colour(  0, 255,   0); }
-Colour Colour::blue()  { return Colour(  0,   0, 255); }
+Colour Colour::red()     { return Colour(255,   0,   0); }
+Colour Colour::green()   { return Colour(  0, 255,   0); }
+Colour Colour::blue()    { return Colour(  0,   0, 255); }
+Colour Colour::cyan()    { return Colour(  0, 255, 255); }
+Colour Colour::magenta() { return Colour(255,   0, 255); }
+Colour Colour::yellow()  { return Colour(255, 255,   0); }

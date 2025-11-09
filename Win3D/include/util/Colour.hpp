@@ -22,5 +22,5 @@ struct Colour {
 
     friend std::ostream& operator<<(std::ostream& os, const Colour& c);
 
-    static Colour red(), green(), blue();
+    static Colour red(), green(), blue(), cyan(), magenta(), yellow();
 };

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <memory>
 #include <thread>
+#include <vector>
 
 /**
  * Class representing a raylib window, its byte array, and related data. 
@@ -25,7 +25,7 @@ public:
     ~Window();
 
     //public methods
-    void update(std::unique_ptr<unsigned char[]>& renderBuffer);
+    void update(const std::vector<unsigned char>& renderBuffer);
     void close();
     bool isAlive();
 

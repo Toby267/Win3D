@@ -1,7 +1,7 @@
 #include "renderer/Window.hpp"
 
 #include "raylib.h"
-#include <cstring>
+#include <algorithm>
 #include <thread>
 #include <unistd.h>
 
@@ -28,8 +28,8 @@ Window::~Window() {
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Window::update(std::unique_ptr<unsigned char[]>& renderBuffer) {
-    memcpy(frameBuffer, renderBuffer.get(), sizeof(unsigned char) * width * height * 4);
+void Window::update(const std::vector<unsigned char>& renderBuffer) {
+    std::copy(renderBuffer.begin(), renderBuffer.end(), frameBuffer);
     hasUpdated.store(true);
 }
 

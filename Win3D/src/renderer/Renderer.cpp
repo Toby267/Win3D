@@ -11,17 +11,17 @@
 
 Renderer::Renderer(int width, int height) :
     width(width), height(height),
-    window(std::make_unique<Window>(width, height)),
-    bitmap(std::make_unique<Bitmap3D>(width, height)),
-    scene(std::make_unique<Scene>())
+    window(width, height),
+    bitmap(width, height),
+    scene()
 {
     std::shared_ptr<Object3D> cube = std::make_shared<Object3D>(Object3D::cube());
     cube->setScale(Matrix::scale(100, 100, 100));
     cube->setTranslation(Matrix::translate(width/2.0, height/2.0, 0));
-    scene->addObject(cube);
+    scene.addObject(cube);
 
     double alpha = 0.0;
-    while (window->isAlive()) {
+    while (window.isAlive()) {
         alpha +=  std::numbers::pi/18;
         cube->setRotation(Matrix::rotation(alpha, alpha, std::numbers::pi/4));
 
@@ -35,11 +35,11 @@ Renderer::Renderer(int width, int height) :
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Renderer::drawCall() {
-    bitmap->clear();
-    
-    VertexShader::draw(*scene, *bitmap);
+    bitmap.clear();
 
-    window->update(bitmap->getFrameBuffer());
+    VertexShader::draw(scene, bitmap);
+
+    window.update(bitmap.getFrameBuffer());
 }
 
 void Renderer::test() {
