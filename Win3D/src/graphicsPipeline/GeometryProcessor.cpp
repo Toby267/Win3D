@@ -1,13 +1,12 @@
-#include "renderer/VertexShader.hpp"
+#include "graphicsPipeline/GeometryProcessor.hpp"
 #include "scene/Scene.hpp"
-#include <iostream>
 #include <memory>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void VertexShader::draw(const Scene& scene, Bitmap3D& bitmap) {
+void GeometryProcessor::draw(const Scene& scene, Bitmap3D& bitmap) {
     for (const std::shared_ptr<const Object3D>& object : scene.getObjects()) {
         Object3D obj = *object;
         

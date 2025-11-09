@@ -1,6 +1,6 @@
 #include "renderer/Renderer.hpp"
 
-#include "renderer/VertexShader.hpp"
+#include "graphicsPipeline/GeometryProcessor.hpp"
 #include "util/Matrix.hpp"
 
 #include <memory>
@@ -20,7 +20,7 @@ Renderer::Renderer(int width, int height) :
     double alpha = 0.0;
     while (window.isAlive()) {
         alpha += std::numbers::pi/256;
-        cube->setRotation(Matrix::rotation(0, -std::numbers::pi/16, -std::numbers::pi/16));
+        cube->setRotation(Matrix::rotation(0, -std::numbers::pi/16, alpha));
 
         drawCall();
         // std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -34,7 +34,7 @@ Renderer::Renderer(int width, int height) :
 void Renderer::drawCall() {
     bitmap.clear();
 
-    VertexShader::draw(scene, bitmap);
+    GeometryProcessor::draw(scene, bitmap);
 
     window.update(bitmap.getFrameBuffer());
 }

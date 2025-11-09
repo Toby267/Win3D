@@ -12,8 +12,6 @@
  * Ideally take in an entire scene as input.
  * Ideally this should be stateless
  */
-class VertexShader {
-public:
-    //public methods
-    static void draw(const Scene& scene, Bitmap3D& bitmap);
+namespace GeometryProcessor {
+    void draw(const Scene& scene, Bitmap3D& bitmap);
 };
