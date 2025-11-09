@@ -3,7 +3,6 @@
 
 #include <cfloat>
 #include <cstdlib>
-#include <iostream>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -11,9 +10,10 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Bitmap3D::Bitmap3D(int width, int height)
-    : width(width), height(height), frameBuffer(width*height*4, 0), zBuffer(width*height, -DBL_MAX)
+    : width(width), height(height)
 {
-    
+    frameBuffer = std::vector<unsigned char>(width*height*4, 0);
+    zBuffer = std::vector<double>(width*height, -DBL_MAX);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -22,19 +22,6 @@ Bitmap3D::Bitmap3D(int width, int height)
 
 const std::vector<unsigned char>& Bitmap3D::getFrameBuffer() {
     return frameBuffer;
-}
-
-Colour Bitmap3D::getCol(int x, int y) {
-    if (x >= width || x < 0 || y >= height || y < 0) return Colour(-1, -1, -1, -1);
-    int i = 4 * (y * width + x);
-
-    Colour c = Colour();
-    c.r = frameBuffer[i + 0];
-    c.g = frameBuffer[i + 1];
-    c.b = frameBuffer[i + 2];
-    c.a = frameBuffer[i + 3];
-
-    return c;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

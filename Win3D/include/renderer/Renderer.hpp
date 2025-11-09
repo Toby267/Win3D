@@ -8,9 +8,9 @@ class Renderer {
 private:
     int width, height;
 
-    Window window;
-    Bitmap3D bitmap;
-    Scene scene;
+    Window window = Window(width, height);
+    Bitmap3D bitmap = Bitmap3D(width, height);
+    Scene scene = Scene();
 
 public:
     //constructors/destructor

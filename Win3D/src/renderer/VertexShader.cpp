@@ -1,5 +1,6 @@
 #include "renderer/VertexShader.hpp"
 #include "scene/Scene.hpp"
+#include <iostream>
 #include <memory>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,7 +22,7 @@ void VertexShader::draw(const Scene& scene, Bitmap3D& bitmap) {
         //step 3 - clipping
 
         //step 4 - screen mapping
-        obj.applyViewportTransformation(Matrix::translate(1280/2.0, 720/2.0, 0) * Matrix::scale(1280, 720, 1000));
+        obj.applyViewportTransformation(Matrix::translate(1280/2.0, 720/2.0, 1000/2.0) * Matrix::scale(1280/2.0, -720/2.0, 1000/2.0));
         
         //step 5 - the resulting data is passed onto the rasterization stage
         obj.draw(bitmap);

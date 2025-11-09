@@ -38,5 +38,5 @@ public:
     static Matrix roll(double rad);
     static Matrix pitch(double rad);
     static Matrix yaw(double rad);
-    static Matrix orthographic(Vector minimumCorner, Vector maximumCorner);
+    static Matrix orthographic(double left, double bottom, double near, double right, double top, double far);
 };

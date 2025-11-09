@@ -39,20 +39,21 @@ void Object3D::transform() {
     for (Vector& vertex : vertices) {
         vertex = affineTransform * vertex;
     }
+    std::cout << "\n\nvertex 0: " << vertices[0] << '\n';
 }
 void Object3D::project() {
     for (Vector& vertex : vertices) {
-        std::cout << "\nvertex: " << vertex << '\n';
         vertex = cameraRef->getProjection() * vertex;
-        std::cout << "vertex: " << vertex << '\n';
         vertex = vertex / vertex.w();
-        std::cout << "vertex: " << vertex << '\n';
     }
+
+    std::cout << "vertex 0: " << vertices[0] <<"\n";
 }
 void Object3D::applyViewportTransformation(Matrix transformationMatrix) {
     for (Vector& vertex : vertices) {
         vertex = transformationMatrix * vertex;
     }
+    std::cout << "vertex 0: " << vertices[0] <<"\n\n";
 }
 void Object3D::draw(Bitmap3D& bmap) {
     for (Vector t : triangles) {
@@ -80,13 +81,13 @@ Object3D Object3D::cube() {
     vertices.emplace_back( 1,  1,  1, 1);
 
     colours.emplace_back(Colour::red());
-    colours.emplace_back(Colour::red());
-    colours.emplace_back(Colour::red());
-    colours.emplace_back(Colour::red());
-    colours.emplace_back(Colour::cyan());
-    colours.emplace_back(Colour::cyan());
-    colours.emplace_back(Colour::cyan());
-    colours.emplace_back(Colour::cyan());
+    colours.emplace_back(Colour::green());
+    colours.emplace_back(Colour::green());
+    colours.emplace_back(Colour::green());
+    colours.emplace_back(Colour::green());
+    colours.emplace_back(Colour::green());
+    colours.emplace_back(Colour::green());
+    colours.emplace_back(Colour::blue());
 
     triangles.emplace_back(0, 1, 2);
     triangles.emplace_back(1, 3, 2);

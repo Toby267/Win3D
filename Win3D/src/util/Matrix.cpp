@@ -227,26 +227,15 @@ Matrix Matrix::yaw(double rad) {
         Vector{0,   0, 0,  1}
     });
 }
-Matrix Matrix::orthographic(Vector minimumCorner, Vector maximumCorner) {
-    double l = minimumCorner.x();
-    double b = minimumCorner.y();
-    double n = minimumCorner.z();
-    double r = maximumCorner.x();
-    double t = maximumCorner.y();
-    double f = maximumCorner.z();
-
+//returns the orthographic projection matrix assuming y is up, x is right, and z is into the screen
+Matrix Matrix::orthographic(double l, double b, double n, double r, double t, double f) {
     double xs = 2.0/(r-l);
     double ys = 2.0/(t-b);
-    double zs = -2.0/(f-n);
+    double zs = 2.0/(f-n);
 
-    double xt = -((r+l)/(r-l));
-    double yt = -((t+b)/(t-b));
-    double zt = -((f+n)/(f-n));
+    double xt = (r+l)/2.0;
+    double yt = (t+b)/2.0;
+    double zt = (f-n)/2.0;
 
-    return Matrix(4, (Vector[]){
-        Vector{xs,  0,  0, xt},
-        Vector{ 0, ys,  0, yt},
-        Vector{ 0,  0, zs, zt},
-        Vector{ 0,  0,  0,  1}
-    });
+    return Matrix::scale(xs, ys, zs) * Matrix::translate(-xt, -yt, -zt);
 }

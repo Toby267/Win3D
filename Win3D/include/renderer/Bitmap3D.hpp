@@ -17,7 +17,6 @@ public:
 
     //getters/setters
     const std::vector<unsigned char>& getFrameBuffer();
-    Colour getCol(int x, int y);
 
     //public methods
     void clear();
