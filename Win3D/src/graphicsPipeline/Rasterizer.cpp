@@ -1,7 +1,10 @@
 #include "graphicsPipeline/Rasterizer.hpp"
 
-void rasterize(Bitmap3D&, Object3D&) {
-    
+void rasterize(Bitmap3D& bmap, Object3D& obj) {
+    for (Vector t : obj.triangles) {
+        drawTriangle(bmap, obj.vertices[t[0]], obj.vertices[t[1]], obj.vertices[t[2]], obj.colours[t[0]], obj.colours[t[1]], obj.colours[t[2]]);
+        // rasterize(bmap, *this);
+    }
 }
 
 void drawTriangle(Bitmap3D& bitmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {

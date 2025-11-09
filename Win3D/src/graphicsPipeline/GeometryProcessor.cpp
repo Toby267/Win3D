@@ -1,5 +1,6 @@
 #include "graphicsPipeline/GeometryProcessor.hpp"
 #include "scene/Scene.hpp"
+#include <iostream>
 #include <memory>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -12,6 +13,7 @@ void GeometryProcessor::draw(const Scene& scene, Bitmap3D& bitmap) {
         
         //step 0 - transform the object into world space
         obj.transform();
+        std::cout << "hellodkfjasd;kl\n";
 
         //step 1 - vertex shading
 

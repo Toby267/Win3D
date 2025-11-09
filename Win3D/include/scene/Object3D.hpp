@@ -14,8 +14,7 @@
  * triangles[i] stores the first tirangle, where triangle[i][0] is v1, triangle[i][1] is v2, and triangle[i][2] is v3.
  * we'll get to uv maps later
  */
-class Object3D {
-private:
+struct Object3D {
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> triangles;

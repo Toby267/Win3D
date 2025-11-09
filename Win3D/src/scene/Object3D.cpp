@@ -53,10 +53,11 @@ void Object3D::applyViewportTransformation(Matrix transformationMatrix) {
     }
 }
 void Object3D::draw(Bitmap3D& bmap) {
-    for (Vector t : triangles) {
-        // bmap.drawTriangle(vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
-        rasterize(bmap, *this);
-    }
+    // for (Vector t : triangles) {
+    //     bmap.drawTriangle(vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
+    //     // rasterize(bmap, *this);
+    // }
+    rasterize(bmap, *this);
 }
 
 
