@@ -1,8 +1,8 @@
-#include "renderer/Renderer.hpp"
+#include "application/Application.hpp"
 
 int main(int argc, char *argv[]) {
-    Renderer* r = new Renderer(1280, 720);
-    delete r;
+    Application* app = new Application();
+    delete app;
 
     return 0;
 }

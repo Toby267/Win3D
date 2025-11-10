@@ -240,3 +240,17 @@ Matrix Matrix::orthographic(double l, double b, double n, double r, double t, do
 
     return Matrix::scale(xs, ys, zs) * Matrix::translate(-xt, -yt, -zt);
 }
+
+//have not verified if it currently assumes -z is into the screen
+Matrix Matrix::perspective(double l, double b, double n, double r, double t, double f) {
+    //converts the view frustrum defined by the near and far to a view cube
+    Matrix perspective(4, (Vector[]){
+        Vector{-n,   0,   0,    0},
+        Vector{  0, -n,   0,    0},
+        Vector{  0,   0, f+n, f*n},
+        Vector{  0,   0,   1,   0}
+    });
+
+    //converts the view cube to the canonical view matrix;
+    return Matrix::orthographic(l, b, n, r, t, f) * perspective;
+}

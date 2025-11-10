@@ -5,15 +5,15 @@
 
 class Camera {
 private:
-    Matrix projection = Matrix::orthographic(0, 0, 0, 1280, 720, 1000);
+    Matrix projection = Matrix::perspective(-640, -360, -500, 640, 360, 500);
     Vector position = Vector(0, 0, 0, 1);
     Vector direction = Vector(0, 0, -1, 0);
     int d = 1;
 
 public:
     //constructors/destructor
-    Camera();
+    Camera() {};
 
     //getters/setters
-    Matrix getProjection();
+    Matrix getProjection() const;
 };

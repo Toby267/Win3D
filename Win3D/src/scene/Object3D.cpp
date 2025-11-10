@@ -1,5 +1,4 @@
 #include "scene/Object3D.hpp"
-#include <iostream>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
@@ -27,9 +26,6 @@ void Object3D::setRotation(Matrix r) {
     rotation = r;
     affineTransform = translation * rotation * scale;
 }
-void Object3D::setCamera(Camera* camera) {
-    cameraRef = camera;
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
@@ -39,28 +35,13 @@ void Object3D::transform() {
     for (Vector& vertex : vertices) {
         vertex = affineTransform * vertex;
     }
-    std::cout << "\n\nvertex 0: " << vertices[0] << '\n';
 }
-void Object3D::project() {
+void Object3D::applyTransformation(Matrix m) {
     for (Vector& vertex : vertices) {
-        vertex = cameraRef->getProjection() * vertex;
+        vertex = m * vertex;
         vertex = vertex / vertex.w();
     }
-
-    std::cout << "vertex 0: " << vertices[0] <<"\n";
 }
-void Object3D::applyViewportTransformation(Matrix transformationMatrix) {
-    for (Vector& vertex : vertices) {
-        vertex = transformationMatrix * vertex;
-    }
-    std::cout << "vertex 0: " << vertices[0] <<"\n\n";
-}
-void Object3D::draw(Bitmap3D& bmap) {
-    for (Vector t : triangles) {
-        bmap.drawTriangle(vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
-    }
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //

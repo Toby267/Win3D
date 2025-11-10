@@ -13,15 +13,10 @@ Window::Window(int width, int height) {
     this->width = width;
     this->height = height;
     this->hasUpdated.store(false);
-    this->shouldStop.store(false);
+    this->alive.store(true);
     this->frameBuffer = new unsigned char[width*height*4];
     
     t = std::thread(&Window::run, this, &frameBuffer[0], width, height);
-}
-
-Window::~Window() {
-    close();
-    delete[] frameBuffer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -29,17 +24,17 @@ Window::~Window() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Window::update(const std::vector<unsigned char>& renderBuffer) {
+    if (!alive) return;
     std::copy(renderBuffer.begin(), renderBuffer.end(), frameBuffer);
     hasUpdated.store(true);
 }
 
-void Window::close() {
-    shouldStop.store(true);
-    t.join();
+bool Window::isAlive() {
+    return alive.load();
 }
 
-bool Window::isAlive() {
-    return !shouldStop.load();
+void Window::close() {
+    t.join();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +52,7 @@ void Window::run(unsigned char* bmap, int width, int height) {
     InitWindow(width, height, "Toby Hothersall - Win3D");
     SetTargetFPS(60);
 
-    while (!WindowShouldClose() && !shouldStop.load()) {
+    while (!WindowShouldClose() && alive.load()) {
         if (hasUpdated.load()) {
             BeginDrawing();
     
@@ -70,6 +65,8 @@ void Window::run(unsigned char* bmap, int width, int height) {
             UnloadTexture(tex);
         }
     }
+    
     CloseWindow();
-    close();
+    delete[] bmap;
+    alive.store(false);
 }
