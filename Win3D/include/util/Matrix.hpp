@@ -39,4 +39,5 @@ public:
     static Matrix pitch(double rad);
     static Matrix yaw(double rad);
     static Matrix orthographic(double left, double bottom, double near, double right, double top, double far);
+    static Matrix perspective(double left, double bottom, double near, double right, double top, double far);
 };
