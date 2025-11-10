@@ -15,6 +15,7 @@ void processGeometry(const Scene& scene, Bitmap3D& bitmap) {
         obj.transform();
 
         //step 2 - transform the camera to the origin, and take all objects along with it
+        obj.applyTransformation(scene.getCamera().getTransformation());
 
         //step 3 - vertex shading
 

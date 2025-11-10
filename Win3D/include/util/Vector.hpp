@@ -43,5 +43,5 @@ public:
     static double dotProduct(Vector lhs, Vector rhs);
 
     static Vector unitNormal(Vector lhs, Vector rhs, Vector origin);
-    static double cosAngle(Vector lhs, Vector rhs, Vector origin);
+    static double cosAngle(Vector lhs, Vector rhs);
 };

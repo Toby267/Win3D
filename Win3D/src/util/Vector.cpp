@@ -214,7 +214,6 @@ Vector Vector::unitNormal(Vector lhs, Vector rhs, Vector origin) {
     Vector retVal = crossProduct((lhs - origin), (rhs - origin));
     return retVal / retVal.magnitude();
 }
-double Vector::cosAngle(Vector lhs, Vector rhs, Vector origin) {
-    Vector lhsPrime = lhs-origin, rhsPrime = rhs-origin;
-    return dotProduct(lhsPrime, rhsPrime) / (lhsPrime.magnitude() * rhsPrime.magnitude());
+double Vector::cosAngle(Vector lhs, Vector rhs) {
+    return dotProduct(lhs, rhs) / (lhs.magnitude() * rhs.magnitude());
 }
