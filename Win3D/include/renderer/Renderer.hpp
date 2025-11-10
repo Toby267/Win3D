@@ -16,4 +16,7 @@ private:
 public:
     //constructors/destructor
     Renderer(int width, int height, std::shared_ptr<Scene> s);
+
+    //public methods
+    void drawCall();
 };
