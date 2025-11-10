@@ -11,17 +11,7 @@
 Renderer::Renderer(int width, int height, std::shared_ptr<Scene> s) :
     width(width), height(height), scene(s)
 {
-    /*
-    while (window.isAlive()) {
-        bitmap.clear();
 
-        GraphicsPipeline::DrawCall(*scene, bitmap);
-
-        window.update(bitmap.getFrameBuffer());
-
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
-    */
 }
 
 void Renderer::drawCall() {
@@ -30,6 +20,4 @@ void Renderer::drawCall() {
     GraphicsPipeline::DrawCall(*scene, bitmap);
 
     window.update(bitmap.getFrameBuffer());
-
-    // std::this_thread::sleep_for(std::chrono::seconds(1));
 }

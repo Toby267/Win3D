@@ -1,14 +1,12 @@
-#include "graphicsPipeline/GeometryProcessor.hpp"
-#include "graphicsPipeline/Rasterizer.hpp"
+#include "graphicsPipeline/GraphicsPipelineInternals.hpp"
 #include "scene/Scene.hpp"
-#include <iostream>
 #include <memory>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void GeometryProcessor::draw(const Scene& scene, Bitmap3D& bitmap) {
+void processGeometry(const Scene& scene, Bitmap3D& bitmap) {
     for (const std::shared_ptr<const Object3D>& object : scene.getObjects()) {
         Object3D obj = *object;
         

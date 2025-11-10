@@ -1,9 +1,14 @@
 #pragma once
 
-#include "util/Vector.hpp"
-#include "util/Colour.hpp"
+#include "scene/Scene.hpp"
 #include "renderer/Bitmap3D.hpp"
-#include "scene/Object3D.hpp"
+
+
+// * ------------------------------------------ [ GEOMETRY PROCESSOR ] ------------------------------------------ * //
+
+void processGeometry(const Scene& scene, Bitmap3D& bitmap);
+
+// * ---------------------------------------------- [ RASTERIZER ] ---------------------------------------------- * //
 
 void rasterize(Bitmap3D&, Object3D&);
 

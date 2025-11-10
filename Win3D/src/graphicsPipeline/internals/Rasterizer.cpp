@@ -1,4 +1,4 @@
-#include "graphicsPipeline/Rasterizer.hpp"
+#include "graphicsPipeline/GraphicsPipelineInternals.hpp"
 
 void rasterize(Bitmap3D& bmap, Object3D& obj) {
     for (Vector t : obj.triangles) {
