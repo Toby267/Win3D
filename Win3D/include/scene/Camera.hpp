@@ -12,7 +12,7 @@ private:
 
 public:
     //constructors/destructor
-    Camera();
+    Camera() {};
 
     //getters/setters
     Matrix getProjection() const;

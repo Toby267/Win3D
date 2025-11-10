@@ -12,7 +12,7 @@ private:
 
 public:
     //constructors/destructor
-    Scene();
+    Scene() {};
 
     //getters/setters
     std::vector<std::shared_ptr<Object3D>> getObjects() const;
