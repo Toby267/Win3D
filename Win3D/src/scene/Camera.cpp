@@ -1,7 +1,5 @@
 #include "scene/Camera.hpp"
 
-Camera::Camera() { }
-
-Matrix Camera::getProjection() {
+Matrix Camera::getProjection() const {
     return projection;
 }

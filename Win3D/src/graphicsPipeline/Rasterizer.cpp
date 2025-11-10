@@ -3,7 +3,6 @@
 void rasterize(Bitmap3D& bmap, Object3D& obj) {
     for (Vector t : obj.triangles) {
         drawTriangle(bmap, obj.vertices[t[0]], obj.vertices[t[1]], obj.vertices[t[2]], obj.colours[t[0]], obj.colours[t[1]], obj.colours[t[2]]);
-        // rasterize(bmap, *this);
     }
 }
 

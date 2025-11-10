@@ -15,5 +15,5 @@ public:
     Camera();
 
     //getters/setters
-    Matrix getProjection();
+    Matrix getProjection() const;
 };

@@ -1,5 +1,6 @@
 #include "graphicsPipeline/GraphicsPipeline.hpp"
+#include "graphicsPipeline/GeometryProcessor.hpp"
 
-void DrawCall(const Scene& scene, Bitmap3D& bitmap) {
-    
+void GraphicsPipeline::DrawCall(const Scene& scene, Bitmap3D& bitmap) {
+    GeometryProcessor::draw(scene, bitmap);
 }

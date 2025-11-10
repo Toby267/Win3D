@@ -1,6 +1,4 @@
 #include "scene/Object3D.hpp"
-#include <iostream>
-#include "graphicsPipeline/Rasterizer.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
@@ -28,9 +26,6 @@ void Object3D::setRotation(Matrix r) {
     rotation = r;
     affineTransform = translation * rotation * scale;
 }
-void Object3D::setCamera(Camera* camera) {
-    cameraRef = camera;
-}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
@@ -41,25 +36,12 @@ void Object3D::transform() {
         vertex = affineTransform * vertex;
     }
 }
-void Object3D::project() {
+void Object3D::applyTransformation(Matrix m) {
     for (Vector& vertex : vertices) {
-        vertex = cameraRef->getProjection() * vertex;
+        vertex = m * vertex;
         vertex = vertex / vertex.w();
     }
 }
-void Object3D::applyViewportTransformation(Matrix transformationMatrix) {
-    for (Vector& vertex : vertices) {
-        vertex = transformationMatrix * vertex;
-    }
-}
-void Object3D::draw(Bitmap3D& bmap) {
-    // for (Vector t : triangles) {
-    //     bmap.drawTriangle(vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
-    //     // rasterize(bmap, *this);
-    // }
-    rasterize(bmap, *this);
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //

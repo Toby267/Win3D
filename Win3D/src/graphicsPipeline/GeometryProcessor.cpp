@@ -1,4 +1,5 @@
 #include "graphicsPipeline/GeometryProcessor.hpp"
+#include "graphicsPipeline/Rasterizer.hpp"
 #include "scene/Scene.hpp"
 #include <iostream>
 #include <memory>
@@ -13,19 +14,18 @@ void GeometryProcessor::draw(const Scene& scene, Bitmap3D& bitmap) {
         
         //step 0 - transform the object into world space
         obj.transform();
-        std::cout << "hellodkfjasd;kl\n";
 
         //step 1 - vertex shading
 
         //step 2 - projection
-        obj.project();
+        obj.applyTransformation(scene.getCamera().getProjection());
 
         //step 3 - clipping
 
         //step 4 - screen mapping
-        obj.applyViewportTransformation(Matrix::translate(1280/2.0, 720/2.0, 1000/2.0) * Matrix::scale(1280/2.0, -720/2.0, 1000/2.0));
+        obj.applyTransformation(Matrix::translate(1280/2.0, 720/2.0, 1000/2.0) * Matrix::scale(1280/2.0, -720/2.0, 1000/2.0));
         
         //step 5 - the resulting data is passed onto the rasterization stage
-        obj.draw(bitmap);
+        rasterize(bitmap, obj);
     }
 }

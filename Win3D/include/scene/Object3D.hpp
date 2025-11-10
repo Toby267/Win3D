@@ -2,9 +2,6 @@
 
 #include <vector>
 
-#include "Camera.hpp"
-#include "renderer/Bitmap3D.hpp"
-
 #include "util/Matrix.hpp"
 #include "util/Vector.hpp"
 #include "util/Colour.hpp"
@@ -15,6 +12,7 @@
  * we'll get to uv maps later
  */
 struct Object3D {
+public:
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> triangles;
@@ -26,8 +24,6 @@ struct Object3D {
 
     Matrix affineTransform = translation * scale * rotation;
 
-    Camera* cameraRef;
-
 public:
     //constructors/destructor
     Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles);
@@ -37,13 +33,9 @@ public:
     void setTranslation(Matrix t);
     void setRotation(Matrix r);
 
-    void setCamera(Camera* camera);
-
     //public methods
     void transform();
-    void project();
-    void applyViewportTransformation(Matrix transformationMatrix);
-    void draw(Bitmap3D& bmap);
+    void applyTransformation(Matrix m);
 
     //static methods
     static Object3D cube();

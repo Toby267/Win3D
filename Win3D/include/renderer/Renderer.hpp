@@ -3,6 +3,7 @@
 #include "Bitmap3D.hpp"
 #include "Window.hpp"
 #include "scene/Scene.hpp"
+#include <memory>
 
 class Renderer {
 private:
@@ -10,13 +11,9 @@ private:
 
     Window window = Window(width, height);
     Bitmap3D bitmap = Bitmap3D(width, height);
-    Scene scene = Scene();
+    std::shared_ptr<Scene> scene;
 
 public:
     //constructors/destructor
-    Renderer(int width, int height);
-
-private:
-    //private methods
-    void drawCall();
+    Renderer(int width, int height, std::shared_ptr<Scene> s);
 };

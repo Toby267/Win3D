@@ -15,18 +15,17 @@ private:
     unsigned char* frameBuffer;
 
     std::atomic<bool> hasUpdated;
-    std::atomic<bool> shouldStop;
+    std::atomic<bool> alive;
     std::thread t;
 
 public:
     //constructors/destructor
     Window(int width, int height);
-    ~Window();
 
     //public methods
     void update(const std::vector<unsigned char>& renderBuffer);
-    void close();
     bool isAlive();
+    void close();
 
 private:
     //private methods

@@ -1,7 +1,6 @@
 #include "renderer/Renderer.hpp"
 
-#include "graphicsPipeline/GeometryProcessor.hpp"
-#include "util/Matrix.hpp"
+#include "graphicsPipeline/GraphicsPipeline.hpp"
 
 #include <memory>
 
@@ -9,32 +8,16 @@
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Renderer::Renderer(int width, int height) :
-    width(width), height(height)
+Renderer::Renderer(int width, int height, std::shared_ptr<Scene> s) :
+    width(width), height(height), scene(s)
 {
-    std::shared_ptr<Object3D> cube = std::make_shared<Object3D>(Object3D::cube());
-    cube->setScale(Matrix::scale(100, 100, 100));
-    cube->setTranslation(Matrix::translate(300, 300, 500));
-    scene.addObject(cube);
-
-    double alpha = 0.0;
     while (window.isAlive()) {
-        alpha += std::numbers::pi/256;
-        cube->setRotation(Matrix::rotation(0, -std::numbers::pi/16, alpha));
+        bitmap.clear();
 
-        drawCall();
-        // std::this_thread::sleep_for(std::chrono::seconds(1));
+        GraphicsPipeline::DrawCall(*scene, bitmap);
+
+        window.update(bitmap.getFrameBuffer());
+
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void Renderer::drawCall() {
-    bitmap.clear();
-
-    GeometryProcessor::draw(scene, bitmap);
-
-    window.update(bitmap.getFrameBuffer());
 }

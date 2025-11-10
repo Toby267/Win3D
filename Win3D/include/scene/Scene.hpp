@@ -15,7 +15,8 @@ public:
     Scene();
 
     //getters/setters
-    std::vector<std::shared_ptr<Object3D>> getObjects() const;    
+    std::vector<std::shared_ptr<Object3D>> getObjects() const;
+    const Camera& getCamera() const;
 
     //public methods    
     void addObject(std::shared_ptr<Object3D> obj);
