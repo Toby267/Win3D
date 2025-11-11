@@ -11,8 +11,8 @@
  * triangles[i] stores the first tirangle, where triangle[i][0] is v1, triangle[i][1] is v2, and triangle[i][2] is v3.
  * we'll get to uv maps later
  */
-struct Object3D {
-public:
+class Object3D {
+private:
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> triangles;
@@ -29,13 +29,18 @@ public:
     Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles);
 
     //getters/setters
+    const std::vector<Vector>& getVertices() const;
+    const std::vector<Colour>& getColours() const;
+    const std::vector<Vector>& getTriangles() const;
+    const std::vector<Vector>& getUvCoordinates() const;
+
     void setScale(Matrix s);
     void setTranslation(Matrix t);
     void setRotation(Matrix r);
 
     //public methods
     void transform();
-    void applyTransformation(Matrix m);
+    void applyTransformation(const Matrix& m);
 
     //static methods
     static Object3D cube();

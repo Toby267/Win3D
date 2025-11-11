@@ -1,10 +1,12 @@
 #include "scene/Scene.hpp"
 
+Scene::Scene() {}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-std::vector<std::shared_ptr<Object3D>> Scene::getObjects() const {
+const std::vector<std::shared_ptr<Object3D>>& Scene::getObjects() const {
     return objects;
 }
 
@@ -16,6 +18,7 @@ const Camera& Scene::getCamera() const {
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//needs to be passed by non-ref in order to be shared
 void Scene::addObject(std::shared_ptr<Object3D> obj) {
     objects.push_back(obj);
 }

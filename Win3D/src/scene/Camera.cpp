@@ -1,6 +1,4 @@
 #include "scene/Camera.hpp"
-#include <iostream>
-
 Matrix Camera::getProjection() const {
     return projection;
 }

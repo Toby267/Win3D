@@ -1,8 +1,13 @@
 #include "graphicsPipeline/GraphicsPipelineInternals.hpp"
+#include <vector>
 
 void rasterize(Bitmap3D& bmap, Object3D& obj) {
-    for (Vector t : obj.triangles) {
-        drawTriangle(bmap, obj.vertices[t[0]], obj.vertices[t[1]], obj.vertices[t[2]], obj.colours[t[0]], obj.colours[t[1]], obj.colours[t[2]]);
+    std::vector<Vector> vertices = obj.getVertices();
+    std::vector<Colour> colours = obj.getColours();
+    
+    //should really have a method in Object3D to construct a triangle
+    for (Vector t : obj.getTriangles()) {
+        drawTriangle(bmap, vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
     }
 }
 

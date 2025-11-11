@@ -14,6 +14,19 @@ Object3D::Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, st
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+const std::vector<Vector>& Object3D::getVertices() const {
+    return vertices;
+}
+const std::vector<Colour>& Object3D::getColours() const {
+    return colours;
+}
+const std::vector<Vector>& Object3D::getTriangles() const {
+    return triangles;
+}
+const std::vector<Vector>& Object3D::getUvCoordinates() const {
+    return uvCoordinates;
+}
+
 void Object3D::setScale(Matrix s) {
     scale = s;
     affineTransform = translation * rotation * scale;
@@ -36,7 +49,7 @@ void Object3D::transform() {
         vertex = affineTransform * vertex;
     }
 }
-void Object3D::applyTransformation(Matrix m) {
+void Object3D::applyTransformation(const Matrix& m) {
     for (Vector& vertex : vertices) {
         vertex = m * vertex;
         vertex = vertex / vertex.w();
