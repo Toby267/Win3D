@@ -2,11 +2,11 @@
 
 #include "scene/Scene.hpp"
 #include "renderer/Bitmap3D.hpp"
-
+#include "renderer/Viewport.hpp"
 
 // * ------------------------------------------ [ GEOMETRY PROCESSOR ] ------------------------------------------ * //
 
-void processGeometry(const Scene& scene, Bitmap3D& bitmap);
+void processGeometry(const Scene& scene, Bitmap3D& bitmap, const Viewport& viewport);
 
 // * ---------------------------------------------- [ RASTERIZER ] ---------------------------------------------- * //
 

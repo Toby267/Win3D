@@ -20,4 +20,5 @@ public:
 
     //public methods    
     void addObject(std::shared_ptr<Object3D> obj);
+    void setDepthOfField(int depth);
 };

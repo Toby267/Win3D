@@ -12,7 +12,7 @@ Application::Application() {
 
     double alpha = 0.0;
 
-    Renderer* r = new Renderer(1280, 720, scene);
+    Renderer* r = new Renderer(1280, 720, 1000, 90, scene);
 
     for (;;) {
         alpha += std::numbers::pi/512;

@@ -5,7 +5,10 @@
 
 class Camera {
 private:
-    Matrix projection = Matrix::perspective(-640, -360, -500, 640, 360, 500);
+    const double width = 1600, height = 900;
+    double depthOfField;
+    
+    Matrix projection = Matrix::identity(4);
 
     Vector position     = Vector(0, 0, 0, 1);
     Vector direction    = Vector(0, 0, 1, 0);
@@ -20,4 +23,6 @@ public:
     //getters/setters
     Matrix getProjection() const;
     Matrix getTransformation() const;
+
+    void setDepthOfField(int depthOfField);
 };

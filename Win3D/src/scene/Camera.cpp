@@ -9,3 +9,9 @@ Matrix Camera::getTransformation() const {
     
     return changeOfBasis * translation;
 }
+
+void Camera::setDepthOfField(int depth) {
+    this->depthOfField = depth;
+
+    projection = Matrix::perspective(-width/2, -height/2, -depthOfField/2, width/2, height/2, depthOfField/2);
+}
