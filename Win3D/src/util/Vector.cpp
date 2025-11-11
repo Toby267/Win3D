@@ -23,10 +23,7 @@ Vector::Vector(int _length, double a[]){
     this->length = _length;
     v = new double[length];
 
-    //TODO: test this change
     memcpy(v, a, sizeof(double)*length);
-    // for (int i = 0; i < _length; i++)
-        // v[i] = a[i];
 }
 Vector::Vector(double a, double b) {
     length = 2;
@@ -102,13 +99,26 @@ Vector::~Vector() {
 double& Vector::x() {
     return v[0];
 }
-double& Vector::y() {
+double& Vector::y(){
     return v[1];
 }
-double& Vector::z() {
+double& Vector::z(){
     return v[2];
 }
 double& Vector::w() {
+    return v[3];
+}
+
+const double& Vector::x() const {
+    return v[0];
+}
+const double& Vector::y() const {
+    return v[1];
+}
+const double& Vector::z() const {
+    return v[2];
+}
+const double& Vector::w() const {
     return v[3];
 }
 
@@ -128,13 +138,19 @@ double Vector::magnitude() const {
 // * --------------------------------------- [ OPERATOR OVERLOADS ] -------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-double& Vector::operator[](int i) const {
+double& Vector::operator[](int i) {
     if (i >= length || i < 0)
         throw std::out_of_range(std::string("Index: " + std::to_string(i) + " out of range of Vector or Matrix"));
     
     return v[i];
 }
-Vector Vector::operator/(const double& other) const {
+const double& Vector::operator[](int i) const {
+    if (i >= length || i < 0)
+        throw std::out_of_range(std::string("Index: " + std::to_string(i) + " out of range of Vector or Matrix"));
+    
+    return v[i];
+}
+Vector Vector::operator/(double other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
@@ -142,7 +158,7 @@ Vector Vector::operator/(const double& other) const {
 
     return vector;
 }
-Vector Vector::operator*(const double& other) const {
+Vector Vector::operator*(double other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
@@ -205,7 +221,7 @@ std::ostream& operator<<(std::ostream& os, const Vector& v) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //aka vector product
-Vector Vector::crossProduct(Vector lhs, Vector rhs) {
+Vector Vector::crossProduct(const Vector& lhs, const Vector& rhs) {
     //
     //  | a |   | d |   |  (bf - ce) |    | (bf - ce) |
     //  | b | x | e | = | -(af - cd) | or | (cd - af) |
@@ -217,7 +233,7 @@ Vector Vector::crossProduct(Vector lhs, Vector rhs) {
     vector[2] = lhs[0] * rhs[1] - lhs[1] * rhs[0];
     return vector;
 }
-double Vector::dotProduct(Vector lhs, Vector rhs) {
+double Vector::dotProduct(const Vector& lhs, const Vector& rhs) {
     double retVal = 0;
     
     for (int i = 0; i < lhs.length; i++)
@@ -226,10 +242,10 @@ double Vector::dotProduct(Vector lhs, Vector rhs) {
     return retVal;
 }
 
-Vector Vector::unitNormal(Vector lhs, Vector rhs) {
+Vector Vector::unitNormal(const Vector& lhs, const Vector& rhs) {
     Vector retVal = crossProduct(lhs, rhs);
     return retVal / retVal.magnitude();
 }
-double Vector::cosAngle(Vector lhs, Vector rhs) {
+double Vector::cosAngle(const Vector& lhs, const Vector& rhs) {
     return dotProduct(lhs, rhs) / (lhs.magnitude() * rhs.magnitude());
 }

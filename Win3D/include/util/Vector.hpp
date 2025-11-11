@@ -26,13 +26,20 @@ public:
     double& y();
     double& z();
     double& w();
+
+    const double& x() const;
+    const double& y() const;
+    const double& z() const;
+    const double& w() const;
+
     int getLength() const;
     double magnitude() const;
 
     //operator overloads
-    double& operator[](int i) const;
-    Vector operator/(const double& other) const;
-    Vector operator*(const double& other) const;
+    double& operator[](int i);
+    const double& operator[](int i) const;
+    Vector operator/(double other) const;
+    Vector operator*(double other) const;
     Vector operator*(const Vector& other) const;
     Vector operator+(const Vector& other) const;
     Vector operator-(const Vector& other) const;
@@ -41,9 +48,9 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Vector& v);
 
     //static methods
-    static Vector crossProduct(Vector lhs, Vector rhs);
-    static double dotProduct(Vector lhs, Vector rhs);
+    static Vector crossProduct(const Vector& lhs, const Vector& rhs);
+    static double dotProduct(const Vector& lhs, const Vector& rhs);
 
-    static Vector unitNormal(Vector lhs, Vector rhs);
-    static double cosAngle(Vector lhs, Vector rhs);
+    static Vector unitNormal(const Vector& lhs, const Vector& rhs);
+    static double cosAngle(const Vector& lhs, const Vector& rhs);
 };

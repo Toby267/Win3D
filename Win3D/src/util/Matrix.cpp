@@ -32,7 +32,8 @@ Matrix::Matrix(int _rows, int _columns, double a[]) {
         }
     }
 }
-Matrix::Matrix(int _rows, Vector a[]) {
+//const reference so that im not copying each vector in the array
+Matrix::Matrix(int _rows, const Vector (&a)[]) {
     rows = _rows;
     columns = a[0].getLength();
 
@@ -100,10 +101,10 @@ Matrix::~Matrix() {
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int Matrix::getColumns() {
+int Matrix::getColumns() const {
     return columns;
 }
-int Matrix::getRows() {
+int Matrix::getRows() const {
     return rows;
 }
 
@@ -111,12 +112,19 @@ int Matrix::getRows() {
 // * --------------------------------------- [ OPERATOR OVERLOADS ] -------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Vector& Matrix::operator[](int i) const {
+Vector& Matrix::operator[](int i) {
     if (i >= rows || i < 0)
         throw std::out_of_range(std::string("Index: " + std::to_string(i) + " out of range of Matrix"));
     
     return m[i];
 }
+const Vector& Matrix::operator[](int i) const {
+    if (i >= rows || i < 0)
+        throw std::out_of_range(std::string("Index: " + std::to_string(i) + " out of range of Matrix"));
+    
+    return m[i];
+}
+
 Matrix Matrix::operator*(const Matrix& other) const {
     if (columns != other.rows) throw std::logic_error("Can't multiply matirx by matrix: columns and rows  do not match");
     
@@ -255,7 +263,7 @@ Matrix Matrix::perspective(double l, double b, double n, double r, double t, dou
 }
 
 //returns a matrix that transforms objects to a view assuming the cameria is at position position, looking down direction, and its up is up
-Matrix Matrix::changeOfBasis(Vector position, Vector direction, Vector up) {
+Matrix Matrix::changeOfBasis(const Vector& position, const Vector& direction, const Vector& up) {
     //calculate the direction of the right and up vectors along the x and y axis respectively
     
     Vector rightBasis = -Vector::unitNormal(direction, up);

@@ -11,7 +11,7 @@ public:
     //constructors/destructor/rule of 5
     Matrix(int _rows, int _columns);
     Matrix(int _rows, int _columns, double a[]);
-    Matrix(int rows, Vector a[]);
+    Matrix(int rows, const Vector (&a)[]);
 
     Matrix(const Matrix& other);                    //copy constructor
     Matrix& operator=(const Matrix& other);         //copy assignment operator
@@ -20,11 +20,12 @@ public:
     ~Matrix();                                      //destructor
 
     //getters/setters
-    int getColumns();
-    int getRows();
+    int getColumns() const;
+    int getRows() const;
 
     //operator overloads
-    Vector& operator[](int i) const;
+    Vector& operator[](int i);
+    const Vector& operator[](int i) const;
     Matrix operator*(const Matrix& other) const;
     Vector operator*(const Vector& other) const;
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
@@ -43,5 +44,5 @@ public:
     static Matrix orthographic(double left, double bottom, double near, double right, double top, double far);
     static Matrix perspective(double left, double bottom, double near, double right, double top, double far);
 
-    static Matrix changeOfBasis(Vector position, Vector direction, Vector up);
+    static Matrix changeOfBasis(const Vector& position, const Vector& direction, const Vector& up);
 };

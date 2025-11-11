@@ -57,7 +57,7 @@ Colour Colour::operator/(const Colour& other) const {
     );
 }
 
-Colour Colour::operator+(const double& other) const {
+Colour Colour::operator+(double other) const {
     return Colour(
         r + other,
         g + other,
@@ -65,7 +65,7 @@ Colour Colour::operator+(const double& other) const {
         a + other
     );
 }
-Colour Colour::operator-(const double& other) const {
+Colour Colour::operator-(double other) const {
     return Colour(
         r - other,
         g - other,
@@ -73,7 +73,7 @@ Colour Colour::operator-(const double& other) const {
         a - other
     );
 }
-Colour Colour::operator*(const double& other) const {
+Colour Colour::operator*(double other) const {
     return Colour(
         r * other,
         g * other,
@@ -81,7 +81,7 @@ Colour Colour::operator*(const double& other) const {
         a * other
     );
 }
-Colour Colour::operator/(const double& other) const {
+Colour Colour::operator/(double other) const {
     return Colour(
         r / other,
         g / other,

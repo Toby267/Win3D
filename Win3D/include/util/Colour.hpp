@@ -18,10 +18,10 @@ public:
     Colour operator*(const Colour& other) const;
     Colour operator/(const Colour& other) const;
     
-    Colour operator+(const double& other) const;
-    Colour operator-(const double& other) const;
-    Colour operator*(const double& other) const;
-    Colour operator/(const double& other) const;
+    Colour operator+(double other) const;
+    Colour operator-(double other) const;
+    Colour operator*(double other) const;
+    Colour operator/(double other) const;
 
     friend std::ostream& operator<<(std::ostream& os, const Colour& c);
 
