@@ -34,10 +34,14 @@ public:
     static Matrix scale(double x, double y, double z);
     static Matrix identity(int size);
     static Matrix project(double d);
+
     static Matrix rotation(double roll, double pitch, double yaw);
     static Matrix roll(double rad);
     static Matrix pitch(double rad);
     static Matrix yaw(double rad);
+
     static Matrix orthographic(double left, double bottom, double near, double right, double top, double far);
     static Matrix perspective(double left, double bottom, double near, double right, double top, double far);
+
+    static Matrix changeOfBasis(Vector position, Vector direction, Vector up);
 };

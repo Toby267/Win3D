@@ -241,7 +241,6 @@ Matrix Matrix::orthographic(double l, double b, double n, double r, double t, do
     return Matrix::scale(xs, ys, zs) * Matrix::translate(-xt, -yt, -zt);
 }
 
-//have not verified if it currently assumes -z is into the screen
 Matrix Matrix::perspective(double l, double b, double n, double r, double t, double f) {
     //converts the view frustrum defined by the near and far to a view cube
     Matrix perspective(4, (Vector[]){
@@ -253,4 +252,20 @@ Matrix Matrix::perspective(double l, double b, double n, double r, double t, dou
 
     //converts the view cube to the canonical view matrix;
     return Matrix::orthographic(l, b, n, r, t, f) * perspective;
+}
+
+//returns a matrix that transforms objects to a view assuming the cameria is at position position, looking down direction, and its up is up
+Matrix Matrix::changeOfBasis(Vector position, Vector direction, Vector up) {
+    //calculate the direction of the right and up vectors along the x and y axis respectively
+    
+    Vector rightBasis = -Vector::unitNormal(direction, up);
+    Vector upBasis    = Vector::crossProduct(direction, rightBasis);
+
+    //then return the change of basiss
+    return Matrix(4, (Vector[]){
+        rightBasis,
+        upBasis,
+        direction,
+        Vector(0, 0, 0, 1)
+    });
 }

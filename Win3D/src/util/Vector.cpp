@@ -174,6 +174,22 @@ Vector Vector::operator-(const Vector& other) const {
 
     return vector;
 }
+Vector Vector::operator+() const {
+    Vector vector(length);
+
+    for (int i = 0; i < length; i++)
+        vector[i] = +v[i];
+
+    return vector;
+}
+Vector Vector::operator-() const {
+    Vector vector(length);
+
+    for (int i = 0; i < length; i++)
+        vector[i] = -v[i];
+
+    return vector;
+}
 std::ostream& operator<<(std::ostream& os, const Vector& v) {
     os << "(" << v[0];
 
@@ -210,8 +226,8 @@ double Vector::dotProduct(Vector lhs, Vector rhs) {
     return retVal;
 }
 
-Vector Vector::unitNormal(Vector lhs, Vector rhs, Vector origin) {
-    Vector retVal = crossProduct((lhs - origin), (rhs - origin));
+Vector Vector::unitNormal(Vector lhs, Vector rhs) {
+    Vector retVal = crossProduct(lhs, rhs);
     return retVal / retVal.magnitude();
 }
 double Vector::cosAngle(Vector lhs, Vector rhs) {

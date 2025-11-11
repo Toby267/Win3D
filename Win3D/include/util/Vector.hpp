@@ -36,12 +36,14 @@ public:
     Vector operator*(const Vector& other) const;
     Vector operator+(const Vector& other) const;
     Vector operator-(const Vector& other) const;
+    Vector operator+() const;
+    Vector operator-() const;
     friend std::ostream& operator<<(std::ostream& os, const Vector& v);
 
     //static methods
     static Vector crossProduct(Vector lhs, Vector rhs);
     static double dotProduct(Vector lhs, Vector rhs);
 
-    static Vector unitNormal(Vector lhs, Vector rhs, Vector origin);
+    static Vector unitNormal(Vector lhs, Vector rhs);
     static double cosAngle(Vector lhs, Vector rhs);
 };
