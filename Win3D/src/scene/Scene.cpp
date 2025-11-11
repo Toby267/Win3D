@@ -11,11 +11,11 @@ const std::vector<std::shared_ptr<Object3D>>& Scene::getObjects() const {
 }
 
 const Camera& Scene::getCamera() const {
-    return camera;
+    return *camera;
 }
 
 void Scene::setDepthOfField(int depth) {
-    camera.setDepthOfField(depth);
+    camera->setDepthOfField(depth);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,4 +25,8 @@ void Scene::setDepthOfField(int depth) {
 //needs to be passed by non-ref in order to be shared
 void Scene::addObject(std::shared_ptr<Object3D> obj) {
     objects.push_back(obj);
+}
+
+void Scene::setCamera(std::shared_ptr<Camera> cam) {
+    camera = cam;
 }

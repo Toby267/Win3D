@@ -6,7 +6,9 @@
 class Camera {
 private:
     const double width = 1600, height = 900;
+    
     double depthOfField;
+    int d = 1;
     
     Matrix projection = Matrix::identity(4);
 
@@ -14,11 +16,10 @@ private:
     Vector direction    = Vector(0, 0, 1, 0);
     Vector up           = Vector(0, 1, 0, 0);
 
-    int d = 1;
-
 public:
     //constructors/destructor
     Camera() {};
+    Camera(Vector position, Vector direction, Vector up);
 
     //getters/setters
     Matrix getProjection() const;

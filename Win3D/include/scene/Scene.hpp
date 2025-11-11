@@ -8,7 +8,7 @@
 class Scene {
 private:
     std::vector<std::shared_ptr<Object3D>> objects;
-    Camera camera;
+    std::shared_ptr<Camera> camera;
 
 public:
     //constructors/destructor
@@ -20,5 +20,6 @@ public:
 
     //public methods    
     void addObject(std::shared_ptr<Object3D> obj);
+    void setCamera(std::shared_ptr<Camera> cam);
     void setDepthOfField(int depth);
 };

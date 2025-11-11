@@ -1,4 +1,11 @@
 #include "scene/Camera.hpp"
+
+Camera::Camera(Vector position, Vector direction, Vector up)
+    : position(position), direction(direction), up(up)
+{
+
+}
+
 Matrix Camera::getProjection() const {
     return projection;
 }
