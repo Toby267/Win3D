@@ -1,7 +1,7 @@
 #include "graphicsPipeline/GraphicsPipelineInternals.hpp"
 #include <vector>
 
-void rasterize(Bitmap3D& bmap, Object3D& obj) {
+void PipelineInternals::rasterize(Bitmap3D& bmap, const Object3D& obj) {
     std::vector<Vector> vertices = obj.getVertices();
     std::vector<Colour> colours = obj.getColours();
     
@@ -11,7 +11,7 @@ void rasterize(Bitmap3D& bmap, Object3D& obj) {
     }
 }
 
-void drawTriangle(Bitmap3D& bitmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
+void PipelineInternals::drawTriangle(Bitmap3D& bitmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
     if (v1.x() > v2.x()) {
         Vector vTemp = v1;
         v1 = v2;
@@ -80,7 +80,7 @@ void drawTriangle(Bitmap3D& bitmap, Vector v1, Vector v2, Vector v3, Colour c1, 
     }
 }
 
-void drawLine(Bitmap3D& bitmap, Vector start, Vector end, Colour c1, Colour c2) {
+void PipelineInternals::drawLine(Bitmap3D& bitmap, Vector start, Vector end, Colour c1, Colour c2) {
     int x1 = start.x(), y1 = start.y(), z1 = start.z();
     int x2 = end.x(), y2 = end.y(), z2 = end.z();
 

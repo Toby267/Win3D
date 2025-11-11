@@ -6,7 +6,7 @@
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void processGeometry(const Scene& scene, Bitmap3D& bitmap, const Viewport& viewport) {
+void PipelineInternals::processGeometry(const Scene& scene, Bitmap3D& bitmap, const Viewport& viewport) {
     for (const std::shared_ptr<const Object3D>& object : scene.getObjects()) {
         //TODO: surely the GraphicsPipeline::DrawCall() function should just create a copy of the scene, instead of having to create copies of each object here
         Object3D obj = *object;
@@ -18,6 +18,8 @@ void processGeometry(const Scene& scene, Bitmap3D& bitmap, const Viewport& viewp
         obj.applyTransformation(scene.getCamera().getTransformation());
 
         //step 3 - vertex shading
+        //since we have transformed everything to 'camera space', we can assume that the camera is facing: (0, 0, 1)
+        //although we haven't transformed light vectors... so this has to go above. or we just transform light vectors as well, because we are taking copies of the Object3Ds
 
         //step 4 - projection to the canonical view cube
         obj.applyTransformation(scene.getCamera().getProjection());
