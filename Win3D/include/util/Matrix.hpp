@@ -34,7 +34,6 @@ public:
     static Matrix translate(double x, double y, double z);
     static Matrix scale(double x, double y, double z);
     static Matrix identity(int size);
-    static Matrix project(double d);
 
     static Matrix rotation(double roll, double pitch, double yaw);
     static Matrix roll(double rad);

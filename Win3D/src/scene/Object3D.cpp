@@ -1,4 +1,5 @@
 #include "scene/Object3D.hpp"
+#include <iostream>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
@@ -56,11 +57,17 @@ void Object3D::applyTransformation(const Matrix& m) {
     }
 }
 
+void Object3D::normalise() {
+    for (Vector& vertex : vertices) {
+        vertex = vertex / vertex.w();
+    }
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Object3D Object3D::cube() {
+Object3D Object3D::cube(Colour c) {
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> triangles;
@@ -75,13 +82,13 @@ Object3D Object3D::cube() {
     vertices.emplace_back( 1,  1,  1, 1);
 
     colours.emplace_back(Colour::red());
+    colours.emplace_back(c);
+    colours.emplace_back(c);
+    colours.emplace_back(c);
+    colours.emplace_back(c);
+    colours.emplace_back(c);
+    colours.emplace_back(c);
     colours.emplace_back(Colour::green());
-    colours.emplace_back(Colour::green());
-    colours.emplace_back(Colour::green());
-    colours.emplace_back(Colour::green());
-    colours.emplace_back(Colour::green());
-    colours.emplace_back(Colour::green());
-    colours.emplace_back(Colour::blue());
 
     triangles.emplace_back(0, 1, 2);
     triangles.emplace_back(1, 3, 2);
@@ -97,4 +104,31 @@ Object3D Object3D::cube() {
     triangles.emplace_back(1, 4, 5);
 
     return Object3D(vertices, colours, triangles);
+}
+
+void Object3D::clip() {
+    double xMax = vertices[0].x(), yMax = vertices[0].y(), zMax = vertices[0].z();
+    double xMin = vertices[0].x(), yMin = vertices[0].y(), zMin = vertices[0].z();
+
+    for (Vector& vertex : vertices) {
+        if (vertex.x() > xMax) xMax = vertex.x();
+        if (vertex.y() > yMax) yMax = vertex.y();
+        if (vertex.z() > zMax) zMax = vertex.z();
+
+        if (vertex.x() < xMin) xMin = vertex.x();
+        if (vertex.y() < yMin) yMin = vertex.y();
+        if (vertex.z() < zMin) zMin = vertex.z();
+    }
+
+    if (xMin >  1 || yMin >  1 || zMin > 1) triangles.clear();
+    if (xMax < -1 || yMax < -1 || zMax < 0) triangles.clear();
+}
+
+
+std::ostream& operator<<(std::ostream& os, const Object3D& obj) {
+    os << "printing out object vertices:\n";
+    for (const Vector& vertex : obj.vertices) {
+        os << "vertex: " << vertex << '\n';
+    }
+    return os;
 }

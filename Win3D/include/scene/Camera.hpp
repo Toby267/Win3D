@@ -8,7 +8,7 @@ private:
     const double width = 1600, height = 900;
     
     double depthOfField;
-    int d = 1;
+    double verticalFieldOfView = 90;
     
     Matrix projection = Matrix::identity(4);
 
@@ -26,4 +26,7 @@ public:
     Matrix getTransformation() const;
 
     void setDepthOfField(int depthOfField);
+
+    void setDirection(Vector direction);
+    void setUp(Vector up);
 };

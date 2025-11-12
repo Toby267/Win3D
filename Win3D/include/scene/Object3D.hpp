@@ -41,7 +41,12 @@ public:
     //public methods
     void transform();
     void applyTransformation(const Matrix& m);
+    void normalise();
+
+    void clip();
 
     //static methods
-    static Object3D cube();
+    static Object3D cube(Colour c);
+
+    friend std::ostream& operator<<(std::ostream& os, const Object3D& m);
 };

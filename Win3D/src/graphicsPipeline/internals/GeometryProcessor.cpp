@@ -1,5 +1,6 @@
 #include "graphicsPipeline/GraphicsPipelineInternals.hpp"
 #include "scene/Scene.hpp"
+#include <iostream>
 #include <memory>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -29,8 +30,10 @@ void PipelineInternals::processGeometry(const Scene& scene, Bitmap3D& bitmap, co
 
         //step 5 - projection to the canonical view cube
         obj.applyTransformation(scene.getCamera().getProjection());
+        std::cout << "obj: " << obj << '\n';
 
         //step 6 - clipping
+        obj.clip();
 
         //step 7 - screen mapping
         obj.applyTransformation(viewport.getTransformation());

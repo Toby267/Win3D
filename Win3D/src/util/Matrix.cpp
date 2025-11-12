@@ -191,14 +191,6 @@ Matrix Matrix::identity(int size) {
         Vector{0, 0, 0, s}
     });
 }
-Matrix Matrix::project(double d) {
-    return Matrix(4, (Vector[]){
-        Vector{1, 0,      0, 0},
-        Vector{0, 1,      0, 0},
-        Vector{0, 0,      1, 0},
-        Vector{0, 0, -(1/d), 0}
-    });
-}
 Matrix Matrix::rotation(double roll, double pitch, double yaw) {
     return Matrix::roll(roll) * Matrix::pitch(pitch) * Matrix::yaw(yaw);
 }
@@ -244,7 +236,7 @@ Matrix Matrix::orthographic(double l, double b, double n, double r, double t, do
 
     double xt = (r+l)/2.0;
     double yt = (t+b)/2.0;
-    double zt = (f-n)/2.0;
+    double zt = (f+n)/2.0;
 
     return Matrix::scale(xs, ys, zs) * Matrix::translate(-xt, -yt, -zt);
 }
@@ -253,12 +245,13 @@ Matrix Matrix::perspective(double l, double b, double n, double r, double t, dou
     //converts the view frustrum defined by the near and far to a view cube
     Matrix perspective(4, (Vector[]){
         Vector{-n,   0,   0,    0},
-        Vector{  0, -n,   0,    0},
-        Vector{  0,   0, -f-n, f*n},
+        Vector{ 0, -n,   0,    0},
+        Vector{  0,   0, f-n, f*n},
         Vector{  0,   0,   1,   0}
     });
 
     //converts the view cube to the canonical view matrix;
+    //need to work out the answer to this before incorporating fov
     return Matrix::orthographic(l, b, n, r, t, f) * perspective;
 }
 
@@ -269,7 +262,7 @@ Matrix Matrix::changeOfBasis(const Vector& position, const Vector& direction, co
     Vector rightBasis = -Vector::unitNormal(direction, up);
     Vector upBasis    = Vector::crossProduct(direction, rightBasis);
 
-    //then return the change of basiss
+    //then return the change of basis
     return Matrix(4, (Vector[]){
         rightBasis,
         upBasis,

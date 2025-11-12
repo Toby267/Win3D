@@ -46,6 +46,8 @@ void Bitmap3D::clear() {
 }
 
 void Bitmap3D::drawPixel(int x, int y, int z, Colour c) {
+    //if z < 0 because the camera will be oriented at 0, 0, 0 facing +z, so it doesn't want to get anything that is behind it
+    //wait, doesn't me having to put this here to avoid this bug implying that the cameras projection isn't working
     if (x >= width || x < 0 || y >= height || y < 0) return;
     z += 20000;
     if (zBuffer[y*width + x] < z) return;
