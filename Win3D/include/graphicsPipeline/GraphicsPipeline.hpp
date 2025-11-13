@@ -8,13 +8,13 @@
 
 class GraphicsPipeline {
 private:
-    GeometryProcessor geometryProcessor = GeometryProcessor();
+    GeometryProcessor geometryProcessor{};
     Rasterizer rasterizer;
 
 public:
+    //constructors/destructor
     GraphicsPipeline(Bitmap3D& bmap);
 
-
+    //public methods
     void drawCall(std::vector<Object3D>& objects);
-
 };

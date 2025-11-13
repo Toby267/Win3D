@@ -1,8 +1,18 @@
 #include "graphicsPipeline/Rasterizer.hpp"
 
-Rasterizer::Rasterizer(Bitmap3D& bmap) : bitmap(bmap) {
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Rasterizer::Rasterizer(Bitmap3D& bmap)
+    : bitmap(bmap)
+{
 
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Performs rasterization on a vector of objects, assuming they are already in screen space, and renders them on a bitmap/framebuffer
@@ -11,7 +21,7 @@ Rasterizer::Rasterizer(Bitmap3D& bmap) : bitmap(bmap) {
  * @param bmap      the bitmap to render onto
  */
 void Rasterizer::rasterize(std::vector<Object3D>& objects) {
-    for (Object3D obj : objects) {
+    for (Object3D& obj : objects) {
         std::vector<Vector> vertices = obj.getVertices();
         std::vector<Colour> colours = obj.getColours();
     
@@ -20,6 +30,10 @@ void Rasterizer::rasterize(std::vector<Object3D>& objects) {
         }
     }
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Draws a triangle onto a given bitmap, defined by their veritces, and their colours

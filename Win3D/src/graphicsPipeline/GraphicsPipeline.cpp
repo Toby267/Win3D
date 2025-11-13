@@ -2,9 +2,19 @@
 
 #include <vector>
 
-GraphicsPipeline::GraphicsPipeline(Bitmap3D& bmap) : rasterizer(bmap) {
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+GraphicsPipeline::GraphicsPipeline(Bitmap3D& bmap)
+    : rasterizer(bmap)
+{
 
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Passes a vector of objects through the graphics rendering pipeline, and renders them onto a bitmap/framebuffer
@@ -13,7 +23,6 @@ GraphicsPipeline::GraphicsPipeline(Bitmap3D& bmap) : rasterizer(bmap) {
  * @param bmap      the bitmap to render to
  */
 void GraphicsPipeline::drawCall(std::vector<Object3D>& objects) {    
-
     geometryProcessor.processGeometry(objects);
 
     rasterizer.rasterize(objects);
