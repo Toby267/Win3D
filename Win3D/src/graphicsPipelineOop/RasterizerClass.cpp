@@ -1,17 +1,18 @@
-#include "graphicsPipeline/GraphicsPipelineInternals.hpp"
-#include <vector>
+#include "graphicsPipelineOop/RasterizerClass.hpp"
 
-void PipelineInternals::rasterize(Bitmap3D& bmap, const Object3D& obj) {
-    std::vector<Vector> vertices = obj.getVertices();
-    std::vector<Colour> colours = obj.getColours();
+
+void RasterizerClass::rasterize(std::vector<Object3D>& objects, Bitmap3D& bmap) {
+    for (Object3D obj : objects) {
+        std::vector<Vector> vertices = obj.getVertices();
+        std::vector<Colour> colours = obj.getColours();
     
-    //should really have a method in Object3D to construct a triangle
-    for (Vector t : obj.getTriangles()) {
-        drawTriangle(bmap, vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
+        for (Vector t : obj.getTriangles()) {
+            this->drawTriangle(bmap, vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
+        }
     }
 }
-
-void PipelineInternals::drawTriangle(Bitmap3D& bitmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
+    
+void RasterizerClass::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
     if (v1.x() > v2.x()) {
         Vector vTemp = v1;
         v1 = v2;
@@ -68,7 +69,7 @@ void PipelineInternals::drawTriangle(Bitmap3D& bitmap, Vector v1, Vector v2, Vec
         Vector vertex2 = v1 + Vector(x, dBydx13.y() * x, dBydx13.z() * x, 0);
         Colour colour1 = c1 + Colour(drBydx12 * x, dgBydx12 * x, dbBydx12 * x, daBydx12 * x);
         Colour colour2 = c1 + Colour(drBydx13 * x, dgBydx13 * x, dbBydx13 * x, daBydx13 * x);
-        drawLine(bitmap, vertex1, vertex2, colour1, colour2);
+        this->drawLine(bmap, vertex1, vertex2, colour1, colour2);
     }
     for (double x = 0; x < v2ToV3.x(); x++) {
         double x2 = v1ToV2.x() + x;
@@ -76,18 +77,17 @@ void PipelineInternals::drawTriangle(Bitmap3D& bitmap, Vector v1, Vector v2, Vec
         Vector vertex2 = v1 + Vector(x2, dBydx13.y() * x2, dBydx13.z() * x2, 0);
         Colour colour1 = c2 + Colour(drBydx23 * x, dgBydx23 * x, dbBydx23 * x, daBydx23 * x);
         Colour colour2 = c1 + Colour(drBydx13 * x2, dgBydx13 * x2, dbBydx13 * x2, daBydx13 * x2);
-        drawLine(bitmap, vertex1, vertex2, colour1, colour2);
+        this->drawLine(bmap, vertex1, vertex2, colour1, colour2);
     }
 }
-
-void PipelineInternals::drawLine(Bitmap3D& bitmap, Vector start, Vector end, Colour c1, Colour c2) {
+void RasterizerClass::drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour c2) {
     int x1 = start.x(), y1 = start.y(), z1 = start.z();
     int x2 = end.x(), y2 = end.y(), z2 = end.z();
 
     double dx = x2-x1, dy = y2-y1, dz = z2-z1;
     double dr = c2.r-c1.r, dg = c2.g-c1.g, db = c2.b-c1.b, da = c2.a - c1.a;
 
-    bitmap.drawPixel(x1, y1, z1, c1);
+    bmap.drawPixel(x1, y1, z1, c1);
     if (std::abs(dx) > std::abs(dy)) {
         if (dx == 0) return;
 
@@ -115,7 +115,7 @@ void PipelineInternals::drawLine(Bitmap3D& bitmap, Vector start, Vector end, Col
             c1.g = (gSlope * x1) + gError;
             c1.b = (bSlope * x1) + bError;
             c1.a = (aSlope * x1) + aError;
-            bitmap.drawPixel(x1, y1, z1, c1);
+            bmap.drawPixel(x1, y1, z1, c1);
         }
     }
     else {
@@ -145,7 +145,7 @@ void PipelineInternals::drawLine(Bitmap3D& bitmap, Vector start, Vector end, Col
             c1.g = (gSlope * y1) + gError;
             c1.b = (bSlope * y1) + bError;
             c1.a = (aSlope * y1) + aError;
-            bitmap.drawPixel(x1, y1, z1, c1);
+            bmap.drawPixel(x1, y1, z1, c1);
         }
     }
 }

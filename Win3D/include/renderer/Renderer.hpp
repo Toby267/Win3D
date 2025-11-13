@@ -2,24 +2,20 @@
 
 #include "Bitmap3D.hpp"
 #include "Window.hpp"
-#include "Viewport.hpp"
-#include "scene/Scene.hpp"
-#include <memory>
+#include "graphicsPipelineOop/GraphicsPipelineClass.hpp"
+#include <vector>
 
 class Renderer {
 private:
-    int width, height, depthOfField, FieldOfView;
+    Window window;
+    Bitmap3D bitmap;
 
-    Window window = Window(width, height);
-    Bitmap3D bitmap = Bitmap3D(width, height);
-    Viewport viewport = Viewport(width, height, depthOfField);
-
-    std::shared_ptr<Scene> scene;
+    GraphicsPipelineClass pipeline{};
 
 public:
     //constructors/destructor
-    Renderer(int screenWidth, int screenHeight, int depthOfField, int FieldOfView, std::shared_ptr<Scene> s);
+    Renderer(int screenWidth, int screenHeight);
 
     //public methods
-    void drawCall();
+    void drawCall(std::vector<Object3D> objects);
 };
