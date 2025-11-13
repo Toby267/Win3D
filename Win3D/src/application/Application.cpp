@@ -1,8 +1,16 @@
 #include "application/Application.hpp"
 
-#include "renderer/Renderer.hpp"
 #include <vector>
 
+#include "renderer/Renderer.hpp"
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Runs the application
+ */
 Application::Application() {
     std::vector<Object3D> objects;
 

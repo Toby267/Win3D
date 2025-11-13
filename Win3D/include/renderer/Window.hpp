@@ -10,7 +10,6 @@
  */
 class Window {
 private:
-    //attributes
     int width, height;
     unsigned char* frameBuffer;
 

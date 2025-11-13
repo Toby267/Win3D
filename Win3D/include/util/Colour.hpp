@@ -1,7 +1,6 @@
 #pragma once
 
 #include <ostream>
-#include <sys/types.h>
 
 struct Colour {
 public:

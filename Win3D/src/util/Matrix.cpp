@@ -1,9 +1,12 @@
 #include "util/Matrix.hpp"
-#include "util/Vector.hpp"
+
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
 #include <string>
+
+#include "util/Vector.hpp"
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------- [ CONSTRUCTORS/DESCTUCTOR/RULE OF 5 ] ------------------------------- * //
@@ -227,8 +230,11 @@ Matrix Matrix::yaw(double rad) {
         Vector{0,   0, 0,  1}
     });
 }
-//returns the orthographic projection matrix assuming y is up, x is right, and z is into the screen
-//the canonical view matrix of the renderer is from (-1, -1, -1) to (1, 1, 1)
+
+/**
+ * retuns the perspective transform matrix that maps to the canonical view volume defined in the geometry processor.
+ * assumes l = -r, b = -t, and t = -f
+ */
 Matrix Matrix::orthographic(double l, double b, double n, double r, double t, double f) {
     double xs = 2.0/(r-l);
     double ys = 2.0/(t-b);
@@ -241,28 +247,26 @@ Matrix Matrix::orthographic(double l, double b, double n, double r, double t, do
     return Matrix::scale(xs, ys, zs) * Matrix::translate(-xt, -yt, -zt);
 }
 
+/**
+ * retuns the perspective transform matrix that maps to the canonical view volume defined in the geometry processor.
+ * assumes l = -r, b = -t, and t = -f       those assumptions allowed me to simplify to this:
+ */
 Matrix Matrix::perspective(double l, double b, double n, double r, double t, double f) {
-    //converts the view frustrum defined by the near and far to a view cube
     Matrix perspective(4, (Vector[]){
-        Vector{-n,   0,   0,    0},
-        Vector{ 0, -n,   0,    0},
-        Vector{  0,   0, f-n, f*n},
+        Vector{f,   0,   0,    0},
+        Vector{ 0, f,   0,    0},
+        Vector{  0,   0, 2*f, f*n},
         Vector{  0,   0,   1,   0}
     });
 
-    //converts the view cube to the canonical view matrix;
-    //need to work out the answer to this before incorporating fov
     return Matrix::orthographic(l, b, n, r, t, f) * perspective;
 }
 
 //returns a matrix that transforms objects to a view assuming the cameria is at position position, looking down direction, and its up is up
-Matrix Matrix::changeOfBasis(const Vector& position, const Vector& direction, const Vector& up) {
-    //calculate the direction of the right and up vectors along the x and y axis respectively
-    
+Matrix Matrix::changeOfBasis(const Vector& position, const Vector& direction, const Vector& up) {    
     Vector rightBasis = -Vector::unitNormal(direction, up);
     Vector upBasis    = Vector::crossProduct(direction, rightBasis);
 
-    //then return the change of basis
     return Matrix(4, (Vector[]){
         rightBasis,
         upBasis,

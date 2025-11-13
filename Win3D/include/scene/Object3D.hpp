@@ -29,10 +29,9 @@ public:
     Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles);
 
     //getters/setters
-    const std::vector<Vector>& getVertices() const;
-    const std::vector<Colour>& getColours() const;
-    const std::vector<Vector>& getTriangles() const;
-    const std::vector<Vector>& getUvCoordinates() const;
+     std::vector<Vector>& getVertices();
+     std::vector<Colour>& getColours();
+     std::vector<Vector>& getTriangles();
 
     void setScale(Matrix s);
     void setTranslation(Matrix t);
@@ -40,13 +39,15 @@ public:
 
     //public methods
     void transform();
+    void applyAffineTransformation(const Matrix& m);
     void applyTransformation(const Matrix& m);
     void normalise();
 
     void clip();
 
+    //operator overloads
+    friend std::ostream& operator<<(std::ostream& os, const Object3D& m);
+
     //static methods
     static Object3D cube(Colour c);
-
-    friend std::ostream& operator<<(std::ostream& os, const Object3D& m);
 };

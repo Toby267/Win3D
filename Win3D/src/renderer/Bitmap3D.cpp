@@ -1,13 +1,20 @@
 #include "renderer/Bitmap3D.hpp"
-#include "util/Colour.hpp"
 
 #include <cfloat>
 #include <vector>
+
+#include "util/Colour.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Default constructor
+ *
+ * @param width     the width of the bitmap
+ * @param height    the height of the bitmap
+ */
 Bitmap3D::Bitmap3D(int width, int height)
     : width(width), height(height)
 {
@@ -19,13 +26,15 @@ Bitmap3D::Bitmap3D(int width, int height)
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//returns a reference to the framebuffer
 const std::vector<unsigned char>& Bitmap3D::getFrameBuffer() {
     return frameBuffer;
 }
-
+//returns the width of the bitmap
 int Bitmap3D::getWidth() {
     return width;
 }
+//returns the height of the bitmap
 int Bitmap3D::getHeight() {
     return height;
 }
@@ -34,6 +43,7 @@ int Bitmap3D::getHeight() {
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//clears the bitmap
 void Bitmap3D::clear() {
     for (int i = 0; i < width*height; i++) {
         zBuffer[i] = DBL_MAX;
@@ -45,9 +55,8 @@ void Bitmap3D::clear() {
     }
 }
 
+//draws a pixel onto the frame buffer
 void Bitmap3D::drawPixel(int x, int y, int z, Colour c) {
-    //if z < 0 because the camera will be oriented at 0, 0, 0 facing +z, so it doesn't want to get anything that is behind it
-    //wait, doesn't me having to put this here to avoid this bug implying that the cameras projection isn't working
     if (x >= width || x < 0 || y >= height || y < 0) return;
     z += 20000;
     if (zBuffer[y*width + x] < z) return;

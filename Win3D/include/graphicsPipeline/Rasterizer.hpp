@@ -3,7 +3,7 @@
 #include "renderer/Bitmap3D.hpp"
 #include "scene/Object3D.hpp"
 
-class RasterizerClass {
+class Rasterizer {
 private:
 
 

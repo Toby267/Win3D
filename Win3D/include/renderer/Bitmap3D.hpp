@@ -1,7 +1,8 @@
 #pragma once
 
-#include "util/Colour.hpp"
 #include <vector>
+
+#include "util/Colour.hpp"
 
 class Bitmap3D {
 private:

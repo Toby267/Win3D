@@ -1,7 +1,12 @@
-#include "graphicsPipelineOop/RasterizerClass.hpp"
+#include "graphicsPipeline/Rasterizer.hpp"
 
-
-void RasterizerClass::rasterize(std::vector<Object3D>& objects, Bitmap3D& bmap) {
+/**
+ * Performs rasterization on a vector of objects, assuming they are already in screen space, and renders them on a bitmap/framebuffer
+ * 
+ * @param objects   the objects to rasterize
+ * @param bmap      the bitmap to render onto
+ */
+void Rasterizer::rasterize(std::vector<Object3D>& objects, Bitmap3D& bmap) {
     for (Object3D obj : objects) {
         std::vector<Vector> vertices = obj.getVertices();
         std::vector<Colour> colours = obj.getColours();
@@ -11,8 +16,15 @@ void RasterizerClass::rasterize(std::vector<Object3D>& objects, Bitmap3D& bmap) 
         }
     }
 }
-    
-void RasterizerClass::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
+
+/**
+ * Draws a triangle onto a given bitmap, defined by their veritces, and their colours
+ * 
+ * @param v1, v2, v3    the vertices of the triangle
+ * @param c1, c2, c3    the colours of the vertices
+ * @param bmap          the bmap to render onto
+ */
+void Rasterizer::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
     if (v1.x() > v2.x()) {
         Vector vTemp = v1;
         v1 = v2;
@@ -80,7 +92,15 @@ void RasterizerClass::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector 
         this->drawLine(bmap, vertex1, vertex2, colour1, colour2);
     }
 }
-void RasterizerClass::drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour c2) {
+
+/**
+ * Draws a line onto a given bitmap, defined by the start and end colours and vectors
+ * 
+ * @param start     the coordinate of the start of the line
+ * @param end       the coodinate of the end of the line
+ * @param c1, c2    the colours of the start and end of the line
+ */
+void Rasterizer::drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour c2) {
     int x1 = start.x(), y1 = start.y(), z1 = start.z();
     int x2 = end.x(), y2 = end.y(), z2 = end.z();
 

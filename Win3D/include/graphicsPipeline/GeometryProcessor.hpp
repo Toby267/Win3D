@@ -1,10 +1,10 @@
 #pragma once
 
+#include <vector>
+
 #include "util/Vector.hpp"
 #include "util/Matrix.hpp"
 #include "scene/Object3D.hpp"
-#include <vector>
-
 
 /*
 object space axis:              x = right,  y = up, z = forward
@@ -22,12 +22,11 @@ screen space range:              defined by the viewport struct
 object space -> world space -> camera space -> canonical view cube -> screen space
 */
 
-
 struct transformation {
 
 };
 
-struct CameraS {
+struct Camera {
     Vector position     = Vector(0, 0, 0, 1);
     Vector direction    = Vector(0, 0, 1, 0);
     Vector up           = Vector(0, 1, 0, 0);
@@ -47,18 +46,18 @@ struct Projection {
     Matrix transformation();
 };
 
-struct ViewportS {
+struct Viewport {
     int screenWidth = 1280;
     int screenHeight = 720;
 
     Matrix transformation();
 };
 
-class GeometryProcessorClass {
+class GeometryProcessor {
 private:
-    struct CameraS camera;
+    struct Camera camera;
     struct Projection projection;
-    struct ViewportS viewport;
+    struct Viewport viewport;
 
 public:
     void processGeometry(std::vector<Object3D>& objects);

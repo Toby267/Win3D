@@ -9,6 +9,7 @@
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//default constructor, sets up the window with the given width and height
 Window::Window(int width, int height) {
     this->width = width;
     this->height = height;
@@ -23,16 +24,19 @@ Window::Window(int width, int height) {
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//updates the window with the given buffer
 void Window::update(const std::vector<unsigned char>& renderBuffer) {
     if (!alive) return;
     std::copy(renderBuffer.begin(), renderBuffer.end(), frameBuffer);
     hasUpdated.store(true);
 }
 
+//returns whether or not the window is still 'alive'
 bool Window::isAlive() {
     return alive.load();
 }
 
+//closes the window
 void Window::close() {
     t.join();
 }
@@ -41,6 +45,7 @@ void Window::close() {
 // * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//used to constantly render a bitmap pointer onto the screen via raylib
 void Window::run(unsigned char* bmap, int width, int height) {
     Image img = {0};
     img.data = bmap;
