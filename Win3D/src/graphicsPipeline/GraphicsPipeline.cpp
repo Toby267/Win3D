@@ -25,5 +25,9 @@ GraphicsPipeline::GraphicsPipeline(Bitmap3D& bmap)
 void GraphicsPipeline::drawCall(std::vector<Object3D>& objects) {    
     geometryProcessor.processGeometry(objects);
 
-    rasterizer.rasterize(objects);
+    /*fragments = */ rasterizer.rasterize(objects);
+
+    /*fragmentShader.shade(fragments)*/
+
+    /*bitmap.merge(fragments)*/
 }

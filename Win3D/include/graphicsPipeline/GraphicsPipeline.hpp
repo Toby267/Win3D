@@ -18,3 +18,13 @@ public:
     //public methods
     void drawCall(std::vector<Object3D>& objects);
 };
+
+
+
+/*
+TODO:
+
+tesselation
+clipping & culling
+fragment shader
+*/

@@ -1,5 +1,4 @@
 #include "graphicsPipeline/GeometryProcessor.hpp"
-#include <iostream>
 
 GeometryProcessor::GeometryProcessor() {
     camera.calcTransformationMatrix();
