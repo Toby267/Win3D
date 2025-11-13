@@ -11,7 +11,7 @@
  * @param height    the height of the scrren
  */
 Renderer::Renderer(int width, int height)
-    : window(width, height), bitmap(width, height)
+    : window(width, height), bitmap(width, height), pipeline(bitmap)
 {
 
 }
@@ -28,7 +28,7 @@ Renderer::Renderer(int width, int height)
 void Renderer::drawCall(std::vector<Object3D> objects) {
     bitmap.clear();
 
-    pipeline.drawCall(objects, bitmap);
+    pipeline.drawCall(objects);
 
     window.update(bitmap.getFrameBuffer());
 }

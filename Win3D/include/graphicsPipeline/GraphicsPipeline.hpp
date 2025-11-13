@@ -12,7 +12,9 @@ private:
     Rasterizer rasterizer;
 
 public:
+    GraphicsPipeline(Bitmap3D& bmap);
 
-    void drawCall(std::vector<Object3D>& objects, Bitmap3D& bmap);
+
+    void drawCall(std::vector<Object3D>& objects);
 
 };

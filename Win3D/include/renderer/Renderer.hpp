@@ -14,7 +14,7 @@ private:
     Window window;
     Bitmap3D bitmap;
 
-    GraphicsPipeline pipeline{};
+    GraphicsPipeline pipeline;
 
 public:
     //constructors/destructor
