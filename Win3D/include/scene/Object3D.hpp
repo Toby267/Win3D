@@ -29,9 +29,9 @@ public:
     Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles);
 
     //getters/setters
-     std::vector<Vector>& getVertices();
-     std::vector<Colour>& getColours();
-     std::vector<Vector>& getTriangles();
+    std::vector<Vector>& getVertices();
+    std::vector<Colour>& getColours();
+    std::vector<Vector>& getTriangles();
 
     void setScale(Matrix s);
     void setTranslation(Matrix t);

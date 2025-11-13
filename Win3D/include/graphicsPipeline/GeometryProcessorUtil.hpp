@@ -2,10 +2,6 @@
 
 #include "util/Matrix.hpp"
 
-struct transformation {
-
-};
-
 struct Camera {
     Vector position     = Vector(0, 0, 0, 1);
     Vector direction    = Vector(0, 0, 1, 0);

@@ -24,7 +24,6 @@ void GeometryProcessor::processGeometry(std::vector<Object3D>& objects) {
         obj.transform();
 
         //step 2 - transform the objects to camera space
-        std::cout << "camera transformation: " << camera.transformation << '\n';
         obj.applyAffineTransformation(camera.transformation);
 
         //step 3 - vertex shading
