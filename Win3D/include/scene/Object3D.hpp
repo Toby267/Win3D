@@ -50,4 +50,6 @@ public:
 
     //static methods
     static Object3D cube(Colour c);
+    static Object3D icoSphereSmall(Colour c);
+    static Object3D icoSphere(Colour c);
 };
