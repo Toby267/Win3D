@@ -1,9 +1,22 @@
 #include "graphicsPipeline/GeometryProcessor.hpp"
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 GeometryProcessor::GeometryProcessor() {
-    camera.calcTransformationMatrix();
-    viewport.calcTransformationMatrix();
-    projection.calcTransformationMatrix();
+    //camera default values
+    camera = Camera(
+        Vector(0, 0, 0, 1),
+        Vector(0, 0, 1, 0),
+        Vector(0, 1, 0, 0)
+    );
+
+    //projection default values
+    projection = Projection(1600, 900, 2000, std::numbers::pi/2);
+
+    //viewport default values
+    viewport = Viewport(1280, 720);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -23,17 +36,17 @@ void GeometryProcessor::processGeometry(std::vector<Object3D>& objects) {
         obj.transform();
 
         //step 2 - transform the objects to camera space
-        obj.applyAffineTransformation(camera.transformation);
+        obj.applyAffineTransformation(camera.getTransformationMatrix());
 
         //step 3 - vertex shading
 
         //step 3 - transform the objects to clip space
-        obj.applyTransformation(projection.transformation);
+        obj.applyTransformation(projection.getTransformationMatrix());
 
         //step 5 - clip the objects
         obj.clip();
 
         //step 6 - transform the objects to screen space
-        obj.applyAffineTransformation(viewport.transformation);
+        obj.applyAffineTransformation(viewport.getTransformationMatrix());
     }
 }

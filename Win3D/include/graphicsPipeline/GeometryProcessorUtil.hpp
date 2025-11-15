@@ -3,34 +3,37 @@
 #include "util/Matrix.hpp"
 
 struct Camera {
-    Vector position     = Vector(0, 0, 0, 1);
-    Vector direction    = Vector(0, 0, 1, 0);
-    Vector up           = Vector(0, 1, 0, 0);
+    Vector position;
+    Vector direction;
+    Vector up;
 
-    Matrix transformation{4, 4};
+    Camera() = default;
+    Camera(Vector position, Vector direction, Vector up);
 
-    void calcTransformationMatrix();
+    Matrix getTransformationMatrix();
 };
 
 struct Projection {
-    double lensWidth  = 1600;
-    double lensHeight = 900;
+    double lensWidth;
+    double lensHeight;
     
-    double depthOfField = 2000;
-    // double fieldOfView  = 90;
-
-    Matrix transformation{4, 4};
+    double depthOfField;
+    double fieldOfView;
 
     // enum type {orthographic, perspctive} projection;
 
-    void calcTransformationMatrix();
+    Projection() = default;
+    Projection(double lensWidth, double lensHeight, double depthOfField, double fieldOfView);
+
+    Matrix getTransformationMatrix();
 };
 
 struct Viewport {
-    int screenWidth = 1280;
-    int screenHeight = 720;
+    int screenWidth;
+    int screenHeight;
 
-    Matrix transformation{4, 4};
+    Viewport() = default;
+    Viewport(int screenWidth, int screenHeight);
 
-    void calcTransformationMatrix();
+    Matrix getTransformationMatrix();
 };
