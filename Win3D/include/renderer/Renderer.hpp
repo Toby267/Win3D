@@ -4,7 +4,8 @@
 
 #include "Bitmap3D.hpp"
 #include "Window.hpp"
-#include "graphicsPipeline/GraphicsPipeline.hpp"
+#include "graphicsPipeline/GeometryProcessor.hpp"
+#include "graphicsPipeline/Rasterizer.hpp"
 
 /*
 The rendering engine, consisting of the window to be drawn to, the bitmap to store a frame, and the pipeline to process scenes
@@ -14,7 +15,9 @@ private:
     Window window;
     Bitmap3D bitmap;
 
-    GraphicsPipeline pipeline;
+    // GraphicsPipeline pipeline;
+    GeometryProcessor geometryProcessor;
+    Rasterizer rasterizer;
 
 public:
     //constructors/destructor
