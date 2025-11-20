@@ -1,7 +1,6 @@
 #include "util/Vector.hpp"
 
 #include <cmath>
-#include <cstring>
 #include <iostream>
 #include <ostream>
 #include <stdexcept>
@@ -11,115 +10,39 @@
 // * ------------------------------- [ CONSTRUCTORS/DESCTUCTOR/RULE OF 5 ] ------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Vector::Vector() {
-    length = 0;
-    v = nullptr;
-}
-Vector::Vector(int _length) {
-    this->length = _length;
-    v = new double[length] {0};
-}
-Vector::Vector(int _length, double a[]){
-    this->length = _length;
-    v = new double[length];
-
-    memcpy(v, a, sizeof(double)*length);
-}
-Vector::Vector(double a, double b) {
-    length = 2;
-    v = new double[length];
-    v[0] = a;
-    v[1] = b;
-}
-Vector::Vector(double a, double b, double c) {
-    length = 3;
-    v = new double[length];
-    v[0] = a;
-    v[1] = b;
-    v[2] = c;
-}
-Vector::Vector(double a, double b, double c, double d) {
-    length = 4;
-    v = new double[length];
-    v[0] = a;
-    v[1] = b;
-    v[2] = c;
-    v[3] = d;
-}
-
-//copy constructor
-Vector::Vector(const Vector& other) {
-    length = other.length;
-    v = new double[length];
-    memcpy(v, other.v, sizeof(double)*length);
-}
-//copy assignment operator
-Vector& Vector::operator=(const Vector& other) {
-    if (this != &other) {
-        if (v) delete[] v;
-    
-        length = other.length;
-        v = new double[length];
-        memcpy(v, other.v, sizeof(double)*length);
-    }
-
-    return *this;
-}
-//move constructor
-Vector::Vector(Vector&& other) noexcept {
-    length = other.length;
-    v = other.v;
-
-    other.length = 0;
-    other.v = nullptr;
-}
-//move assignment operator
-Vector& Vector::operator=(Vector&& other) noexcept {
-    if (this != &other) {
-        if (v) delete[] v;
-    
-        length = other.length;
-        v = other.v;
-        
-        other.length = 0;
-        other.v = nullptr;
-    }
-
-    return *this;
-}
-//destructor
-Vector::~Vector() {
-    if (v) delete[] v;
-}
+Vector::Vector(int length) : length(length) {}
+Vector::Vector(double x, double y) : length(2), vect(x, y, 0, 0) {}
+Vector::Vector(double x, double y, double z) : length(3), vect(x, y, z, 0) {}
+Vector::Vector(double x, double y, double z, double w) : length(4), vect(x, y, z, w) {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 double& Vector::x() {
-    return v[0];
+    return vect[0];
 }
 double& Vector::y(){
-    return v[1];
+    return vect[1];
 }
 double& Vector::z(){
-    return v[2];
+    return vect[2];
 }
 double& Vector::w() {
-    return v[3];
+    return vect[3];
 }
 
 const double& Vector::x() const {
-    return v[0];
+    return vect[0];
 }
 const double& Vector::y() const {
-    return v[1];
+    return vect[1];
 }
 const double& Vector::z() const {
-    return v[2];
+    return vect[2];
 }
 const double& Vector::w() const {
-    return v[3];
+    return vect[3];
 }
 
 int Vector::getLength() const {
@@ -129,7 +52,7 @@ double Vector::magnitude() const {
     double retVal = 0;
 
     for(int i = 0; i < length; i++)
-        retVal += v[i] * v[i];
+        retVal += vect[i] * vect[i];
 
     return std::sqrt(retVal);
 }
@@ -142,19 +65,19 @@ double& Vector::operator[](int i) {
     if (i >= length || i < 0)
         throw std::out_of_range(std::string("Index: " + std::to_string(i) + " out of range of Vector or Matrix"));
     
-    return v[i];
+    return vect[i];
 }
 const double& Vector::operator[](int i) const {
     if (i >= length || i < 0)
         throw std::out_of_range(std::string("Index: " + std::to_string(i) + " out of range of Vector or Matrix"));
     
-    return v[i];
+    return vect[i];
 }
 Vector Vector::operator/(double other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
-        vector[i] = v[i] / other;
+        vector[i] = vect[i] / other;
 
     return vector;
 }
@@ -162,7 +85,7 @@ Vector Vector::operator*(double other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
-        vector[i] = v[i] * other;
+        vector[i] = vect[i] * other;
 
     return vector;
 }
@@ -170,7 +93,7 @@ Vector Vector::operator*(const Vector& other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
-        vector[i] = v[i] * other[i];
+        vector[i] = vect[i] * other[i];
 
     return vector;
 }
@@ -178,7 +101,7 @@ Vector Vector::operator+(const Vector& other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
-        vector[i] = v[i] + other[i];
+        vector[i] = vect[i] + other[i];
 
     return vector;
 }
@@ -186,7 +109,7 @@ Vector Vector::operator-(const Vector& other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
-        vector[i] = v[i] - other[i];
+        vector[i] = vect[i] - other[i];
 
     return vector;
 }
@@ -194,7 +117,7 @@ Vector Vector::operator+() const {
     Vector vector(length);
 
     for (int i = 0; i < length; i++)
-        vector[i] = +v[i];
+        vector[i] = +vect[i];
 
     return vector;
 }
@@ -202,7 +125,7 @@ Vector Vector::operator-() const {
     Vector vector(length);
 
     for (int i = 0; i < length; i++)
-        vector[i] = -v[i];
+        vector[i] = -vect[i];
 
     return vector;
 }

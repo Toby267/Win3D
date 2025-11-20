@@ -12,92 +12,12 @@
 // * ------------------------------- [ CONSTRUCTORS/DESCTUCTOR/RULE OF 5 ] ------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Matrix::Matrix(int _rows, int _columns) {
-    rows = _rows;
-    columns = _columns;
+Matrix::Matrix(int rows, int columns) : rows(rows), columns(columns) {}
 
-    m = new Vector[rows];
-    for (int i = 0; i < rows; i++)
-        m[i] = Vector(columns);
-}
-Matrix::Matrix(int _rows, int _columns, double a[]) {
-    rows = _rows;
-    columns = _columns;
-
-    m = new Vector[rows];
-    for (int i = 0; i < rows; i++)
-        m[i] = Vector(columns);
-
-    int k = 0;
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < columns; j++, k++) {
-            m[i][j] = a[k];
-        }
-    }
-}
 //const reference so that im not copying each vector in the array
-Matrix::Matrix(int _rows, const Vector (&a)[]) {
-    rows = _rows;
-    columns = a[0].getLength();
-
-    m = new Vector[rows];
+Matrix::Matrix(int rows, const Vector (&a)[]) : rows(rows), columns(a[0].getLength()) {
     for (int i = 0; i < rows; i++)
-        m[i] = a[i];
-}
-
-//copy constructor
-Matrix::Matrix(const Matrix& other) {
-    rows = other.rows;
-    columns = other.columns;
-
-    m = new Vector[rows];
-    for (int i = 0; i < rows; i++)
-        m[i] = other.m[i];
-}
-//copy assignment operator
-Matrix& Matrix::operator=(const Matrix& other) {
-    if (this != &other) {
-        if (m) delete[] m;
-
-        rows = other.rows;
-        columns = other.columns;
-
-        m = new Vector[rows];
-        for (int i = 0; i < rows; i++)
-            m[i] = other.m[i];
-    }
-
-    return *this;
-}
-//move constructor
-Matrix::Matrix(Matrix&& other) noexcept {
-    rows = other.rows;
-    columns = other.columns;
-    m = other.m;
-
-    other.rows = 0;
-    other.columns = 0;
-    other.m = nullptr;
-}
-//move assignment operator
-Matrix& Matrix::operator=(Matrix&& other) noexcept {
-    if (this != &other) {
-        if (m) delete[] m;
-
-        rows = other.rows;
-        columns = other.columns;
-        m = other.m;
-
-        other.rows = 0;
-        other.columns = 0;
-        other.m = nullptr;
-    }
-
-    return *this;
-}
-//destructor
-Matrix::~Matrix() {
-    if (m) delete[] m;
+        mat[i] = a[i];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -119,13 +39,13 @@ Vector& Matrix::operator[](int i) {
     if (i >= rows || i < 0)
         throw std::out_of_range(std::string("Index: " + std::to_string(i) + " out of range of Matrix"));
     
-    return m[i];
+    return mat[i];
 }
 const Vector& Matrix::operator[](int i) const {
     if (i >= rows || i < 0)
         throw std::out_of_range(std::string("Index: " + std::to_string(i) + " out of range of Matrix"));
     
-    return m[i];
+    return mat[i];
 }
 
 Matrix Matrix::operator*(const Matrix& other) const {
@@ -136,7 +56,7 @@ Matrix Matrix::operator*(const Matrix& other) const {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < other.columns; j++) {
             for (int k = 0; k < other.rows; k++)  {
-                matrix[i][j] += m[i][k] * other[k][j];
+                matrix[i][j] += mat[i][k] * other[k][j];
             }
         }
     }
@@ -150,7 +70,7 @@ Vector Matrix::operator*(const Vector& other) const {
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
-            vector[i] += m[i][j] * other[j];
+            vector[i] += mat[i][j] * other[j];
         }
     }
 

@@ -16,6 +16,7 @@ Rasterizer::Rasterizer(Bitmap3D& bmap)
 
 /**
  * Performs rasterization on a vector of objects, assuming they are already in screen space, and renders them on a bitmap/framebuffer
+ * TODO: should move fragment shading out of here, and could implement barycentric interpolation instead of what i currently have
  * 
  * @param objects   the objects to rasterize
  * @param bmap      the bitmap to render onto
@@ -37,6 +38,7 @@ void Rasterizer::rasterize(std::vector<Object3D>& objects) {
 
 /**
  * Draws a triangle onto a given bitmap, defined by their veritces, and their colours
+ * TODO: could use a scanline filling algorithm instead
  * 
  * @param v1, v2, v3    the vertices of the triangle
  * @param c1, c2, c3    the colours of the vertices
@@ -78,20 +80,20 @@ void Rasterizer::drawTriangle(Vector v1, Vector v2, Vector v3, Colour c1, Colour
     Vector dBydx23 = v2ToV3 / (v2ToV3.x() + error);
 
     Colour c1ToC2 = c2-c1, c1ToC3 = c3-c1, c2ToC3 = c3-c2;
-    double drBydx12 = c1ToC2.r / (v1ToV2.x() + error);
-    double dgBydx12 = c1ToC2.g / (v1ToV2.x() + error);
-    double dbBydx12 = c1ToC2.b / (v1ToV2.x() + error);
-    double daBydx12 = c1ToC2.a / (v1ToV2.x() + error);
+    double drBydx12 = c1ToC2.r() / (v1ToV2.x() + error);
+    double dgBydx12 = c1ToC2.g() / (v1ToV2.x() + error);
+    double dbBydx12 = c1ToC2.b() / (v1ToV2.x() + error);
+    double daBydx12 = c1ToC2.a() / (v1ToV2.x() + error);
 
-    double drBydx13 = c1ToC3.r / (v1ToV3.x() + error);
-    double dgBydx13 = c1ToC3.g / (v1ToV3.x() + error);
-    double dbBydx13 = c1ToC3.b / (v1ToV3.x() + error);
-    double daBydx13 = c1ToC3.a / (v1ToV3.x() + error);
+    double drBydx13 = c1ToC3.r() / (v1ToV3.x() + error);
+    double dgBydx13 = c1ToC3.g() / (v1ToV3.x() + error);
+    double dbBydx13 = c1ToC3.b() / (v1ToV3.x() + error);
+    double daBydx13 = c1ToC3.a() / (v1ToV3.x() + error);
 
-    double drBydx23 = c2ToC3.r / (v2ToV3.x() + error);
-    double dgBydx23 = c2ToC3.g / (v2ToV3.x() + error);
-    double dbBydx23 = c2ToC3.b / (v2ToV3.x() + error);
-    double daBydx23 = c2ToC3.a / (v2ToV3.x() + error);
+    double drBydx23 = c2ToC3.r() / (v2ToV3.x() + error);
+    double dgBydx23 = c2ToC3.g() / (v2ToV3.x() + error);
+    double dbBydx23 = c2ToC3.b() / (v2ToV3.x() + error);
+    double daBydx23 = c2ToC3.a() / (v2ToV3.x() + error);
 
 
     for (double x = 0; x < v1ToV2.x(); x++) {
@@ -113,6 +115,8 @@ void Rasterizer::drawTriangle(Vector v1, Vector v2, Vector v3, Colour c1, Colour
 
 /**
  * Draws a line onto a given bitmap, defined by the start and end colours and vectors
+ * Implemented the DDA (differential analyser) algorithm
+ * TODO: could implement bresenhams algorithm instead
  * 
  * @param start     the coordinate of the start of the line
  * @param end       the coodinate of the end of the line
@@ -123,7 +127,7 @@ void Rasterizer::drawLine(Vector start, Vector end, Colour c1, Colour c2) {
     int x2 = end.x(), y2 = end.y(), z2 = end.z();
 
     double dx = x2-x1, dy = y2-y1, dz = z2-z1;
-    double dr = c2.r-c1.r, dg = c2.g-c1.g, db = c2.b-c1.b, da = c2.a - c1.a;
+    double dr = c2.r()-c1.r(), dg = c2.g()-c1.g(), db = c2.b()-c1.b(), da = c2.a() - c1.a();
 
     bitmap.drawPixel(x1, y1, z1, c1);
     if (std::abs(dx) > std::abs(dy)) {
@@ -138,10 +142,10 @@ void Rasterizer::drawLine(Vector start, Vector end, Colour c1, Colour c2) {
 
         int yError = (y1   - ySlope * x1);
         int zError = (z1   - zSlope * x1);
-        int rError = (c1.r - rSlope * x1);
-        int gError = (c1.g - gSlope * x1);
-        int bError = (c1.b - bSlope * x1);
-        int aError = (c1.a - aSlope * x1);
+        int rError = (c1.r() - rSlope * x1);
+        int gError = (c1.g() - gSlope * x1);
+        int bError = (c1.b() - bSlope * x1);
+        int aError = (c1.a() - aSlope * x1);
 
         int xStep = dx < 0 ? -1 : 1;
 
@@ -149,10 +153,10 @@ void Rasterizer::drawLine(Vector start, Vector end, Colour c1, Colour c2) {
             x1 += xStep;
             y1   = (ySlope * x1) + yError;
             z1   = (zSlope * x1) + zError;
-            c1.r = (rSlope * x1) + rError;
-            c1.g = (gSlope * x1) + gError;
-            c1.b = (bSlope * x1) + bError;
-            c1.a = (aSlope * x1) + aError;
+            c1.r() = (rSlope * x1) + rError;
+            c1.g() = (gSlope * x1) + gError;
+            c1.b() = (bSlope * x1) + bError;
+            c1.a() = (aSlope * x1) + aError;
             bitmap.drawPixel(x1, y1, z1, c1);
         }
     }
@@ -168,10 +172,10 @@ void Rasterizer::drawLine(Vector start, Vector end, Colour c1, Colour c2) {
 
         int xError = (x1   - xSlope * y1);
         int zError = (z1   - zSlope * y1);
-        int rError = (c1.r - rSlope * y1);
-        int gError = (c1.g - gSlope * y1);
-        int bError = (c1.b - bSlope * y1);
-        int aError = (c1.a - aSlope * y1);
+        int rError = (c1.r() - rSlope * y1);
+        int gError = (c1.g() - gSlope * y1);
+        int bError = (c1.b() - bSlope * y1);
+        int aError = (c1.a() - aSlope * y1);
 
         int yStep = dy < 0 ? -1 : 1;
 
@@ -179,10 +183,10 @@ void Rasterizer::drawLine(Vector start, Vector end, Colour c1, Colour c2) {
             y1 += yStep;
             x1   = (xSlope * y1) + xError;
             z1   = (zSlope * y1) + zError;
-            c1.r = (rSlope * y1) + rError;
-            c1.g = (gSlope * y1) + gError;
-            c1.b = (bSlope * y1) + bError;
-            c1.a = (aSlope * y1) + aError;
+            c1.r() = (rSlope * y1) + rError;
+            c1.g() = (gSlope * y1) + gError;
+            c1.b() = (bSlope * y1) + bError;
+            c1.a() = (aSlope * y1) + aError;
             bitmap.drawPixel(x1, y1, z1, c1);
         }
     }

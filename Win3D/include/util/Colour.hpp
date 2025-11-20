@@ -1,15 +1,27 @@
 #pragma once
 
+#include "Vector.hpp"
 #include <ostream>
 
 struct Colour {
+private:
+    Vector vect;
 public:
-    int r, g, b, a;
-
     //constructors/destructor
+    Colour();
     Colour(int r, int g, int b, int a);
     Colour(int r, int g, int b);
-    Colour();
+
+    //getters/setters
+    double& r();
+    double& g();
+    double& b();
+    double& a();
+
+    const double& r() const;
+    const double& g() const;
+    const double& b() const;
+    const double& a() const;
 
     //operator overloads
     Colour operator+(const Colour& other) const;

@@ -4,20 +4,14 @@
 
 class Matrix {
 private:
-    Vector *m;
-    int rows, columns;
+    Vector mat[4]{};
+    int rows = 4, columns = 4;
 
 public:
     //constructors/destructor/rule of 5
-    Matrix(int _rows, int _columns);
-    Matrix(int _rows, int _columns, double a[]);
+    Matrix() = default;
+    Matrix(int rows, int columns);
     Matrix(int rows, const Vector (&a)[]);
-
-    Matrix(const Matrix& other);                    //copy constructor
-    Matrix& operator=(const Matrix& other);         //copy assignment operator
-    Matrix(Matrix&& other) noexcept;                //move constructor
-    Matrix& operator=(Matrix&& other) noexcept;     //move assignment operator
-    ~Matrix();                                      //destructor
 
     //getters/setters
     int getColumns() const;
@@ -26,8 +20,10 @@ public:
     //operator overloads
     Vector& operator[](int i);
     const Vector& operator[](int i) const;
+
     Matrix operator*(const Matrix& other) const;
     Vector operator*(const Vector& other) const;
+
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 
     //static methods

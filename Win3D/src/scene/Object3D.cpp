@@ -17,7 +17,7 @@
 Object3D::Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles)
     : vertices(vertices), colours(colours), triangles(triangles)
 {
-    std::cout << "in constructor triangles: " << triangles.size() << '\n';
+    
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

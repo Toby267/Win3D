@@ -64,8 +64,8 @@ void Bitmap3D::drawPixel(int x, int y, int z, Colour c) {
     zBuffer[y*width + x] = z;
     
     int i = 4 * (y * width + x);
-    frameBuffer[i + 0] = c.r;
-    frameBuffer[i + 1] = c.g;
-    frameBuffer[i + 2] = c.b;
-    frameBuffer[i + 3] = c.a;
+    frameBuffer[i + 0] = c.r();
+    frameBuffer[i + 1] = c.g();
+    frameBuffer[i + 2] = c.b();
+    frameBuffer[i + 3] = c.a();
 }

@@ -4,22 +4,15 @@
 
 class Vector {
 private:
-    double *v;
-    int length;
+    double vect[4]{};
+    int length{4};
 public:
     //constructors/destructor/rule of 5
-    Vector();
-    Vector(int _length);
-    Vector(int _length, double a[]);
-    Vector(double a, double b);
-    Vector(double a, double b, double c);
-    Vector(double a, double b, double c, double d);
-
-    Vector(const Vector& other);                  //copy constructor
-    Vector& operator=(const Vector& other);       //copy assignment operator
-    Vector(Vector&& other) noexcept;              //move constructor
-    Vector& operator=(Vector&& other) noexcept;   //move assignment operator
-    ~Vector();                                    //destructor
+    Vector() = default;
+    Vector(int length);
+    Vector(double x, double y);
+    Vector(double x, double y, double z);
+    Vector(double x, double y, double z, double w);
 
     //getters/setters
     double& x();
@@ -38,13 +31,20 @@ public:
     //operator overloads
     double& operator[](int i);
     const double& operator[](int i) const;
-    Vector operator/(double other) const;
+
     Vector operator*(double other) const;
+    Vector operator/(double other) const;
+    Vector operator+(double other) const;
+    Vector operator-(double other) const;
+
     Vector operator*(const Vector& other) const;
+    Vector operator/(const Vector& other) const;
     Vector operator+(const Vector& other) const;
     Vector operator-(const Vector& other) const;
+
     Vector operator+() const;
     Vector operator-() const;
+
     friend std::ostream& operator<<(std::ostream& os, const Vector& v);
 
     //static methods
