@@ -13,7 +13,7 @@ GeometryProcessor::GeometryProcessor() {
     );
 
     //projection default values
-    projection = Projection(1600, 900, 2000, std::numbers::pi/2);
+    projection = Projection(1600, 900, 2000, std::numbers::pi/2, 1000);
 
     //viewport default values
     viewport = Viewport(1280, 720);

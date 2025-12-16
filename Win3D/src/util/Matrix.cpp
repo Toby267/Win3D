@@ -173,9 +173,9 @@ Matrix Matrix::orthographic(double l, double b, double n, double r, double t, do
  */
 Matrix Matrix::perspective(double l, double b, double n, double r, double t, double f) {
     Matrix perspective(4, (Vector[]){
-        Vector{f,   0,   0,    0},
-        Vector{ 0, f,   0,    0},
-        Vector{  0,   0, 2*f, f*n},
+        Vector{n,   0,   0,    0},
+        Vector{ 0, n,   0,    0},
+        Vector{  0,   0, f+n, -f*n},
         Vector{  0,   0,   1,   0}
     });
 

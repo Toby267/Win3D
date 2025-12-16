@@ -1,5 +1,6 @@
 #include "application/Application.hpp"
 
+#include <iostream>
 #include <vector>
 
 #include "renderer/Renderer.hpp"
@@ -21,7 +22,7 @@ Application::Application() {
 
     Object3D sphere = Object3D::icoSphere(Colour::blue());
     sphere.setScale(Matrix::scale(100, 100, 100));
-    sphere.setTranslation(Matrix::translate(300, 0, 700));
+    sphere.setTranslation(Matrix::translate(300, 0, 1000));
     sphere.setRotation(Matrix::rotation(0, 0, 0));
     
     objects.emplace_back(cube1);
@@ -30,12 +31,16 @@ Application::Application() {
     Renderer* r = new Renderer(1280, 720);
 
     double alpha = 0.0;
+    double z = 500;
 
     for (;;) {
         alpha -= std::numbers::pi/256;
         objects[0].setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         objects[1].setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        objects[1].setTranslation(Matrix::translate(300, 0, z+=100));
 
         r->drawCall(objects);
+
+        std::cin.get();
     }
 }

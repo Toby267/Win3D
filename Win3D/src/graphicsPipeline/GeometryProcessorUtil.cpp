@@ -1,6 +1,7 @@
 #include "graphicsPipeline/GeometryProcessorUtil.hpp"
 
 #include "util/Matrix.hpp"
+#include <iostream>
 
 // * -------------------------------------------- [ CAMERA ] -------------------------------------------- * //
 
@@ -19,14 +20,16 @@ Matrix Camera::getTransformationMatrix() {
 
 // * ------------------------------------------ [ PROJECTION ] ------------------------------------------ * //
 
-Projection::Projection(double lensWidth, double lensHeight, double depthOfField, double fieldOfView)
-    : lensWidth(lensWidth), lensHeight(lensHeight), depthOfField(depthOfField), fieldOfView(fieldOfView)
+Projection::Projection(double lensWidth, double lensHeight, double depthOfField, double fieldOfView, double near)
+    : lensWidth(lensWidth), lensHeight(lensHeight), depthOfField(depthOfField), fieldOfView(fieldOfView), near(near)
 {
 
 }
 
 Matrix Projection::getTransformationMatrix() {
-    return Matrix::perspective(-lensWidth/2, -lensHeight/2, -depthOfField/2, lensWidth/2, lensHeight/2, depthOfField/2);
+    std::cout << "near+depthOfField: " << near+depthOfField << '\n';
+    
+    return Matrix::perspective(-lensWidth/2, -lensHeight/2, near, lensWidth/2, lensHeight/2, near+depthOfField);
 }
 
 // * ------------------------------------------- [ VIEWPORT ] ------------------------------------------- * //

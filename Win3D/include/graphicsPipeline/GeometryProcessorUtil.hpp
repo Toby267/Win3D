@@ -20,10 +20,12 @@ struct Projection {
     double depthOfField;
     double fieldOfView;
 
+    double near;
+
     // enum type {orthographic, perspctive} projection;
 
     Projection() = default;
-    Projection(double lensWidth, double lensHeight, double depthOfField, double fieldOfView);
+    Projection(double lensWidth, double lensHeight, double depthOfField, double fieldOfView, double near);
 
     Matrix getTransformationMatrix();
 };
