@@ -95,7 +95,7 @@ void Object3D::clip() {
         if (vertex.z() < zMin) zMin = vertex.z();
     }
 
-    if (xMin >  1 || yMin >  1 || zMin > 1) triangles.clear();
+    if (xMin >  1 || yMin >  1 || zMin >  1) triangles.clear();
     if (xMax < -1 || yMax < -1 || zMax < -1) triangles.clear();
 }
 

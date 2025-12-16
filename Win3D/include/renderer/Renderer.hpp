@@ -12,6 +12,9 @@ The rendering engine, consisting of the window to be drawn to, the bitmap to sto
 */
 class Renderer {
 private:
+    double width;
+    double height;
+
     Window window;
     Bitmap3D bitmap;
 
@@ -25,4 +28,9 @@ public:
 
     //public methods
     void drawCall(std::vector<Object3D> objects);
+
+private:
+    //private methods
+    void drawCallRaster(std::vector<Object3D> objects);
+    void drawCallRayTraced(std::vector<Object3D> objects);
 };

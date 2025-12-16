@@ -34,4 +34,5 @@ public:
 
     //public methods
     void processGeometry(std::vector<Object3D>& objects);
+    void processGeometryRayTracing(std::vector<Object3D>& objects);
 };

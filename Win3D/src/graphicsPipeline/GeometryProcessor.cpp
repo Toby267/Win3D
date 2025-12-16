@@ -50,3 +50,17 @@ void GeometryProcessor::processGeometry(std::vector<Object3D>& objects) {
         obj.applyAffineTransformation(viewport.getTransformationMatrix());
     }
 }
+
+void GeometryProcessor::processGeometryRayTracing(std::vector<Object3D>& objects) {
+    for (Object3D& obj : objects) {
+        //step 0 - tesselation
+
+        //step 1 - transform the object into world space
+        obj.transform();
+
+        //step 2 - transform the objects to camera space
+        obj.applyAffineTransformation(camera.getTransformationMatrix());
+
+        //step 3 - vertex shading
+    }
+}

@@ -28,6 +28,9 @@ public:
     int getLength() const;
     double magnitude() const;
 
+    //public methods
+    Vector normalise();
+
     //operator overloads
     double& operator[](int i);
     const double& operator[](int i) const;
