@@ -25,7 +25,7 @@ Application::Application() {
     sphere.setRotation(Matrix::rotation(0, 0, 0));
     
     objects.emplace_back(cube1);
-    objects.emplace_back(sphere);
+    // objects.emplace_back(sphere);
 
     Renderer* r = new Renderer(1280, 720);
 
@@ -35,7 +35,7 @@ Application::Application() {
     for (;;) {
         alpha -= std::numbers::pi/256;
         objects[0].setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        objects[1].setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        // objects[1].setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         // objects[1].setTranslation(Matrix::translate(300, 0, z+=100));
 
         r->drawCall(objects);

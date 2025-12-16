@@ -56,7 +56,9 @@ void Renderer::drawCallRayTraced(std::vector<Object3D> objects) {
 
     geometryProcessor.processGeometryRayTracing(objects);
 
-    /*fragments =*/ tracer.trace();
+    /*fragments =*/ tracer.trace(objects);
 
     window.update(bitmap.getFrameBuffer());
+
+    std::cin.get();
 }
