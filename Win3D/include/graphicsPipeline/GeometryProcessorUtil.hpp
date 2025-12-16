@@ -14,18 +14,18 @@ struct Camera {
 };
 
 struct Projection {
-    double lensWidth;
-    double lensHeight;
+    double apperatureWidth;
+    double apperatureHeight;
     
-    double depthOfField;
     double fieldOfView;
 
-    double near;
+    double nearFocalDistance;
+    double farFocalDistance;
 
     // enum type {orthographic, perspctive} projection;
 
     Projection() = default;
-    Projection(double lensWidth, double lensHeight, double depthOfField, double fieldOfView, double near);
+    Projection(double apperatureWidth, double apperatureHeight, double depthOfField, double fieldOfView, double focalDistance);
 
     Matrix getTransformationMatrix();
 };

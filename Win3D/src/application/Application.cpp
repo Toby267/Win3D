@@ -1,6 +1,5 @@
 #include "application/Application.hpp"
 
-#include <iostream>
 #include <vector>
 
 #include "renderer/Renderer.hpp"

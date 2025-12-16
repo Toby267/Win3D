@@ -36,8 +36,8 @@ public:
     static Matrix pitch(double rad);
     static Matrix yaw(double rad);
 
-    static Matrix orthographic(double left, double bottom, double near, double right, double top, double far);
-    static Matrix perspective(double left, double bottom, double near, double right, double top, double far);
+    static Matrix orthographic(double near, double far, double top, double right);
+    static Matrix perspective(double near, double far, double top, double right, double fov);
 
     static Matrix changeOfBasis(const Vector& position, const Vector& direction, const Vector& up);
 };

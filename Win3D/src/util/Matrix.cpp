@@ -1,5 +1,6 @@
 #include "util/Matrix.hpp"
 
+#include <cassert>
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
@@ -155,36 +156,38 @@ Matrix Matrix::yaw(double rad) {
  * retuns the perspective transform matrix that maps to the canonical view volume defined in the geometry processor.
  * assumes l = -r, b = -t, and t = -f
  */
-Matrix Matrix::orthographic(double l, double b, double n, double r, double t, double f) {
-    double xs = 2.0/(r-l);
-    double ys = 2.0/(t-b);
+Matrix Matrix::orthographic(double n, double f, double t, double r) {
     double zs = 2.0/(f-n);
+    double zt = -(f+n)/(f-n);
 
-    double xt = (r+l)/2.0;
-    double yt = (t+b)/2.0;
-    double zt = (f+n)/2.0;
-
-    return Matrix::scale(xs, ys, zs) * Matrix::translate(-xt, -yt, -zt);
+    return Matrix(4, (Vector[]){
+        Vector(1/r, 0, 0, 0),
+        Vector(0, 1/t, 0, 0),
+        Vector(0, 0, zs, zt),
+        Vector(0, 0, 0, 1)
+    });
 }
 
 /**
  * retuns the perspective transform matrix that maps to the canonical view volume defined in the geometry processor.
- * assumes l = -r, b = -t, and t = -f       those assumptions allowed me to simplify to this:
+ * fov assumed to be in radians
+ * assumes l = -r and b = -t      those assumptions allowed me to simplify to this:
  */
-Matrix Matrix::perspective(double l, double b, double n, double r, double t, double f) {
-    double aspect = 16.0/9.0;
-    double fov = (110.0 / 360.0) * 2*std::numbers::pi;
-    double thing = r / ( aspect * std::tan(fov / 2) );
-    double thing2 = r / ( aspect * std::tan(fov / 2) );
-    
-    Matrix perspective(4, (Vector[]){
-        Vector{thing,   0,   0,    0},
-        Vector{ 0, thing2,   0,    0},
-        Vector{  0,   0, f+n, -f*n},
-        Vector{  0,   0,   1,   0}
-    });
+Matrix Matrix::perspective(double n, double f, double t, double r, double fov) {
+    double aspect = r/t;
 
-    return Matrix::orthographic(l, b, n, r, t, f) * perspective;
+    double _00 = 1 / ( aspect * std::tan(fov / 2) );
+    double _11 = 1 / ( std::tan(fov / 2) );
+
+    double _22 = (f+n) / (f-n);
+    double _23 = -2.0 * (f*n) / (f-n);
+    
+    return Matrix(4, (Vector[]){
+        Vector{_00,   0,   0,    0},
+        Vector{  0, _11,   0,    0},
+        Vector{  0,   0, _22,  _23},
+        Vector{  0,   0,   1,    0}
+    });
 }
 
 //returns a matrix that transforms objects to a view assuming the cameria is at position position, looking down direction, and its up is up
