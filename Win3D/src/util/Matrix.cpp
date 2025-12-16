@@ -172,9 +172,14 @@ Matrix Matrix::orthographic(double l, double b, double n, double r, double t, do
  * assumes l = -r, b = -t, and t = -f       those assumptions allowed me to simplify to this:
  */
 Matrix Matrix::perspective(double l, double b, double n, double r, double t, double f) {
+    double aspect = 16.0/9.0;
+    double fov = (110.0 / 360.0) * 2*std::numbers::pi;
+    double thing = r / ( aspect * std::tan(fov / 2) );
+    double thing2 = r / ( aspect * std::tan(fov / 2) );
+    
     Matrix perspective(4, (Vector[]){
-        Vector{n,   0,   0,    0},
-        Vector{ 0, n,   0,    0},
+        Vector{thing,   0,   0,    0},
+        Vector{ 0, thing2,   0,    0},
         Vector{  0,   0, f+n, -f*n},
         Vector{  0,   0,   1,   0}
     });
