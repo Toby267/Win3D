@@ -6,6 +6,7 @@
 #include "Window.hpp"
 #include "graphicsPipeline/GeometryProcessor.hpp"
 #include "graphicsPipeline/Rasterizer.hpp"
+#include "graphicsPipeline/RayTracer.hpp"
 
 /*
 The rendering engine, consisting of the window to be drawn to, the bitmap to store a frame, and the pipeline to process scenes
@@ -21,6 +22,8 @@ private:
     // GraphicsPipeline pipeline;
     GeometryProcessor geometryProcessor;
     Rasterizer rasterizer;
+
+    RayTracer tracer;
 
 public:
     //constructors/destructor
