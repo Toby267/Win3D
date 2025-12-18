@@ -60,5 +60,5 @@ void Renderer::drawCallRayTraced(std::vector<Object3D> objects) {
 
     window.update(bitmap.getFrameBuffer());
 
-    std::cin.get();
+    // std::cin.get();
 }

@@ -23,6 +23,4 @@ public:
 
 private:
     float mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2);
-    float barycentricIntersection();
-    float waldMethodIntersection();
 };

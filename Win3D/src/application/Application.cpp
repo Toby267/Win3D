@@ -33,7 +33,7 @@ Application::Application() {
     double z = 500;
 
     for (;;) {
-        alpha -= std::numbers::pi/256;
+        alpha -= std::numbers::pi/16;
         objects[0].setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         // objects[1].setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         // objects[1].setTranslation(Matrix::translate(300, 0, z+=100));
