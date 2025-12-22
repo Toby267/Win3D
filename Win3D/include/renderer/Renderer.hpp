@@ -2,9 +2,9 @@
 
 #include <vector>
 
+#include "scene/Camera.hpp"
 #include "Bitmap3D.hpp"
 #include "Window.hpp"
-#include "graphicsPipeline/GeometryProcessor.hpp"
 #include "graphicsPipeline/Rasterizer.hpp"
 #include "graphicsPipeline/RayTracer.hpp"
 
@@ -19,8 +19,9 @@ private:
     Window window;
     Bitmap3D bitmap;
 
-    // GraphicsPipeline pipeline;
-    GeometryProcessor geometryProcessor;
+    Camera camera;
+    Viewport viewport;
+
     Rasterizer rasterizer;
 
     RayTracer tracer;
@@ -36,4 +37,8 @@ private:
     //private methods
     void drawCallRaster(std::vector<Object3D> objects);
     void drawCallRayTraced(std::vector<Object3D> objects);
+
+    //geometry processing functions
+    void processGeometry(std::vector<Object3D>& objects);
+    void processGeometryRayTracing(std::vector<Object3D>& objects);
 };
