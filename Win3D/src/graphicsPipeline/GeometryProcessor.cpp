@@ -5,18 +5,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 GeometryProcessor::GeometryProcessor() {
-    //camera default values
-    camera = Camera(
-        Vector(0, 0, 0, 1),
-        Vector(0, 0, 1, 0),
-        Vector(0, 1, 0, 0)
-    );
 
-    //projection default values
-    projection = Projection(1600, 900, 2000, 60, 1000);
-
-    //viewport default values
-    viewport = Viewport(1280, 720);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,18 +25,18 @@ void GeometryProcessor::processGeometry(std::vector<Object3D>& objects) {
         obj.transform();
 
         //step 2 - transform the objects to camera space
-        obj.applyAffineTransformation(camera.getTransformationMatrix());
+        obj.applyAffineTransformation(camera.tranformationMatrix());
 
         //step 3 - vertex shading
 
         //step 3 - transform the objects to clip space
-        obj.applyTransformation(projection.getTransformationMatrix());
+        obj.applyTransformation(camera.projectionMatrix());
 
         //step 5 - clip the objects
         obj.clip();
 
         //step 6 - transform the objects to screen space
-        obj.applyAffineTransformation(viewport.getTransformationMatrix());
+        obj.applyAffineTransformation(viewport.tranformationMatrix());
     }
 }
 
@@ -59,7 +48,7 @@ void GeometryProcessor::processGeometryRayTracing(std::vector<Object3D>& objects
         obj.transform();
 
         //step 2 - transform the objects to camera space
-        obj.applyAffineTransformation(camera.getTransformationMatrix());
+        obj.applyAffineTransformation(camera.tranformationMatrix());
 
         //step 3 - vertex shading
     }

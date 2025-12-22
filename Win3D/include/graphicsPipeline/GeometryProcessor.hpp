@@ -26,7 +26,7 @@ object space -> world space -> camera space -> canonical view cube -> screen spa
 class GeometryProcessor {
 private:
     struct Camera camera;
-    struct Projection projection;
+    // struct Projection projection;
     struct Viewport viewport;
 
 public:
