@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "scene/Object3D.hpp"
-#include "graphicsPipeline/GeometryProcessorUtil.hpp"
+#include "scene/Camera.hpp"
 
 /*
 object space axis:              x = right,  y = up, z = forward

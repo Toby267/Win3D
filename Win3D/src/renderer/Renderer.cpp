@@ -29,8 +29,8 @@ Renderer::Renderer(int width, int height)
  * @param objects   the objects to pass throught the rendering pipeline
  */
 void Renderer::drawCall(std::vector<Object3D> objects) {
-    // drawCallRaster(objects);
-    drawCallRayTraced(objects);
+    drawCallRaster(objects);
+    // drawCallRayTraced(objects);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
