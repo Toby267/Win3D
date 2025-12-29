@@ -1,8 +1,5 @@
 #include "graphicsPipeline/RayTracer.hpp"
 
-#include <cmath>
-#include <cstdlib>
-#include <iostream>
 #include <limits>
 #include <vector>
 

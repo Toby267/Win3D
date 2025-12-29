@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "scene/Camera.hpp"
+#include "scene/CameraRayTracer.hpp"
 #include "Bitmap3D.hpp"
 #include "Window.hpp"
 #include "graphicsPipeline/Rasterizer.hpp"
