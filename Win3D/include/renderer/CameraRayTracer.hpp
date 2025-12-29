@@ -1,8 +1,8 @@
 #pragma once
 
 #include "util/Matrix.hpp"
-#include "renderer/Bitmap3D.hpp"
-#include "scene/Object.hpp"
+#include "engine/Bitmap3D.hpp"
+#include "renderer/Object.hpp"
 
 struct Ray {
     Vector origin;
@@ -11,7 +11,7 @@ struct Ray {
     Colour col;
 } typedef ray;
 
-class Camera {
+class CameraRayTracer {
 private:
     //position/orientation
     Vector position = Vector(0, 0, 0, 1);

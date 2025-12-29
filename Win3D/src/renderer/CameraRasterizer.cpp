@@ -1,4 +1,4 @@
-#include "scene/CameraRasterizer.hpp"
+#include "renderer/CameraRasterizer.hpp"
 
 #include "util/Matrix.hpp"
 

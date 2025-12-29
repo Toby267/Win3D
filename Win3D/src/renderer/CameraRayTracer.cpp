@@ -1,25 +1,25 @@
-#include "scene/CameraRayTracer.hpp"
+#include "renderer/CameraRayTracer.hpp"
 
 #include "util/Matrix.hpp"
 #include <limits>
 
 // * -------------------------------------------- [ CAMERA ] -------------------------------------------- * //
 
-Matrix Camera::tranformationMatrix() {
+Matrix CameraRayTracer::tranformationMatrix() {
     Matrix changeOfBasis = Matrix::changeOfBasis(position, direction, up);
     Matrix translation = Matrix::translate(-position.x(), -position.y(), -position.z());
 
     return changeOfBasis * translation;
 }
-Matrix Camera::projectionMatrix() {
+Matrix CameraRayTracer::projectionMatrix() {
     return Matrix::perspective(nearFocalDistance, farFocalDistance, apperatureHeight/2, apperatureWidth/2, fieldOfView);
 }
-Matrix Camera::viewportMatrix() {
+Matrix CameraRayTracer::viewportMatrix() {
     return Matrix::translate(screenWidth/2.0, screenHeight/2.0, 10000) * Matrix::scale(screenWidth/2.0, -screenHeight/2.0, 10000);
 }
 
 
-void Camera::trace(std::vector<Object>& objects, Bitmap3D& bmap) {
+void CameraRayTracer::trace(std::vector<Object>& objects, Bitmap3D& bmap) {
     for (Object& obj : objects) {
         //step 0 - tesselation
 
@@ -66,7 +66,7 @@ void Camera::trace(std::vector<Object>& objects, Bitmap3D& bmap) {
     }
 }
 
-float Camera::mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2) {
+float CameraRayTracer::mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2) {
     constexpr float epsilon = std::numeric_limits<float>::epsilon();
 
     Vector edge1 = vert1 - vert0;

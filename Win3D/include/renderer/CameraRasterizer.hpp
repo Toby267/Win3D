@@ -1,8 +1,8 @@
 #pragma once
 
 #include "util/Matrix.hpp"
-#include "renderer/Bitmap3D.hpp"
-#include "scene/Object.hpp"
+#include "engine/Bitmap3D.hpp"
+#include "renderer/Object.hpp"
 
 class CameraRasterizer {
 private:

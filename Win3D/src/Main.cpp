@@ -1,4 +1,4 @@
-#include "application/Application.hpp"
+#include "Application.hpp"
 
 //Driver code
 int main(int argc, char *argv[]) {

@@ -1,4 +1,4 @@
-#include "scene/Object.hpp"
+#include "renderer/Object.hpp"
 
 #include <iostream>
 #include <vector>

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "renderer/Bitmap3D.hpp"
-#include "renderer/Window.hpp"
-#include "scene/CameraRayTracer.hpp"
-#include "scene/CameraRasterizer.hpp"
+#include "engine/Bitmap3D.hpp"
+#include "engine/Window.hpp"
+#include "renderer/CameraRayTracer.hpp"
+#include "renderer/CameraRasterizer.hpp"
 
 class Engine {
 private:
@@ -15,7 +15,7 @@ private:
     const int HEIGHT = 720;
 
     CameraRasterizer cameraRaster = CameraRasterizer();
-    Camera cameraRayTracer = Camera();
+    CameraRayTracer cameraRayTracer = CameraRayTracer();
     Window window = Window(WIDTH, HEIGHT);
 
     Bitmap3D bitmap = Bitmap3D(WIDTH, HEIGHT);
