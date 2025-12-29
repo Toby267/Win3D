@@ -21,18 +21,21 @@ private:
     double nearFocalDistance = 1000;
     double farFocalDistance = 3000;
 
-public:
-    CameraRasterizer() = default;
+    //viewport
+    int screenWidth = 1280;
+    int screenHeight = 720;
 
+public:
     Matrix tranformationMatrix();
     Matrix projectionMatrix();
+    Matrix viewportMatrix();
 
-    Bitmap3D rasterize(std::vector<Object>& objects);
+    void rasterize(std::vector<Object>& objects, Bitmap3D& bmap);
 
 private:
     //private methods
-    void drawTriangle(Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3);
-    void drawLine(Vector start, Vector end, Colour c1, Colour c2);
+    void drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3);
+    void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour c2);
 };
 
 // struct Viewport {

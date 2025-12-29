@@ -2,7 +2,8 @@
 
 #include <vector>
 
-#include "renderer/Renderer.hpp"
+// #include "renderer/Renderer.hpp"
+#include "Engine.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
@@ -27,7 +28,8 @@ Application::Application() {
     objects.emplace_back(cube1);
     // objects.emplace_back(sphere);
 
-    Renderer* r = new Renderer(1280, 720);
+    // Renderer* r = new Renderer(1280, 720);
+    Engine* e = new Engine();
 
     double alpha = 0.0;
     double z = 500;
@@ -38,7 +40,7 @@ Application::Application() {
         // objects[1].setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         // objects[1].setTranslation(Matrix::translate(300, 0, z+=100));
 
-        r->drawCall(objects);
+        e->drawCall(objects);
 
         // std::cin.get();
     }

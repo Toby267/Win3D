@@ -1,8 +1,18 @@
 #pragma once
 
 #include "util/Matrix.hpp"
+#include "renderer/Bitmap3D.hpp"
+#include "scene/Object.hpp"
 
-struct Camera {
+struct Ray {
+    Vector origin;
+    Vector direction;
+    Vector screenCoord;
+    Colour col;
+} typedef ray;
+
+class Camera {
+private:
     //position/orientation
     Vector position = Vector(0, 0, 0, 1);
     Vector direction = Vector(0, 0, 1, 0);
@@ -18,17 +28,24 @@ struct Camera {
     double nearFocalDistance = 1000;
     double farFocalDistance = 3000;
 
-    Camera() = default;
-
-    Matrix tranformationMatrix();
-    Matrix projectionMatrix();
-};
-
-struct Viewport {
+    //viewport
     int screenWidth = 1280;
     int screenHeight = 720;
 
-    Viewport() = default;
-
+public:
     Matrix tranformationMatrix();
+    Matrix projectionMatrix();
+    Matrix viewportMatrix();
+
+    void trace(std::vector<Object>& objects, Bitmap3D& bmap);
+
+private:
+    float mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2);
 };
+
+// struct Viewport {
+//     int screenWidth = 1280;
+//     int screenHeight = 720;
+
+//     Matrix tranformationMatrix();
+// };

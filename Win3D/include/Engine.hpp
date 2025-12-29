@@ -1,6 +1,8 @@
 #pragma once
 
+#include "renderer/Bitmap3D.hpp"
 #include "renderer/Window.hpp"
+#include "scene/CameraRayTracer.hpp"
 #include "scene/Scene.hpp"
 #include "scene/CameraRasterizer.hpp"
 
@@ -10,12 +12,19 @@ private:
     // cameras (one for raster, one for ray tracing, etc)
     // window
 
+    const int WIDTH = 1280;
+    const int HEIGHT = 720;
+
     Scene scene = Scene();
-    CameraRasterizer camera = CameraRasterizer();
-    Window window = Window(1280, 720);
+    CameraRasterizer cameraRaster = CameraRasterizer();
+    Camera cameraRayTracer = Camera();
+    Window window = Window(WIDTH, HEIGHT);
+
+    Bitmap3D bitmap = Bitmap3D(WIDTH, HEIGHT);
 
 
 public:
+    void drawCall(std::vector<Object> objects);
 
 private:
 
