@@ -31,14 +31,14 @@ public:
     Renderer(int screenWidth, int screenHeight);
 
     //public methods
-    void drawCall(std::vector<Object3D> objects);
+    void drawCall(std::vector<Object> objects);
 
 private:
     //private methods
-    void drawCallRaster(std::vector<Object3D> objects);
-    void drawCallRayTraced(std::vector<Object3D> objects);
+    void drawCallRaster(std::vector<Object> objects);
+    void drawCallRayTraced(std::vector<Object> objects);
 
     //geometry processing functions
-    void processGeometry(std::vector<Object3D>& objects);
-    void processGeometryRayTracing(std::vector<Object3D>& objects);
+    void processGeometry(std::vector<Object>& objects);
+    void processGeometryRayTracing(std::vector<Object>& objects);
 };

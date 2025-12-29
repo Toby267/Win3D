@@ -21,8 +21,8 @@ Rasterizer::Rasterizer(Bitmap3D& bmap)
  * @param objects   the objects to rasterize
  * @param bmap      the bitmap to render onto
  */
-void Rasterizer::rasterize(std::vector<Object3D>& objects) {
-    for (Object3D& obj : objects) {
+void Rasterizer::rasterize(std::vector<Object>& objects) {
+    for (Object& obj : objects) {
         std::vector<Vector> vertices = obj.getVertices();
         std::vector<Colour> colours = obj.getColours();
     

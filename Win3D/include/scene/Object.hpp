@@ -11,7 +11,7 @@
  * triangles[i] stores the first tirangle, where triangle[i][0] is v1, triangle[i][1] is v2, and triangle[i][2] is v3.
  * we'll get to uv maps later
  */
-class Object3D {
+class Object {
 private:
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
@@ -26,7 +26,7 @@ private:
 
 public:
     //constructors/destructor
-    Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles);
+    Object(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles);
 
     //getters/setters
     std::vector<Vector>& getVertices();
@@ -46,10 +46,10 @@ public:
     void clip();
 
     //operator overloads
-    friend std::ostream& operator<<(std::ostream& os, const Object3D& m);
+    friend std::ostream& operator<<(std::ostream& os, const Object& m);
 
     //static methods
-    static Object3D cube(Colour c);
-    static Object3D icoSphereSmall(Colour c);
-    static Object3D icoSphere(Colour c);
+    static Object cube(Colour c);
+    static Object icoSphereSmall(Colour c);
+    static Object icoSphere(Colour c);
 };

@@ -12,14 +12,14 @@
  * Runs the application
  */
 Application::Application() {
-    std::vector<Object3D> objects = std::vector<Object3D>();
+    std::vector<Object> objects = std::vector<Object>();
 
-    Object3D cube1 = Object3D::cube(Colour::blue());
+    Object cube1 = Object::cube(Colour::blue());
     cube1.setScale(Matrix::scale(100, 100, 100));
     cube1.setTranslation(Matrix::translate(-300, 0, 1100));
     cube1.setRotation(Matrix::rotation(0, 0, 0));
 
-    Object3D sphere = Object3D::icoSphere(Colour::blue());
+    Object sphere = Object::icoSphere(Colour::blue());
     sphere.setScale(Matrix::scale(100, 100, 100));
     sphere.setTranslation(Matrix::translate(300, 0, 1000));
     sphere.setRotation(Matrix::rotation(0, 0, 0));

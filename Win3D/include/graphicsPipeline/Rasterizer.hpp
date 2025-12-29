@@ -1,7 +1,7 @@
 #pragma once
 
 #include "renderer/Bitmap3D.hpp"
-#include "scene/Object3D.hpp"
+#include "scene/Object.hpp"
 
 class Rasterizer {
 private:
@@ -12,7 +12,7 @@ public:
     Rasterizer(Bitmap3D& bmap);
 
     //public methods
-    void rasterize(std::vector<Object3D>& objects);
+    void rasterize(std::vector<Object>& objects);
 private:
     //private methods
     void drawTriangle(Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3);

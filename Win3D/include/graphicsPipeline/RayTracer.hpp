@@ -1,7 +1,7 @@
 #pragma once
 
 #include "renderer/Bitmap3D.hpp"
-#include "scene/Object3D.hpp"
+#include "scene/Object.hpp"
 #include "util/Vector.hpp"
 #include "util/Colour.hpp"
 
@@ -19,7 +19,7 @@ private:
 public:
     RayTracer(Bitmap3D& bmap);
 
-    void trace(std::vector<Object3D>& objects);
+    void trace(std::vector<Object>& objects);
 
 private:
     float mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2);

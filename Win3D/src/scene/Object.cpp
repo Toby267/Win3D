@@ -1,4 +1,4 @@
-#include "scene/Object3D.hpp"
+#include "scene/Object.hpp"
 
 #include <iostream>
 #include <vector>
@@ -14,7 +14,7 @@
  * @param colours   the colour of each vertex
  * @param triangles the indeces of the vertices array, determining the traingles of the object
  */
-Object3D::Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles)
+Object::Object(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles)
     : vertices(vertices), colours(colours), triangles(triangles)
 {
     
@@ -25,30 +25,30 @@ Object3D::Object3D(std::vector<Vector> vertices, std::vector<Colour> colours, st
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //returns the vertices of the object
-std::vector<Vector>& Object3D::getVertices() {
+std::vector<Vector>& Object::getVertices() {
     return vertices;
 }
 //returns the colours of the object
-std::vector<Colour>& Object3D::getColours() {
+std::vector<Colour>& Object::getColours() {
     return colours;
 }
 //returns the triangles of the object
-std::vector<Vector>& Object3D::getTriangles() {
+std::vector<Vector>& Object::getTriangles() {
     return triangles;
 }
 
 //sets the scale of the object
-void Object3D::setScale(Matrix s) {
+void Object::setScale(Matrix s) {
     scale = s;
     affineTransform = translation * rotation * scale;
 }
 //sets the translation of the object
-void Object3D::setTranslation(Matrix t) {
+void Object::setTranslation(Matrix t) {
     translation = t;
     affineTransform = translation * rotation * scale;
 }
 //sets the rotation of the object
-void Object3D::setRotation(Matrix r) {
+void Object::setRotation(Matrix r) {
     rotation = r;
     affineTransform = translation * rotation * scale;
 }
@@ -58,20 +58,20 @@ void Object3D::setRotation(Matrix r) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //transforms the object into world space
-void Object3D::transform() {
+void Object::transform() {
     for (Vector& vertex : vertices) {
         vertex = affineTransform * vertex;
     }
 }
 //applys an affine transformation to the object
-void Object3D::applyAffineTransformation(const Matrix& m) {
+void Object::applyAffineTransformation(const Matrix& m) {
     for (Vector& vertex : vertices) {
         vertex = m * vertex;
         
     }
 }
 //applys a non-affine transformation to the object, and normalises it
-void Object3D::applyTransformation(const Matrix& m) {
+void Object::applyTransformation(const Matrix& m) {
     for (Vector& vertex : vertices) {
         vertex = m * vertex;
         vertex = vertex / vertex.w();
@@ -81,7 +81,7 @@ void Object3D::applyTransformation(const Matrix& m) {
 
 //clips the object if it is outside the canonical view volume
 //TODO: this should be done in the geometry processing class, and you should fix the fact that it renders in front and behind, then clips behind.
-void Object3D::clip() {
+void Object::clip() {
     double xMax = vertices[0].x(), yMax = vertices[0].y(), zMax = vertices[0].z();
     double xMin = vertices[0].x(), yMin = vertices[0].y(), zMin = vertices[0].z();
 
@@ -104,7 +104,7 @@ void Object3D::clip() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //prints out the object
-std::ostream& operator<<(std::ostream& os, const Object3D& obj) {
+std::ostream& operator<<(std::ostream& os, const Object& obj) {
     os << "printing out object vertices:\n";
     for (const Vector& vertex : obj.vertices) {
         os << "vertex: " << vertex << '\n';
@@ -117,7 +117,7 @@ std::ostream& operator<<(std::ostream& os, const Object3D& obj) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //sets up, and returns a cube
-Object3D Object3D::cube(Colour c) {
+Object Object::cube(Colour c) {
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> triangles;
@@ -153,10 +153,10 @@ Object3D Object3D::cube(Colour c) {
     triangles.emplace_back(0, 4, 1);
     triangles.emplace_back(1, 4, 5);
 
-    return Object3D(vertices, colours, triangles);
+    return Object(vertices, colours, triangles);
 }
 
-Object3D Object3D::icoSphereSmall(Colour c) {
+Object Object::icoSphereSmall(Colour c) {
     std::vector<Vector> vertices = std::vector<Vector>();
     std::vector<Colour> colours = std::vector<Colour>();
     std::vector<Vector> triangles = std::vector<Vector>();
@@ -211,10 +211,10 @@ Object3D Object3D::icoSphereSmall(Colour c) {
     for (Vector& i : vertices)
         i = i * 2.0;
 
-    return Object3D(vertices, colours, triangles);
+    return Object(vertices, colours, triangles);
 }
 
-Object3D Object3D::icoSphere(Colour c) {
+Object Object::icoSphere(Colour c) {
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> triangles;
@@ -2800,5 +2800,5 @@ Object3D Object3D::icoSphere(Colour c) {
     for (Vector& i : triangles)
         i = i + Vector(-1, -1, -1);
 
-    return Object3D(vertices, colours, triangles);
+    return Object(vertices, colours, triangles);
 }

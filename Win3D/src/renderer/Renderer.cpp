@@ -28,7 +28,7 @@ Renderer::Renderer(int width, int height)
  * 
  * @param objects   the objects to pass throught the rendering pipeline
  */
-void Renderer::drawCall(std::vector<Object3D> objects) {
+void Renderer::drawCall(std::vector<Object> objects) {
     // drawCallRaster(objects);
     drawCallRayTraced(objects);
 }
@@ -37,7 +37,7 @@ void Renderer::drawCall(std::vector<Object3D> objects) {
 // * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Renderer::drawCallRaster(std::vector<Object3D> objects) {
+void Renderer::drawCallRaster(std::vector<Object> objects) {
     bitmap.clear();
 
     processGeometry(objects);
@@ -51,7 +51,7 @@ void Renderer::drawCallRaster(std::vector<Object3D> objects) {
     window.update(bitmap.getFrameBuffer());
 }
 
-void Renderer::drawCallRayTraced(std::vector<Object3D> objects) {
+void Renderer::drawCallRayTraced(std::vector<Object> objects) {
     bitmap.clear();
 
     processGeometryRayTracing(objects);
@@ -82,8 +82,8 @@ object space -> world space -> camera space -> canonical view cube -> screen spa
 */
 
 
-void Renderer::processGeometry(std::vector<Object3D>& objects) {
-    for (Object3D& obj : objects) {
+void Renderer::processGeometry(std::vector<Object>& objects) {
+    for (Object& obj : objects) {
         //step 0 - tesselation
 
         //step 1 - transform the object into world space
@@ -105,8 +105,8 @@ void Renderer::processGeometry(std::vector<Object3D>& objects) {
     }
 }
 
-void Renderer::processGeometryRayTracing(std::vector<Object3D>& objects) {
-    for (Object3D& obj : objects) {
+void Renderer::processGeometryRayTracing(std::vector<Object>& objects) {
+    for (Object& obj : objects) {
         //step 0 - tesselation
 
         //step 1 - transform the object into world space

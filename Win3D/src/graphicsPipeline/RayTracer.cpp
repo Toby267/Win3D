@@ -17,7 +17,7 @@ RayTracer::RayTracer(Bitmap3D& bmap)
     
 }
 
-void RayTracer::trace(std::vector<Object3D>& objects) {
+void RayTracer::trace(std::vector<Object>& objects) {
     //these are defined in the camera
     const int cameraWidth = 1280;
     const int cameraHeight = 720;
@@ -40,7 +40,7 @@ void RayTracer::trace(std::vector<Object3D>& objects) {
     }
 
     for (Ray& ray : rays) {
-        for (Object3D& obj : objects) {
+        for (Object& obj : objects) {
             std::vector<Vector> vertices = obj.getVertices();
             std::vector<Colour> colours = obj.getColours();
 
