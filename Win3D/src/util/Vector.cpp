@@ -86,14 +86,7 @@ const double& Vector::operator[](int i) const {
     
     return vect[i];
 }
-Vector Vector::operator/(double other) const {
-    Vector vector(length);
-    
-    for (int i = 0; i < length; i++)
-        vector[i] = vect[i] / other;
 
-    return vector;
-}
 Vector Vector::operator*(double other) const {
     Vector vector(length);
     
@@ -102,11 +95,44 @@ Vector Vector::operator*(double other) const {
 
     return vector;
 }
+Vector Vector::operator/(double other) const {
+    Vector vector(length);
+    
+    for (int i = 0; i < length; i++)
+        vector[i] = vect[i] / other;
+
+    return vector;
+}
+Vector Vector::operator+(double other) const {
+    Vector vector(length);
+    
+    for (int i = 0; i < length; i++)
+        vector[i] = vect[i] + other;
+
+    return vector;
+}
+Vector Vector::operator-(double other) const {
+    Vector vector(length);
+    
+    for (int i = 0; i < length; i++)
+        vector[i] = vect[i] - other;
+
+    return vector;
+}
+
 Vector Vector::operator*(const Vector& other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
         vector[i] = vect[i] * other[i];
+
+    return vector;
+}
+Vector Vector::operator/(const Vector& other) const {
+    Vector vector(length);
+    
+    for (int i = 0; i < length; i++)
+        vector[i] = vect[i] / other[i];
 
     return vector;
 }
@@ -126,6 +152,7 @@ Vector Vector::operator-(const Vector& other) const {
 
     return vector;
 }
+
 Vector Vector::operator+() const {
     Vector vector(length);
 
@@ -142,6 +169,7 @@ Vector Vector::operator-() const {
 
     return vector;
 }
+
 std::ostream& operator<<(std::ostream& os, const Vector& v) {
     os << "(" << v[0];
 

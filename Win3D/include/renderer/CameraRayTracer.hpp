@@ -4,13 +4,6 @@
 #include "engine/Bitmap3D.hpp"
 #include "renderer/Object.hpp"
 
-struct Ray {
-    Vector origin;
-    Vector direction;
-    Vector screenCoord;
-    Colour col;
-} typedef ray;
-
 class CameraRayTracer {
 private:
     //position/orientation
@@ -42,10 +35,3 @@ public:
 private:
     float mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2);
 };
-
-// struct Viewport {
-//     int screenWidth = 1280;
-//     int screenHeight = 720;
-
-//     Matrix tranformationMatrix();
-// };

@@ -1,6 +1,8 @@
 #include "renderer/CameraRayTracer.hpp"
 
 #include "util/Matrix.hpp"
+#include "renderer/Ray.hpp"
+
 #include <limits>
 
 // * -------------------------------------------- [ CAMERA ] -------------------------------------------- * //
