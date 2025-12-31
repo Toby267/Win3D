@@ -12,14 +12,14 @@
  * Runs the application
  */
 Application::Application() {
-    std::vector<Object> objects = std::vector<Object>();
+    std::vector<Mesh> objects = std::vector<Mesh>();
 
-    Object cube1 = Object::cube(Colour::blue());
+    Mesh cube1 = Mesh::cube(Colour::blue());
     cube1.setScale(Matrix::scale(100, 100, 100));
     cube1.setTranslation(Matrix::translate(-300, 0, 1100));
     cube1.setRotation(Matrix::rotation(0, 0, 0));
 
-    Object sphere = Object::icoSphere(Colour::blue());
+    Mesh sphere = Mesh::icoSphere(Colour::blue());
     sphere.setScale(Matrix::scale(100, 100, 100));
     sphere.setTranslation(Matrix::translate(300, 0, 1000));
     sphere.setRotation(Matrix::rotation(0, 0, 0));

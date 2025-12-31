@@ -1,6 +1,6 @@
 #include "engine/Engine.hpp"
 
-void Engine::drawCall(std::vector<Object> objects) {
+void Engine::drawCall(std::vector<Mesh> objects) {
     bitmap.clear();
 
     // cameraRaster.rasterize(objects, bitmap);

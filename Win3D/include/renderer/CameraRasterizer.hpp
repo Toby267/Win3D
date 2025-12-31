@@ -2,7 +2,7 @@
 
 #include "util/Matrix.hpp"
 #include "engine/Bitmap3D.hpp"
-#include "renderer/Object.hpp"
+#include "renderer/objects/Mesh.hpp"
 
 class CameraRasterizer {
 private:
@@ -30,7 +30,7 @@ public:
     Matrix projectionMatrix();
     Matrix viewportMatrix();
 
-    void rasterize(std::vector<Object>& objects, Bitmap3D& bmap);
+    void rasterize(std::vector<Mesh>& objects, Bitmap3D& bmap);
 
 private:
     //private methods

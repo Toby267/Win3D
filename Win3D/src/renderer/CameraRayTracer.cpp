@@ -2,9 +2,8 @@
 
 #include "util/Matrix.hpp"
 #include "renderer/Ray.hpp"
-#include "renderer/BoundingVolumeHierarchy.hpp"
+#include "renderer/objects/BoundingVolumeHierarchy.hpp"
 
-#include <iostream>
 #include <limits>
 
 // * -------------------------------------------- [ CAMERA ] -------------------------------------------- * //
@@ -23,8 +22,8 @@ Matrix CameraRayTracer::viewportMatrix() {
 }
 
 
-void CameraRayTracer::trace(std::vector<Object>& objects, Bitmap3D& bmap) {
-    for (Object& obj : objects) {
+void CameraRayTracer::trace(std::vector<Mesh>& objects, Bitmap3D& bmap) {
+    for (Mesh& obj : objects) {
         //step 0 - tesselation
 
         //step 1 - transform the object into world space
@@ -64,9 +63,9 @@ void CameraRayTracer::trace(std::vector<Object>& objects, Bitmap3D& bmap) {
             bmap.drawPixel(ray.screenCoord.x(), ray.screenCoord.y(), 1000, ray.col);
         }
         
-        continue;
-        
-        for (Object& obj : objects) {
+        // continue;
+
+        for (Mesh& obj : objects) {
             std::vector<Vector> vertices = obj.getVertices();
             std::vector<Colour> colours = obj.getColours();
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Mesh.hpp"
 #include "util/Vector.hpp"
 #include "renderer/Ray.hpp"
 
@@ -14,5 +15,14 @@ public:
 };
 
 class bvhNode {
+private:
+    bvhNode* left = nullptr;
+    bvhNode* right = nullptr;
+
+    aabb boundingBox;
+
+public:
+    bvhNode(Mesh obj);//leaf
+    bvhNode(Vector min, Vector max);
 
 };

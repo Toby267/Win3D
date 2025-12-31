@@ -28,8 +28,8 @@ Matrix CameraRasterizer::viewportMatrix() {
  * @param objects   the objects to rasterize
  * @param bmap      the bitmap to render onto
  */
-void CameraRasterizer::rasterize(std::vector<Object>& objects, Bitmap3D& bmap) {
-    for (Object& obj : objects) {
+void CameraRasterizer::rasterize(std::vector<Mesh>& objects, Bitmap3D& bmap) {
+    for (Mesh& obj : objects) {
         //step 0 - tesselation
 
         //step 1 - transform the object into world space
@@ -50,7 +50,7 @@ void CameraRasterizer::rasterize(std::vector<Object>& objects, Bitmap3D& bmap) {
         obj.applyAffineTransformation(viewportMatrix());
     }
     
-    for (Object& obj : objects) {
+    for (Mesh& obj : objects) {
         std::vector<Vector> vertices = obj.getVertices();
         std::vector<Colour> colours = obj.getColours();
     

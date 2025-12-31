@@ -21,7 +21,7 @@ private:
     Bitmap3D bitmap = Bitmap3D(WIDTH, HEIGHT);
 
 public:
-    void drawCall(std::vector<Object> objects);
+    void drawCall(std::vector<Mesh> objects);
 
 private:
 

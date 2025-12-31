@@ -2,7 +2,7 @@
 
 #include "util/Matrix.hpp"
 #include "engine/Bitmap3D.hpp"
-#include "renderer/Object.hpp"
+#include "renderer/objects/Mesh.hpp"
 #include "renderer/Ray.hpp"
 
 class CameraRayTracer {
@@ -33,7 +33,7 @@ public:
     Matrix projectionMatrix();
     Matrix viewportMatrix();
 
-    void trace(std::vector<Object>& objects, Bitmap3D& bmap);
+    void trace(std::vector<Mesh>& objects, Bitmap3D& bmap);
 
 private:
     float mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2);
