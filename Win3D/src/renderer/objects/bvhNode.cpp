@@ -1,2 +1,2 @@
-#include "renderer/objects/BoundingVolumeHierarchy.hpp"
+#include "renderer/objects/bvhNode.hpp"
 

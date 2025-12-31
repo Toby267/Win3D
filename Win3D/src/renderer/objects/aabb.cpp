@@ -1,4 +1,4 @@
-#include "renderer/objects/BoundingVolumeHierarchy.hpp"
+#include "renderer/objects/aabb.hpp"
 #include <cassert>
 
 aabb::aabb(Vector min, Vector max): a(min), b(max) {

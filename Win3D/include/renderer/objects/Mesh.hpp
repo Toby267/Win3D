@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "Object.hpp"
 #include "util/Matrix.hpp"
 #include "util/Vector.hpp"
 #include "util/Colour.hpp"
@@ -11,7 +12,7 @@
  * triangles[i] stores the first tirangle, where triangle[i][0] is v1, triangle[i][1] is v2, and triangle[i][2] is v3.
  * we'll get to uv maps later
  */
-class Mesh {
+class Mesh : public Object{
 private:
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
@@ -44,6 +45,8 @@ public:
     void normalise();
 
     void clip();
+
+    bool hit(Ray& ray) override;
 
     //operator overloads
     friend std::ostream& operator<<(std::ostream& os, const Mesh& m);

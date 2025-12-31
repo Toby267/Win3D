@@ -2,7 +2,7 @@
 
 #include "util/Matrix.hpp"
 #include "renderer/Ray.hpp"
-#include "renderer/objects/BoundingVolumeHierarchy.hpp"
+#include "renderer/objects/aabb.hpp"
 
 #include <limits>
 
