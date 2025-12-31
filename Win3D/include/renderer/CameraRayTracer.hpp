@@ -3,6 +3,7 @@
 #include "util/Matrix.hpp"
 #include "engine/Bitmap3D.hpp"
 #include "renderer/Object.hpp"
+#include "renderer/Ray.hpp"
 
 class CameraRayTracer {
 private:
@@ -24,6 +25,8 @@ private:
     //viewport
     int screenWidth = 1280;
     int screenHeight = 720;
+
+    std::vector<Ray> rays = std::vector<Ray>();
 
 public:
     Matrix tranformationMatrix();

@@ -2,7 +2,9 @@
 
 #include "util/Matrix.hpp"
 #include "renderer/Ray.hpp"
+#include "renderer/BoundingVolumeHierarchy.hpp"
 
+#include <iostream>
 #include <limits>
 
 // * -------------------------------------------- [ CAMERA ] -------------------------------------------- * //
@@ -41,7 +43,7 @@ void CameraRayTracer::trace(std::vector<Object>& objects, Bitmap3D& bmap) {
 
     int x = cameraWidth/2, y = cameraHeight/2;
 
-    std::vector<Ray> rays = std::vector<Ray>(cameraHeight*cameraHeight);
+    rays.clear();
 
     //loop through each pixel of the window
     for (int i = -cameraWidth/2; i < cameraWidth/2; i++) {
@@ -55,7 +57,15 @@ void CameraRayTracer::trace(std::vector<Object>& objects, Bitmap3D& bmap) {
         }
     }
 
+    static aabb box = aabb(Vector(-50, -50, 1100), Vector(50, 50, 1200));
+
     for (Ray& ray : rays) {
+        if (box.hit(ray)) {
+            bmap.drawPixel(ray.screenCoord.x(), ray.screenCoord.y(), 1000, ray.col);
+        }
+        
+        continue;
+        
         for (Object& obj : objects) {
             std::vector<Vector> vertices = obj.getVertices();
             std::vector<Colour> colours = obj.getColours();

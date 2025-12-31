@@ -1,7 +1,5 @@
 #include "Application.hpp"
 
-#include <iostream>
-#include "renderer/BoundingVolumeHierarchy.hpp"
 #include <vector>
 
 #include "engine/Engine.hpp"
@@ -14,16 +12,6 @@
  * Runs the application
  */
 Application::Application() {
-    aabb box = aabb(Vector(1, 2, 3), Vector(4, 5, 6));
-    Ray r1 = Ray(Vector(0, 0, 0), Vector(2.5, 3.5, 4.5));
-    Ray r2 = Ray(Vector(-1, -1, -1), Vector(0, 0, 0));
-    std::cout << "hit? " << (box.hit(r1) ? "true" : "false") << '\n';
-    std::cout << "hit? " << (box.hit(r2) ? "true" : "false");
-
-    std::cin.get();
-    return;
-    
-    
     std::vector<Object> objects = std::vector<Object>();
 
     Object cube1 = Object::cube(Colour::blue());

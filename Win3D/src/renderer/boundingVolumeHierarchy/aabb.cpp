@@ -17,12 +17,12 @@ bool aabb::hit(const Ray& ray) {
 
     //if the intervals of x and y don't match, return false
     t0.x() = t0.x() > t0.y() ? t0.x() : t0.y();
-    t1.x() = t1.x() > t1.y() ? t1.x() : t1.y();
+    t1.x() = t1.x() < t1.y() ? t1.x() : t1.y();
     if (t1.x() <= t0.x()) return false;
 
     //if the intervals of x, y, and z don't match, return false
     t0.x() = t0.x() > t0.z() ? t0.x() : t0.z();
-    t1.x() = t1.x() > t1.z() ? t1.x() : t1.z();
+    t1.x() = t1.x() < t1.z() ? t1.x() : t1.z();
     if (t1.x() <= t0.x()) return false;
 
     //it is a hit
