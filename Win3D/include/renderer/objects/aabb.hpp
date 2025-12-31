@@ -5,10 +5,11 @@
 
 class aabb {
 private:
-    Vector a;
-    Vector b;
+    Vector a = Vector(0, 0, 0);
+    Vector b = Vector(0, 0, 0);
 
 public:
+    aabb() = default;
     aabb(Vector min, Vector max);
     bool hit(const Ray& ray);
 };
