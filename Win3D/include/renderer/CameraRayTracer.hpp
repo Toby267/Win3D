@@ -1,5 +1,6 @@
 #pragma once
 
+#include "renderer/objects/bvhNode.hpp"
 #include "util/Matrix.hpp"
 #include "engine/Bitmap3D.hpp"
 #include "renderer/objects/Mesh.hpp"
@@ -35,4 +36,5 @@ public:
     Matrix viewportMatrix();
 
     void trace(std::vector<Mesh>& objects, Bitmap3D& bmap);
+    void trace(bvhNode& scene, Bitmap3D& bmap);
 };

@@ -4,8 +4,6 @@
 #include "renderer/Ray.hpp"
 #include "renderer/objects/aabb.hpp"
 
-#include <limits>
-
 // * -------------------------------------------- [ CAMERA ] -------------------------------------------- * //
 
 Matrix CameraRayTracer::tranformationMatrix() {
@@ -59,7 +57,7 @@ void CameraRayTracer::trace(std::vector<Mesh>& objects, Bitmap3D& bmap) {
     static aabb box = aabb(Vector(-50, -50, 1100), Vector(50, 50, 1200));
 
     for (Ray& ray : rays) {
-        if (box.hit(ray)) {
+        if (box.intersect(ray)) {
             bmap.drawPixel(ray.screenCoord.x(), ray.screenCoord.y(), 1000, ray.col);
         }
 
@@ -69,4 +67,8 @@ void CameraRayTracer::trace(std::vector<Mesh>& objects, Bitmap3D& bmap) {
             }
         }
     }
+}
+
+void CameraRayTracer::trace(bvhNode& scene, Bitmap3D& bmap) {
+
 }

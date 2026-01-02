@@ -4,6 +4,7 @@
 #include "engine/Window.hpp"
 #include "renderer/CameraRayTracer.hpp"
 #include "renderer/CameraRasterizer.hpp"
+#include <memory>
 
 class Engine {
 private:
@@ -21,6 +22,7 @@ private:
     Bitmap3D bitmap = Bitmap3D(WIDTH, HEIGHT);
 
 public:
+    // void drawCall(std::vector<std::shared_ptr<Object>>& objects);
     void drawCall(std::vector<Mesh> objects);
 
 private:

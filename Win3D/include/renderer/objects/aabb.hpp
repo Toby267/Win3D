@@ -11,5 +11,5 @@ private:
 public:
     aabb() = default;
     aabb(Vector min, Vector max);
-    bool hit(const Ray& ray);
+    bool intersect(const Ray& ray) const;
 };

@@ -18,6 +18,7 @@
 Mesh::Mesh(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles)
     : vertices(vertices), colours(colours), triangles(triangles)
 {
+    //need to create bounding box
     
 }
 
@@ -101,6 +102,9 @@ void Mesh::clip() {
 }
 
 bool Mesh::hit(Ray& ray) const {
+    if (!boundingBox.intersect(ray))
+        return false;
+    
     for (Vector t : triangles) {
         float d = mollerTrumboreIntersection(ray.origin, ray.direction, vertices[t[0]], vertices[t[1]], vertices[t[2]]);
         
