@@ -6,5 +6,5 @@
 class Object {
 public:
     virtual bool hit(Ray& ray) const = 0;
-    aabb boundingBox{};
+    virtual aabb getBBox() const = 0;
 };

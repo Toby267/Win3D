@@ -1,4 +1,5 @@
 #include "renderer/objects/aabb.hpp"
+#include "util/Vector.hpp"
 #include <cassert>
 
 aabb::aabb(Vector min, Vector max): a(min), b(max) {

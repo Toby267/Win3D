@@ -54,12 +54,12 @@ void CameraRayTracer::trace(std::vector<Mesh>& objects, Bitmap3D& bmap) {
         }
     }
 
-    static aabb box = aabb(Vector(-50, -50, 1100), Vector(50, 50, 1200));
+    // static aabb box = aabb(Vector(-50, -50, 1100), Vector(50, 50, 1200));
 
     for (Ray& ray : rays) {
-        if (box.intersect(ray)) {
-            bmap.drawPixel(ray.screenCoord.x(), ray.screenCoord.y(), 1000, ray.col);
-        }
+        // if (box.intersect(ray)) {
+            // bmap.drawPixel(ray.screenCoord.x(), ray.screenCoord.y(), 1000, ray.col);
+        // }
 
         for (Mesh& obj : objects) {
             if (obj.hit(ray)) {

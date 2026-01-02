@@ -1,4 +1,5 @@
 #include "renderer/objects/Mesh.hpp"
+#include "util/Vector.hpp"
 
 #include <iostream>
 #include <limits>
@@ -15,11 +16,11 @@
  * @param colours   the colour of each vertex
  * @param triangles the indeces of the vertices array, determining the traingles of the object
  */
-Mesh::Mesh(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles)
-    : vertices(vertices), colours(colours), triangles(triangles)
+Mesh::Mesh(std::vector<Vector> v, std::vector<Colour> c, std::vector<Vector> t)
+    : vertices(v), colours(c), triangles(t)
 {
     //need to create bounding box
-    
+    //naive solution (albeit fine for static scenes):
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -37,6 +38,31 @@ std::vector<Colour>& Mesh::getColours() {
 //returns the triangles of the object
 std::vector<Vector>& Mesh::getTriangles() {
     return triangles;
+}
+
+aabb Mesh::getBBox() const {
+    //this function is broken...
+    constexpr float MIN = std::numeric_limits<float>::lowest();
+    constexpr float MAX = std::numeric_limits<float>::max();
+    
+    Vector min(MAX, MAX, MAX);
+    Vector max(MIN, MIN, MIN);
+
+    for (Vector vertex : vertices) {
+        vertex = affineTransform * vertex;
+        
+        if (vertex.x() > max.x()) max.x() = vertex.x();
+        if (vertex.y() > max.y()) max.y() = vertex.y();
+        if (vertex.z() > max.z()) max.z() = vertex.z();
+
+        if (vertex.x() < min.x()) min.x() = vertex.x();
+        if (vertex.y() < min.y()) min.y() = vertex.y();
+        if (vertex.z() < min.z()) min.z() = vertex.z();
+    }
+
+    // std::cout << "min, max: " << min << ", " << max << '\n';
+    
+    return aabb(min, max);
 }
 
 //sets the scale of the object
@@ -81,7 +107,7 @@ void Mesh::applyTransformation(const Matrix& m) {
 }
 
 
-//clips the object if it is outside the canonical view volume
+//clips the object if it is outside the canonical view volume. assumes it has already been transformed to the canonical view volume
 //TODO: this should be done in the geometry processing class, and you should fix the fact that it renders in front and behind, then clips behind.
 void Mesh::clip() {
     double xMax = vertices[0].x(), yMax = vertices[0].y(), zMax = vertices[0].z();
@@ -102,8 +128,12 @@ void Mesh::clip() {
 }
 
 bool Mesh::hit(Ray& ray) const {
-    if (!boundingBox.intersect(ray))
-        return false;
+    // if (!getBBox().intersect(ray)) {
+        // return false;
+    // }
+    // return true;
+
+    // std::cout << "passed the bbox\n";
     
     for (Vector t : triangles) {
         float d = mollerTrumboreIntersection(ray.origin, ray.direction, vertices[t[0]], vertices[t[1]], vertices[t[2]]);

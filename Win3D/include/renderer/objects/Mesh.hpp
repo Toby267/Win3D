@@ -34,6 +34,8 @@ public:
     std::vector<Colour>& getColours();
     std::vector<Vector>& getTriangles();
 
+    aabb getBBox() const override;
+
     void setScale(Matrix s);
     void setTranslation(Matrix t);
     void setRotation(Matrix r);
