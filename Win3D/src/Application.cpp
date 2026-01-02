@@ -25,7 +25,7 @@ Application::Application() {
     sphere.setRotation(Matrix::rotation(0, 0, 0));
     
     objects.emplace_back(cube1);
-    // objects.emplace_back(sphere);
+    objects.emplace_back(sphere);
 
     // Renderer* r = new Renderer(1280, 720);
     Engine* e = new Engine();

@@ -49,7 +49,7 @@ aabb Mesh::getBBox() const {
     Vector max(MIN, MIN, MIN);
 
     for (Vector vertex : vertices) {
-        vertex = affineTransform * vertex;
+        // vertex = affineTransform * vertex;
         
         if (vertex.x() > max.x()) max.x() = vertex.x();
         if (vertex.y() > max.y()) max.y() = vertex.y();
@@ -61,6 +61,7 @@ aabb Mesh::getBBox() const {
     }
 
     // std::cout << "min, max: " << min << ", " << max << '\n';
+    // std::cin.get();
     
     return aabb(min, max);
 }
@@ -131,9 +132,6 @@ bool Mesh::hit(Ray& ray) const {
     // if (!getBBox().intersect(ray)) {
         // return false;
     // }
-    // return true;
-
-    // std::cout << "passed the bbox\n";
     
     for (Vector t : triangles) {
         float d = mollerTrumboreIntersection(ray.origin, ray.direction, vertices[t[0]], vertices[t[1]], vertices[t[2]]);
