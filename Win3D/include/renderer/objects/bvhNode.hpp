@@ -16,5 +16,5 @@ public:
     bvhNode(std::shared_ptr<Object> obj); //for creating a leaf node - typically pass in a mesh
     bvhNode(std::vector<std::shared_ptr<Mesh>> objects); //for creating a bvhNode
 
-    bool hit(Ray& ray) override;
+    bool hit(Ray& ray) const override;
 };

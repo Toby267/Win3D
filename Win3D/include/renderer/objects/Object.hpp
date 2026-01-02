@@ -4,5 +4,5 @@
 
 class Object {
 public:
-    virtual bool hit(Ray& ray) = 0;
+    virtual bool hit(Ray& ray) const = 0;
 };

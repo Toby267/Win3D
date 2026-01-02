@@ -9,6 +9,6 @@ bvhNode::bvhNode(std::vector<std::shared_ptr<Mesh>> objects) {
 
 }
 
-bool bvhNode::hit(Ray& ray) {
+bool bvhNode::hit(Ray& ray) const {
 
 }

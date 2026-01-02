@@ -46,7 +46,9 @@ public:
 
     void clip();
 
-    bool hit(Ray& ray) override;
+    bool hit(Ray& ray) const override;
+
+    static float mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2);
 
     //operator overloads
     friend std::ostream& operator<<(std::ostream& os, const Mesh& m);

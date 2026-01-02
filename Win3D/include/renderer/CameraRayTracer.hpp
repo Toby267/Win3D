@@ -16,6 +16,7 @@ private:
     double apperatureWidth = 1600;
     double apperatureHeight = 900;
     
+    //to make is so that this is used, you need to offset the camera origin when generating the rays, or just change the angle of them
     double fieldOfView = 60.0/360.0 * 2.0*std::numbers::pi;
 
     //depth of field = farFocalDistance - nearFocalDistance
@@ -34,7 +35,4 @@ public:
     Matrix viewportMatrix();
 
     void trace(std::vector<Mesh>& objects, Bitmap3D& bmap);
-
-private:
-    float mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2);
 };

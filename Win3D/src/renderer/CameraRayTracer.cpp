@@ -62,47 +62,11 @@ void CameraRayTracer::trace(std::vector<Mesh>& objects, Bitmap3D& bmap) {
         if (box.hit(ray)) {
             bmap.drawPixel(ray.screenCoord.x(), ray.screenCoord.y(), 1000, ray.col);
         }
-        
-        // continue;
 
         for (Mesh& obj : objects) {
-            std::vector<Vector> vertices = obj.getVertices();
-            std::vector<Colour> colours = obj.getColours();
-
-            for (Vector t : obj.getTriangles()) {
-                float d = mollerTrumboreIntersection(ray.origin, ray.direction, vertices[t[0]], vertices[t[1]], vertices[t[2]]);
-                if (d != -1) { bmap.drawPixel(ray.screenCoord.x(), ray.screenCoord.y(), 1000, ray.col);}
+            if (obj.hit(ray)) {
+                bmap.drawPixel(ray.screenCoord.x(), ray.screenCoord.y(), 1000, ray.col);
             }
         }
     }
-}
-
-float CameraRayTracer::mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2) {
-    constexpr float epsilon = std::numeric_limits<float>::epsilon();
-
-    Vector edge1 = vert1 - vert0;
-    Vector edge2 = vert2 - vert0;
-
-    Vector pvec = Vector::crossProduct(dir, edge2);
-    float det = Vector::dotProduct(edge1, pvec);
-
-    if (det > -epsilon && det < epsilon)
-        return -1;
-
-    float invDet = 1.0 / det;
-
-    Vector tvec = orig - vert0;
-    float u = Vector::dotProduct(tvec, pvec) * invDet;
-
-    if (u < 0.0 || u > 1.0)
-        return -1;
-
-    Vector qvec = Vector::crossProduct(tvec, edge1);
-    float v = Vector::dotProduct(dir, qvec) * invDet;
-
-    if ( v < 0.0 || u + v > 1.0)
-        return -1;
-
-    float t = Vector::dotProduct(edge2, qvec) * invDet;
-    return t;
 }

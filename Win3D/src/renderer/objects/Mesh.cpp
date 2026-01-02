@@ -1,6 +1,7 @@
 #include "renderer/objects/Mesh.hpp"
 
 #include <iostream>
+#include <limits>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,8 +100,44 @@ void Mesh::clip() {
     if (xMax < -1 || yMax < -1 || zMax < -1) triangles.clear();
 }
 
-bool Mesh::hit(Ray& ray) {
+bool Mesh::hit(Ray& ray) const {
+    for (Vector t : triangles) {
+        float d = mollerTrumboreIntersection(ray.origin, ray.direction, vertices[t[0]], vertices[t[1]], vertices[t[2]]);
+        
+        if (d != -1) return true;
+    }
 
+    return false;
+}
+
+float Mesh::mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2) {
+    constexpr float epsilon = std::numeric_limits<float>::epsilon();
+
+    Vector edge1 = vert1 - vert0;
+    Vector edge2 = vert2 - vert0;
+
+    Vector pvec = Vector::crossProduct(dir, edge2);
+    float det = Vector::dotProduct(edge1, pvec);
+
+    if (det > -epsilon && det < epsilon)
+        return -1;
+
+    float invDet = 1.0 / det;
+
+    Vector tvec = orig - vert0;
+    float u = Vector::dotProduct(tvec, pvec) * invDet;
+
+    if (u < 0.0 || u > 1.0)
+        return -1;
+
+    Vector qvec = Vector::crossProduct(tvec, edge1);
+    float v = Vector::dotProduct(dir, qvec) * invDet;
+
+    if ( v < 0.0 || u + v > 1.0)
+        return -1;
+
+    float t = Vector::dotProduct(edge2, qvec) * invDet;
+    return t;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
