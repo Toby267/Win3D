@@ -31,7 +31,8 @@ bool aabb::intersect(const Ray& ray) const{
 }
 
 float aabb::surfaceArea() {
-    return 2 * (b.x() - a.x() + b.y() - a.y() + b.z() - a.z());
+    Vector d = a-b;
+    return 2 * (d.x() * d.y() + d.x() * d.z() + d.y() * d.z());
 }
 
 Vector aabb::centroid() {

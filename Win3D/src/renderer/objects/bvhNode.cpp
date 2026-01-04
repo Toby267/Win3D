@@ -15,7 +15,7 @@ bvhNode::bvhNode(std::vector<std::shared_ptr<Object>>& objects) {
 
 
     //testing sah:
-    std::cout << objects[0]->getBBox().surfaceArea() << "\n";
+    std::cout << objects[0]->getBBox().centroid() << "\n";
 
     return;
 
