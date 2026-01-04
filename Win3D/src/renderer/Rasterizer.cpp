@@ -1,5 +1,9 @@
 #include "renderer/Rasterizer.hpp"
 
+Rasterizer::Rasterizer(Scene& sceneRef) : scene(sceneRef) {
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -11,26 +15,26 @@
  * @param objects   the objects to rasterize
  * @param bmap      the bitmap to render onto
  */
-void CameraRasterizer::rasterize(std::vector<Mesh>& objects, Bitmap3D& bmap) {
-    for (Mesh& obj : objects) {
+void Rasterizer::rasterize(Bitmap3D& bmap) {
+    for (Mesh& obj : scene.getObjects()) {
         //step 0 - tesselation
 
         //step 1 - transform the object into world space
         obj.transform();
 
         //step 2 - transform the objects to camera space
-        obj.applyAffineTransformation(camera.tranformationMatrix());
+        obj.applyAffineTransformation(scene.getCam().tranformationMatrix());
 
         //step 3 - vertex shading
 
         //step 3 - transform the objects to clip space
-        obj.applyTransformation(camera.projectionMatrix());
+        obj.applyTransformation(scene.getCam().projectionMatrix());
 
         //step 5 - clip the objects
         obj.clip();
 
         //step 6 - transform the objects to screen space
-        obj.applyAffineTransformation(camera.viewportMatrix());
+        obj.applyAffineTransformation(scene.getCam().viewportMatrix());
 
         //step 7 - rasterize
         std::vector<Vector> vertices = obj.getVertices();
@@ -54,7 +58,7 @@ void CameraRasterizer::rasterize(std::vector<Mesh>& objects, Bitmap3D& bmap) {
  * @param c1, c2, c3    the colours of the vertices
  * @param bmap          the bmap to render onto
  */
-void CameraRasterizer::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
+void Rasterizer::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
     if (v1.x() > v2.x()) {
         Vector vTemp = v1;
         v1 = v2;
@@ -132,7 +136,7 @@ void CameraRasterizer::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector
  * @param end       the coodinate of the end of the line
  * @param c1, c2    the colours of the start and end of the line
  */
-void CameraRasterizer::drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour c2) {
+void Rasterizer::drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour c2) {
     int x1 = start.x(), y1 = start.y(), z1 = start.z();
     int x2 = end.x(), y2 = end.y(), z2 = end.z();
 

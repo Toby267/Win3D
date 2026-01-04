@@ -1,4 +1,6 @@
 #include "engine/Engine.hpp"
+#include "renderer/Rasterizer.hpp"
+#include "renderer/RayTracer.hpp"
 #include <iostream>
 #include <vector>
 
@@ -7,8 +9,8 @@ void Engine::drawCall() {
 
     std::vector<Mesh> objects = scene.getObjects();
 
-    // cameraRaster.rasterize(objects, bitmap);
-    cameraRayTracer.trace(objects, bitmap);
+    // cameraRaster.rasterize(bitmap);
+    cameraRayTracer.trace(bitmap);
 
     window.update(bitmap.getFrameBuffer());
 

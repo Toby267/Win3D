@@ -18,3 +18,7 @@ Scene::Scene() {
 std::vector<Mesh> Scene::getObjects() {
     return objects;
 }
+
+const Camera& Scene::getCam() {
+    return camera;
+}

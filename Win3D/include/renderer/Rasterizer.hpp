@@ -1,15 +1,17 @@
 #pragma once
 
-#include "renderer/Camera.hpp"
 #include "engine/Bitmap3D.hpp"
 #include "scene/Mesh.hpp"
+#include "scene/Scene.hpp"
 
-class CameraRasterizer {
+class Rasterizer {
 private:
-    Camera camera{};
+    Scene& scene;
 
 public:
-    void rasterize(std::vector<Mesh>& objects, Bitmap3D& bmap);
+    Rasterizer(Scene& sceneRef);
+
+    void rasterize(Bitmap3D& bmap);
 
 private:
     //private methods

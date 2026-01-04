@@ -1,16 +1,18 @@
 #pragma once
 
-#include "renderer/Camera.hpp"
 #include "engine/Bitmap3D.hpp"
 #include "scene/Mesh.hpp"
 #include "renderer/Ray.hpp"
+#include "scene/Scene.hpp"
 
-class CameraRayTracer {
+class RayTracer {
 private:
-    Camera camera{};
+    Scene& scene;
 
     std::vector<Ray> rays = std::vector<Ray>();
 
 public:
-    void trace(std::vector<Mesh>& objects, Bitmap3D& bmap);
+    RayTracer(Scene& sceneRef);
+
+    void trace(Bitmap3D& bmap);
 };

@@ -23,7 +23,7 @@ public:
     int screenWidth = 1280;
     int screenHeight = 720;
 
-    Matrix tranformationMatrix();
-    Matrix projectionMatrix();
-    Matrix viewportMatrix();
+    Matrix tranformationMatrix() const;
+    Matrix projectionMatrix() const;
+    Matrix viewportMatrix() const;
 } typedef Camera;

@@ -17,8 +17,8 @@ private:
 
     Scene scene{};
 
-    CameraRasterizer cameraRaster{};
-    CameraRayTracer cameraRayTracer{};
+    Rasterizer cameraRaster{scene};
+    RayTracer cameraRayTracer{scene};
 
     Window window{WIDTH, HEIGHT};
 
