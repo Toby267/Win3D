@@ -2,8 +2,8 @@
 
 #include "engine/Bitmap3D.hpp"
 #include "engine/Window.hpp"
-#include "renderer/CameraRayTracer.hpp"
-#include "renderer/CameraRasterizer.hpp"
+#include "renderer/RayTracer.hpp"
+#include "renderer/Rasterizer.hpp"
 #include "scene/Scene.hpp"
 
 class Engine {

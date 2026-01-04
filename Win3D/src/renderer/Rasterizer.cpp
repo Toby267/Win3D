@@ -1,21 +1,4 @@
-#include "renderer/CameraRasterizer.hpp"
-
-#include "util/Matrix.hpp"
-
-// * -------------------------------------------- [ CAMERA ] -------------------------------------------- * //
-
-Matrix CameraRasterizer::tranformationMatrix() {
-    Matrix changeOfBasis = Matrix::changeOfBasis(position, direction, up);
-    Matrix translation = Matrix::translate(-position.x(), -position.y(), -position.z());
-
-    return changeOfBasis * translation;
-}
-Matrix CameraRasterizer::projectionMatrix() {
-    return Matrix::perspective(nearFocalDistance, farFocalDistance, apperatureHeight/2, apperatureWidth/2, fieldOfView);
-}
-Matrix CameraRasterizer::viewportMatrix() {
-    return Matrix::translate(screenWidth/2.0, screenHeight/2.0, 10000) * Matrix::scale(screenWidth/2.0, -screenHeight/2.0, 10000);
-}
+#include "renderer/Rasterizer.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
@@ -36,21 +19,20 @@ void CameraRasterizer::rasterize(std::vector<Mesh>& objects, Bitmap3D& bmap) {
         obj.transform();
 
         //step 2 - transform the objects to camera space
-        obj.applyAffineTransformation(tranformationMatrix());
+        obj.applyAffineTransformation(camera.tranformationMatrix());
 
         //step 3 - vertex shading
 
         //step 3 - transform the objects to clip space
-        obj.applyTransformation(projectionMatrix());
+        obj.applyTransformation(camera.projectionMatrix());
 
         //step 5 - clip the objects
         obj.clip();
 
         //step 6 - transform the objects to screen space
-        obj.applyAffineTransformation(viewportMatrix());
-    }
-    
-    for (Mesh& obj : objects) {
+        obj.applyAffineTransformation(camera.viewportMatrix());
+
+        //step 7 - rasterize
         std::vector<Vector> vertices = obj.getVertices();
         std::vector<Colour> colours = obj.getColours();
     
