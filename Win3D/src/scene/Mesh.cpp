@@ -1,4 +1,4 @@
-#include "renderer/objects/Mesh.hpp"
+#include "scene/Mesh.hpp"
 #include "util/Vector.hpp"
 
 #include <iostream>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "renderer/Ray.hpp"
-#include "renderer/objects/aabb.hpp"
+#include "scene/aabb.hpp"
 
 class Object {
 public:

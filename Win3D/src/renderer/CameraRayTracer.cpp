@@ -2,7 +2,7 @@
 
 #include "util/Matrix.hpp"
 #include "renderer/Ray.hpp"
-#include "renderer/objects/aabb.hpp"
+#include "scene/aabb.hpp"
 
 // * -------------------------------------------- [ CAMERA ] -------------------------------------------- * //
 
@@ -71,6 +71,6 @@ void CameraRayTracer::trace(std::vector<Mesh>& objects, Bitmap3D& bmap) {
     }
 }
 
-void CameraRayTracer::trace(bvhNode& scene, Bitmap3D& bmap) {
-
-}
+// void CameraRayTracer::trace(bvhNode& scene, Bitmap3D& bmap) {
+// 
+// }

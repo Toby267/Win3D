@@ -2,7 +2,7 @@
 
 #include "util/Matrix.hpp"
 #include "engine/Bitmap3D.hpp"
-#include "renderer/objects/Mesh.hpp"
+#include "scene/Mesh.hpp"
 
 class CameraRasterizer {
 private:

@@ -1,15 +1,14 @@
 #include "engine/Engine.hpp"
-#include "renderer/objects/bvhNode.hpp"
 #include <iostream>
+#include <vector>
 
-void Engine::drawCall(std::vector<Mesh> objects) {
+void Engine::drawCall() {
     bitmap.clear();
 
-    // bvhNode tree = bvhNode(objects);
+    std::vector<Mesh> objects = scene.getObjects();
 
     // cameraRaster.rasterize(objects, bitmap);
     cameraRayTracer.trace(objects, bitmap);
-    // cameraRayTracer.trace(tree, bitmap);
 
     window.update(bitmap.getFrameBuffer());
 

@@ -4,6 +4,7 @@
 #include "engine/Window.hpp"
 #include "renderer/CameraRayTracer.hpp"
 #include "renderer/CameraRasterizer.hpp"
+#include "scene/Scene.hpp"
 
 class Engine {
 private:
@@ -14,16 +15,15 @@ private:
     const int WIDTH = 1280;
     const int HEIGHT = 720;
 
-    CameraRasterizer cameraRaster = CameraRasterizer();
-    CameraRayTracer cameraRayTracer = CameraRayTracer();
-    Window window = Window(WIDTH, HEIGHT);
+    Scene scene{};
 
-    Bitmap3D bitmap = Bitmap3D(WIDTH, HEIGHT);
+    CameraRasterizer cameraRaster{};
+    CameraRayTracer cameraRayTracer{};
+
+    Window window{WIDTH, HEIGHT};
+
+    Bitmap3D bitmap{WIDTH, HEIGHT};
 
 public:
-    // void drawCall(std::vector<std::shared_ptr<Object>>& objects);
-    void drawCall(std::vector<Mesh> objects);
-
-private:
-
+    void drawCall();
 };

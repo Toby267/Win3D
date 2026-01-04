@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Mesh.hpp"
-#include "renderer/objects/Object.hpp"
-#include "renderer/objects/aabb.hpp"
+#include "scene/Object.hpp"
+#include "scene/aabb.hpp"
 #include <memory>
 #include <vector>
 
@@ -16,6 +16,7 @@ private:
     aabb boundingBox;
 
 public:
+    bvhNode() = default;
     bvhNode(std::shared_ptr<Object> obj); //for creating a leaf node - typically pass in a mesh
     bvhNode(std::vector<std::shared_ptr<Object>>& objects); //for creating a bvhNode
     bvhNode(std::vector<std::shared_ptr<Object>>& objects, int start, int end);

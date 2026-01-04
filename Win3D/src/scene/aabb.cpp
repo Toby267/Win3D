@@ -1,4 +1,4 @@
-#include "renderer/objects/aabb.hpp"
+#include "scene/aabb.hpp"
 #include "util/Vector.hpp"
 #include <cassert>
 

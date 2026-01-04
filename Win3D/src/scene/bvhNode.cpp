@@ -1,5 +1,5 @@
-#include "renderer/objects/bvhNode.hpp"
-#include "renderer/objects/Object.hpp"
+#include "scene/bvhNode.hpp"
+#include "scene/Object.hpp"
 
 #include <algorithm>
 #include <iostream>
