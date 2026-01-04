@@ -29,3 +29,11 @@ bool aabb::intersect(const Ray& ray) const{
     //it is a hit
     return true;
 }
+
+float aabb::surfaceArea() {
+    return 2 * (b.x() - a.x() + b.y() - a.y() + b.z() - a.z());
+}
+
+Vector aabb::centroid() {
+    return (a + b) / 2;
+}

@@ -12,4 +12,7 @@ public:
     aabb() = default;
     aabb(Vector min, Vector max);
     bool intersect(const Ray& ray) const;
+
+    float surfaceArea();
+    Vector centroid();
 };

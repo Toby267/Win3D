@@ -4,7 +4,6 @@
 #include "engine/Window.hpp"
 #include "renderer/CameraRayTracer.hpp"
 #include "renderer/CameraRasterizer.hpp"
-#include <memory>
 
 class Engine {
 private:
