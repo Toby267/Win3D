@@ -17,4 +17,7 @@ public:
     bvhNode(std::vector<std::shared_ptr<Object>>& objects); //for creating a bvhNode
 
     bool hit(Ray& ray) const override;
+
+private:
+    float sweepSurfaceAreaHeuristic(std::shared_ptr<Object> axisOrderedObjects, int i);
 };
