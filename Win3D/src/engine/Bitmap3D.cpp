@@ -27,7 +27,7 @@ Bitmap3D::Bitmap3D(int width, int height)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //returns a reference to the framebuffer
-std::vector<unsigned char>& Bitmap3D::getFrameBuffer() {
+const std::vector<unsigned char>& Bitmap3D::getFrameBuffer() {
     return frameBuffer;
 }
 //returns the width of the bitmap

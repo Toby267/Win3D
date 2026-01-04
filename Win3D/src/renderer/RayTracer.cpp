@@ -12,7 +12,7 @@ void RayTracer::trace(Bitmap3D& bmap) {
     rays.clear();
 
     Camera& camera = scene.getCam();
-    std::vector<Mesh> objects = scene.getObjects();
+    std::vector<Mesh*>& objects = scene.getObjects();
     
     int x = camera.screenWidth/2, y = camera.screenHeight/2;
     
@@ -28,7 +28,9 @@ void RayTracer::trace(Bitmap3D& bmap) {
         }
     }
     
-    for (Mesh& obj : objects) {
+    for (Mesh* object : objects) {
+        Mesh obj = *object;
+        
         //step 1 - transform the object into world space
         obj.transform();
 

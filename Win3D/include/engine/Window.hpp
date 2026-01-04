@@ -22,7 +22,7 @@ public:
     Window(int width, int height);
 
     //public methods
-    void update(std::vector<unsigned char>& renderBuffer);
+    void update(const std::vector<unsigned char>& renderBuffer);
     bool isAlive();
     void close();
 

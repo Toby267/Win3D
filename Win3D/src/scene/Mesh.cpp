@@ -190,7 +190,7 @@ std::ostream& operator<<(std::ostream& os, const Mesh& obj) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //sets up, and returns a cube
-Mesh Mesh::cube(Colour c) {
+Mesh* Mesh::cube(Colour c) {
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> triangles;
@@ -226,10 +226,10 @@ Mesh Mesh::cube(Colour c) {
     triangles.emplace_back(0, 4, 1);
     triangles.emplace_back(1, 4, 5);
 
-    return Mesh(vertices, colours, triangles);
+    return new Mesh(vertices, colours, triangles);
 }
 
-Mesh Mesh::icoSphereSmall(Colour c) {
+Mesh* Mesh::icoSphereSmall(Colour c) {
     std::vector<Vector> vertices = std::vector<Vector>();
     std::vector<Colour> colours = std::vector<Colour>();
     std::vector<Vector> triangles = std::vector<Vector>();
@@ -284,10 +284,10 @@ Mesh Mesh::icoSphereSmall(Colour c) {
     for (Vector& i : vertices)
         i = i * 2.0;
 
-    return Mesh(vertices, colours, triangles);
+    return new Mesh(vertices, colours, triangles);
 }
 
-Mesh Mesh::icoSphere(Colour c) {
+Mesh* Mesh::icoSphere(Colour c) {
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> triangles;
@@ -2873,5 +2873,5 @@ Mesh Mesh::icoSphere(Colour c) {
     for (Vector& i : triangles)
         i = i + Vector(-1, -1, -1);
 
-    return Mesh(vertices, colours, triangles);
+    return new Mesh(vertices, colours, triangles);
 }

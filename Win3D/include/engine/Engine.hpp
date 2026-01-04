@@ -26,4 +26,6 @@ private:
 
 public:
     void drawCall();
+    
+    Scene& getScene();
 };

@@ -7,12 +7,12 @@
 void Engine::drawCall() {
     bitmap.clear();
 
-    std::vector<Mesh> objects = scene.getObjects();
-
     // cameraRaster.rasterize(bitmap);
     cameraRayTracer.trace(bitmap);
 
     window.update(bitmap.getFrameBuffer());
+}
 
-    std::cin.get();
+Scene& Engine::getScene() {
+    return scene;
 }
