@@ -20,7 +20,6 @@ void CameraRayTracer::trace(std::vector<Mesh>& objects, Bitmap3D& bmap) {
         }
     }
     
-    
     for (Mesh& obj : objects) {
         //step 1 - transform the object into world space
         obj.transform();

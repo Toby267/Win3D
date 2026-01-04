@@ -1,7 +1,6 @@
 #pragma once
 
 #include "renderer/Camera.hpp"
-#include "util/Matrix.hpp"
 #include "engine/Bitmap3D.hpp"
 #include "scene/Mesh.hpp"
 

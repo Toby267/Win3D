@@ -2,7 +2,8 @@
 
 #include <vector>
 
-#include "Object.hpp"
+
+#include "scene/aabb.hpp"
 #include "util/Matrix.hpp"
 #include "util/Vector.hpp"
 #include "util/Colour.hpp"
@@ -12,7 +13,7 @@
  * triangles[i] stores the first tirangle, where triangle[i][0] is v1, triangle[i][1] is v2, and triangle[i][2] is v3.
  * we'll get to uv maps later
  */
-class Mesh : public Object{
+class Mesh {
 private:
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
@@ -34,7 +35,7 @@ public:
     std::vector<Colour>& getColours();
     std::vector<Vector>& getTriangles();
 
-    aabb getBBox() const override;
+    aabb getBBox() const;
 
     void setScale(Matrix s);
     void setTranslation(Matrix t);
@@ -48,7 +49,7 @@ public:
 
     void clip();
 
-    bool hit(Ray& ray) const override;
+    bool hit(Ray& ray) const;
 
     static float mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2);
 

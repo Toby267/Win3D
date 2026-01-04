@@ -1,5 +1,4 @@
 #include "scene/bvhNode.hpp"
-#include "scene/Object.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -7,15 +6,15 @@
 #include <vector>
 
 //for creating a leaf node - typically pass in a mesh
-bvhNode::bvhNode(std::shared_ptr<Object> obj) {
+bvhNode::bvhNode(std::shared_ptr<Mesh> obj) {
 
 }
-bvhNode::bvhNode(std::vector<std::shared_ptr<Object>>& objects) {
+bvhNode::bvhNode(std::vector<std::shared_ptr<Mesh>>& objects) {
     //is this a memory leak?
     *this = bvhNode(objects, 0, objects.size());
 }
 //for creating a bvhNode
-bvhNode::bvhNode(std::vector<std::shared_ptr<Object>>& objects, int start, int end) {
+bvhNode::bvhNode(std::vector<std::shared_ptr<Mesh>>& objects, int start, int end) {
     //surface area heuristic...
     //for now, don't split objects in two, later on you can
 
@@ -36,7 +35,7 @@ bvhNode::bvhNode(std::vector<std::shared_ptr<Object>>& objects, int start, int e
 
     /* pseudo code end */
 
-    std::sort(objects.begin(), objects.end(), [](const std::shared_ptr<Object>& a, const std::shared_ptr<Object>& b){
+    std::sort(objects.begin(), objects.end(), [](const std::shared_ptr<Mesh>& a, const std::shared_ptr<Mesh>& b){
         return a->getBBox().centroid().x() > b->getBBox().centroid().x();
     });
 
@@ -53,9 +52,8 @@ bvhNode::bvhNode(std::vector<std::shared_ptr<Object>>& objects, int start, int e
 
     std::cout << sahValue << '\n';
 
-    left = std::make_unique<bvhNode>(objects, 0, sahIndex);
-    right = std::make_unique<bvhNode>(objects, sahIndex+1, objects.size());
-
+    // left = std::make_unique<bvhNode>(objects, 0, sahIndex);
+    // right = std::make_unique<bvhNode>(objects, sahIndex+1, objects.size());
 }
 
 bool bvhNode::hit(Ray& ray) const {
@@ -69,7 +67,7 @@ aabb bvhNode::getBBox() const {
     return boundingBox;
 }
 
-float bvhNode::sweepSurfaceAreaHeuristic(std::vector<std::shared_ptr<Object>>& objects, int index) {
+float bvhNode::sweepSurfaceAreaHeuristic(std::vector<std::shared_ptr<Mesh>>& objects, int index) {
     // return f(i) = LSA(i) * i + RSA(i) * (N-i)
 
     float lsa = 0, rsa = 0;
