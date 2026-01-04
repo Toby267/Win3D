@@ -27,6 +27,9 @@ Application::Application() {
     sphere->setScale(Matrix::scale(100, 100, 100));
     sphere->setTranslation(Matrix::translate(300, 0, 1000));
     sphere->setRotation(Matrix::rotation(0, 0, 0));
+
+    // cube1->transform();
+    // sphere->transform();
     
     objects.emplace_back(cube1);
     objects.emplace_back(sphere);

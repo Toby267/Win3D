@@ -3,21 +3,29 @@
 
 #include <algorithm>
 #include <iostream>
+#include <memory>
+#include <vector>
 
 //for creating a leaf node - typically pass in a mesh
 bvhNode::bvhNode(std::shared_ptr<Object> obj) {
 
 }
-//for creating a bvhNode
 bvhNode::bvhNode(std::vector<std::shared_ptr<Object>>& objects) {
+    //is this a memory leak?
+    *this = bvhNode(objects, 0, objects.size());
+}
+//for creating a bvhNode
+bvhNode::bvhNode(std::vector<std::shared_ptr<Object>>& objects, int start, int end) {
     //surface area heuristic...
     //for now, don't split objects in two, later on you can
 
 
-    //testing sah:
-    std::cout << objects[0]->getBBox().centroid() << "\n";
+    /* pseudo code start */
 
-    return;
+    // if start - end == 2:
+        // add leaf nodes and return
+    // if start - end = 1:
+        // add leaf node and return
 
     // for each axis x, y, z:
         // sort all objects by their position on said axis
@@ -26,8 +34,8 @@ bvhNode::bvhNode(std::vector<std::shared_ptr<Object>>& objects) {
     // choose the best split
     // split, and recurse
 
-    const int N = objects.size();
-    
+    /* pseudo code end */
+
     std::sort(objects.begin(), objects.end(), [](const std::shared_ptr<Object>& a, const std::shared_ptr<Object>& b){
         return a->getBBox().centroid().x() > b->getBBox().centroid().x();
     });
@@ -35,14 +43,18 @@ bvhNode::bvhNode(std::vector<std::shared_ptr<Object>>& objects) {
     int sahIndex = 0;
     float sahValue = sweepSurfaceAreaHeuristic(objects, 0);
     
-    for (int i = 1; i < N; i++) {
+    for (int i = 1; i < objects.size(); i++) {
         float val = sweepSurfaceAreaHeuristic(objects, i);
-        if (val > sahValue) {
+        if (val < sahValue) {
             sahIndex = i;
             sahValue = val;
         }
     }
 
+    std::cout << sahValue << '\n';
+
+    left = std::make_unique<bvhNode>(objects, 0, sahIndex);
+    right = std::make_unique<bvhNode>(objects, sahIndex+1, objects.size());
 
 }
 
