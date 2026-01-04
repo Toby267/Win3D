@@ -35,7 +35,7 @@ bvhNode::bvhNode(std::vector<std::shared_ptr<Mesh>>& objects, int start, int end
 
     /* pseudo code end */
 
-    std::sort(objects.begin(), objects.end(), [](const std::shared_ptr<Mesh>& a, const std::shared_ptr<Mesh>& b){
+    std::sort(objects.begin(), objects.end(), [](std::shared_ptr<Mesh>& a, std::shared_ptr<Mesh>& b){
         return a->getBBox().centroid().x() > b->getBBox().centroid().x();
     });
 
@@ -56,14 +56,14 @@ bvhNode::bvhNode(std::vector<std::shared_ptr<Mesh>>& objects, int start, int end
     // right = std::make_unique<bvhNode>(objects, sahIndex+1, objects.size());
 }
 
-bool bvhNode::hit(Ray& ray) const {
+bool bvhNode::hit(Ray& ray) {
     if (!boundingBox.intersect(ray))
         return false;
 
     return left->hit(ray) || right->hit(ray);
 }
 
-aabb bvhNode::getBBox() const {
+aabb bvhNode::getBBox() {
     return boundingBox;
 }
 

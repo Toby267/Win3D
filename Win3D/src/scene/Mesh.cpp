@@ -40,7 +40,7 @@ std::vector<Vector>& Mesh::getTriangles() {
     return triangles;
 }
 
-aabb Mesh::getBBox() const {
+aabb Mesh::getBBox() {
     //this function is broken...
     constexpr float MIN = std::numeric_limits<float>::lowest();
     constexpr float MAX = std::numeric_limits<float>::max();
@@ -93,14 +93,14 @@ void Mesh::transform() {
     }
 }
 //applys an affine transformation to the object
-void Mesh::applyAffineTransformation(const Matrix& m) {
+void Mesh::applyAffineTransformation(Matrix m) {
     for (Vector& vertex : vertices) {
         vertex = m * vertex;
         
     }
 }
 //applys a non-affine transformation to the object, and normalises it
-void Mesh::applyTransformation(const Matrix& m) {
+void Mesh::applyTransformation(Matrix m) {
     for (Vector& vertex : vertices) {
         vertex = m * vertex;
         vertex = vertex / vertex.w();
@@ -128,7 +128,7 @@ void Mesh::clip() {
     if (xMax < -1 || yMax < -1 || zMax < -1) triangles.clear();
 }
 
-bool Mesh::hit(Ray& ray) const {
+bool Mesh::hit(Ray& ray) {
     // if (!getBBox().intersect(ray)) {
         // return false;
     // }

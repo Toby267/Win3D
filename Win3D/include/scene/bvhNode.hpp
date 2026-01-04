@@ -22,8 +22,8 @@ public:
     bvhNode(std::vector<std::shared_ptr<Mesh>>& objects); //for creating a bvhNode
     bvhNode(std::vector<std::shared_ptr<Mesh>>& objects, int start, int end);
 
-    bool hit(Ray& ray) const;
-    aabb getBBox() const;
+    bool hit(Ray& ray);
+    aabb getBBox();
 
 private:
     float sweepSurfaceAreaHeuristic(std::vector<std::shared_ptr<Mesh>>& axisOrderedObjects, int i);

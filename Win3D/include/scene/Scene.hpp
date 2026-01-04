@@ -16,5 +16,5 @@ public:
     Scene();
 
     std::vector<Mesh> getObjects();
-    const Camera& getCam();
+    Camera& getCam();
 };

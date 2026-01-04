@@ -19,6 +19,6 @@ std::vector<Mesh> Scene::getObjects() {
     return objects;
 }
 
-const Camera& Scene::getCam() {
+Camera& Scene::getCam() {
     return camera;
 }

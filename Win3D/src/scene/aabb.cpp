@@ -6,7 +6,7 @@ aabb::aabb(Vector min, Vector max): a(min), b(max) {
     assert(min.getLength() == 3 && max.getLength() == 3);
 }
 
-bool aabb::intersect(const Ray& ray) const{
+bool aabb::intersect(Ray& ray) {
     //calculate the t intervals
     Vector t0 = (a - ray.origin) / ray.direction;
     Vector t1 = (b - ray.origin) / ray.direction;

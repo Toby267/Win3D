@@ -35,7 +35,7 @@ public:
     std::vector<Colour>& getColours();
     std::vector<Vector>& getTriangles();
 
-    aabb getBBox() const;
+    aabb getBBox();
 
     void setScale(Matrix s);
     void setTranslation(Matrix t);
@@ -43,13 +43,13 @@ public:
 
     //public methods
     void transform();
-    void applyAffineTransformation(const Matrix& m);
-    void applyTransformation(const Matrix& m);
+    void applyAffineTransformation(Matrix m);
+    void applyTransformation(Matrix m);
     void normalise();
 
     void clip();
 
-    bool hit(Ray& ray) const;
+    bool hit(Ray& ray);
 
     static float mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2);
 

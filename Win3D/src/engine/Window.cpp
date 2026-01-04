@@ -25,7 +25,7 @@ Window::Window(int width, int height) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //updates the window with the given buffer
-void Window::update(const std::vector<unsigned char>& renderBuffer) {
+void Window::update(std::vector<unsigned char>& renderBuffer) {
     if (!alive) return;
     std::copy(renderBuffer.begin(), renderBuffer.end(), frameBuffer);
     hasUpdated.store(true);
