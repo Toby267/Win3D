@@ -32,13 +32,13 @@ void RayTracer::trace(Bitmap3D& bmap) {
         Mesh obj = *object;
         
         //step 1 - transform the object into world space
-        obj.transform();
+        obj.toWorldSpace();
 
         //step 2 - transform the objects to camera space
-        obj.applyAffineTransformation(camera.tranformationMatrix());
+        obj.applyAffineTransform(camera.tranformationMatrix());
 
         //step 3 - ray trace
-        aabb box = obj.getBBox();
+        aabb box = obj.calcBBox();
         for (Ray& ray : rays) {
             if (box.intersect(ray) && obj.hit(ray)) {
                 bmap.drawPixel(ray.screenCoord.x(), ray.screenCoord.y(), 1000, ray.col);

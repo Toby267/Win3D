@@ -1,7 +1,6 @@
 #include "Application.hpp"
 
 #include "engine/Engine.hpp"
-#include <iostream>
 #include <numbers>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -12,8 +11,8 @@
  * Runs the application
  */
 Application::Application() {
-    Engine* e = new Engine();
-    Scene& scene = e->getScene();
+    Engine e{};
+    Scene& scene = e.getScene();
 
     Mesh* cube1 = scene.addObject(Mesh::cube(Colour::blue()));
     cube1->setScale(Matrix::scale(100, 100, 100));
@@ -31,9 +30,7 @@ Application::Application() {
         alpha -= std::numbers::pi/16;
         cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         
-        e->drawCall();
+        e.drawCall();
         // std::cin.get();
     }
-
-    delete e;
 }

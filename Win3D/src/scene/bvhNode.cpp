@@ -36,7 +36,7 @@ bvhNode::bvhNode(std::vector<std::shared_ptr<Mesh>>& objects, int start, int end
     /* pseudo code end */
 
     std::sort(objects.begin(), objects.end(), [](std::shared_ptr<Mesh>& a, std::shared_ptr<Mesh>& b){
-        return a->getBBox().centroid().x() > b->getBBox().centroid().x();
+        return a->calcBBox().centroid().x() > b->calcBBox().centroid().x();
     });
 
     int sahIndex = 0;
@@ -73,10 +73,10 @@ float bvhNode::sweepSurfaceAreaHeuristic(std::vector<std::shared_ptr<Mesh>>& obj
     float lsa = 0, rsa = 0;
     
     for (int i = 0; i < index; i++) {
-        lsa += objects[i]->getBBox().surfaceArea();
+        lsa += objects[i]->calcBBox().surfaceArea();
     }
     for (int i = index; i < objects.size(); i++) {
-        rsa += objects[i]->getBBox().surfaceArea();
+        rsa += objects[i]->calcBBox().surfaceArea();
     }
 
     return lsa * index + rsa * (objects.size()-index);

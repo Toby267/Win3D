@@ -1,7 +1,6 @@
 #pragma once
 
 #include "engine/Bitmap3D.hpp"
-#include "scene/Mesh.hpp"
 #include "renderer/Ray.hpp"
 #include "scene/Scene.hpp"
 

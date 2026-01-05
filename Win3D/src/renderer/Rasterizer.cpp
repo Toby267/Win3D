@@ -22,21 +22,21 @@ void Rasterizer::rasterize(Bitmap3D& bmap) {
         Mesh obj = *object;
 
         //step 1 - transform the object into world space
-        obj.transform();
+        obj.toWorldSpace();
 
         //step 2 - transform the objects to camera space
-        obj.applyAffineTransformation(scene.getCam().tranformationMatrix());
+        obj.applyAffineTransform(scene.getCam().tranformationMatrix());
 
         //step 3 - vertex shading
 
         //step 3 - transform the objects to clip space
-        obj.applyTransformation(scene.getCam().projectionMatrix());
+        obj.applyTransform(scene.getCam().projectionMatrix());
 
         //step 5 - clip the objects
         obj.clip();
 
         //step 6 - transform the objects to screen space
-        obj.applyAffineTransformation(scene.getCam().viewportMatrix());
+        obj.applyAffineTransform(scene.getCam().viewportMatrix());
 
         //step 7 - rasterize
         std::vector<Vector> vertices = obj.getVertices();

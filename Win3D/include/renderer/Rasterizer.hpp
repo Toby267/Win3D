@@ -1,7 +1,6 @@
 #pragma once
 
 #include "engine/Bitmap3D.hpp"
-#include "scene/Mesh.hpp"
 #include "scene/Scene.hpp"
 
 class Rasterizer {

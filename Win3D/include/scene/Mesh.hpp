@@ -2,7 +2,7 @@
 
 #include <vector>
 
-
+#include "renderer/Ray.hpp"
 #include "scene/aabb.hpp"
 #include "util/Matrix.hpp"
 #include "util/Vector.hpp"
@@ -35,23 +35,19 @@ public:
     std::vector<Colour>& getColours();
     std::vector<Vector>& getTriangles();
 
-    aabb getBBox();
-
     void setScale(Matrix s);
     void setTranslation(Matrix t);
     void setRotation(Matrix r);
 
-    //public methods
-    void transform();
-    void applyAffineTransformation(Matrix m);
-    void applyTransformation(Matrix m);
-    void normalise();
+    //general public methods
+    void toWorldSpace();
+    void applyAffineTransform(Matrix m);
+    void applyTransform(Matrix m);
 
     void clip();
 
+    aabb calcBBox();
     bool hit(Ray& ray);
-
-    static float mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2);
 
     //operator overloads
     friend std::ostream& operator<<(std::ostream& os, const Mesh& m);
@@ -60,4 +56,8 @@ public:
     static Mesh* cube(Colour c);
     static Mesh* icoSphereSmall(Colour c);
     static Mesh* icoSphere(Colour c);
+
+private:
+    //private methods
+    float mollerTrumboreIntersection(Ray ray, Vector triangle);
 };
