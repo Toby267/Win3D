@@ -2,29 +2,27 @@
 
 #include "scene/Mesh.hpp"
 #include "scene/aabb.hpp"
-#include <memory>
 #include <vector>
 
-
-//would be easier to just use c style memory management
+//has instance(s) of either left, right, left & right, or just data
+//always has an aabb
 class bvhNode {
 private:
+    aabb boundingBox;
+
     bvhNode* left = nullptr;
     bvhNode* right = nullptr;
 
     Mesh* data = nullptr;
 
-    aabb boundingBox;
-
 public:
     bvhNode() = default;
-    bvhNode(std::shared_ptr<Mesh> obj); //for creating a leaf node - typically pass in a mesh
-    bvhNode(std::vector<std::shared_ptr<Mesh>>& objects); //for creating a bvhNode
-    bvhNode(std::vector<std::shared_ptr<Mesh>>& objects, int start, int end);
+    bvhNode(std::vector<Mesh*> objects);
+
+    ~bvhNode();
 
     bool hit(Ray& ray);
-    aabb getBBox();
 
 private:
-    float sweepSurfaceAreaHeuristic(std::vector<std::shared_ptr<Mesh>>& axisOrderedObjects, int i);
+    float sweepSurfaceAreaHeuristic(std::vector<Mesh*>& axisOrderedObjects, int i);
 };

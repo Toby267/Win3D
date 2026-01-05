@@ -20,7 +20,7 @@ private:
     std::vector<Vector> triangles;
     std::vector<Vector> uvCoordinates;
 
-    Matrix scale       = Matrix::scale(1, 1, 1);
+    Matrix scale       = Matrix::scale(100, 100, 100);
     Matrix translation = Matrix::translate(0, 0, 0);
     Matrix rotation    = Matrix::rotation(0, 0, 0);
 

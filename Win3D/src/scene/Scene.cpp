@@ -1,8 +1,6 @@
 #include "scene/Scene.hpp"
-
-Scene::Scene() {
-    
-}
+#include "scene/bvhNode.hpp"
+#include <iostream>
 
 Scene::~Scene() {
     for (Mesh* mesh : objects) {
@@ -19,6 +17,9 @@ Camera& Scene::getCam() {
 }
 
 Mesh* Scene::addObject(Mesh* mesh) {
-    objects.emplace_back(mesh);
-    return mesh;
+    return objects.emplace_back(mesh);
+}
+
+void Scene::setUpBvh() {
+    tree = bvhNode{objects};
 }

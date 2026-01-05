@@ -1,48 +1,34 @@
 #include "scene/bvhNode.hpp"
 
 #include <algorithm>
-#include <iostream>
-#include <memory>
 #include <vector>
 
-//for creating a leaf node - typically pass in a mesh
-bvhNode::bvhNode(std::shared_ptr<Mesh> obj) {
+bvhNode::bvhNode(std::vector<Mesh*> objects) {
+    // step 1 - generate bbox for the objects
+    boundingBox = objects[0]->calcBBox();
+    for (int i = 1; i < objects.size(); i++) {
+        boundingBox = aabb(boundingBox, objects[i]->calcBBox());
+    }
 
-}
-bvhNode::bvhNode(std::vector<std::shared_ptr<Mesh>>& objects) {
-    //is this a memory leak?
-    *this = bvhNode(objects, 0, objects.size());
-}
-//for creating a bvhNode
-bvhNode::bvhNode(std::vector<std::shared_ptr<Mesh>>& objects, int start, int end) {
-    //surface area heuristic...
-    //for now, don't split objects in two, later on you can
+    // step 2 - if is 1 or 2 objects create them manually then return
+    if (objects.size() == 1) {
+        data = objects[0];
+        return;
+    }
+    else if (objects.size() == 2) {
+        left = new bvhNode({objects[0]});
+        right = new bvhNode({objects[1]});
+        return;
+    }
 
-
-    /* pseudo code start */
-
-    // if start - end == 2:
-        // add leaf nodes and return
-    // if start - end = 1:
-        // add leaf node and return
-
-    // for each axis x, y, z:
-        // sort all objects by their position on said axis
-        // find the index i that minimises sweepSurfaceAreaHeuristic();
-
-    // choose the best split
-    // split, and recurse
-
-    /* pseudo code end */
-
-    std::sort(objects.begin(), objects.end(), [](std::shared_ptr<Mesh>& a, std::shared_ptr<Mesh>& b){
+    // step 3 - work out best split, and split - currently bugged
+    std::sort(objects.begin(), objects.end(), [](Mesh* a, Mesh* b) {
         return a->calcBBox().centroid().x() > b->calcBBox().centroid().x();
     });
 
     int sahIndex = 0;
     float sahValue = sweepSurfaceAreaHeuristic(objects, 0);
-    
-    for (int i = 1; i < objects.size(); i++) {
+    for (int i = 0; i < objects.size(); i++) {        
         float val = sweepSurfaceAreaHeuristic(objects, i);
         if (val < sahValue) {
             sahIndex = i;
@@ -50,10 +36,18 @@ bvhNode::bvhNode(std::vector<std::shared_ptr<Mesh>>& objects, int start, int end
         }
     }
 
-    std::cout << sahValue << '\n';
+    std::nth_element(objects.begin(), objects.begin() + sahIndex, objects.end(), [](Mesh* a, Mesh* b) {
+        return a->calcBBox().centroid().x() > b->calcBBox().centroid().x();
+    });
 
-    // left = std::make_unique<bvhNode>(objects, 0, sahIndex);
-    // right = std::make_unique<bvhNode>(objects, sahIndex+1, objects.size());
+    left = new bvhNode({objects.begin(), objects.begin()+sahIndex});
+    right = new bvhNode({objects.begin()+sahIndex, objects.end()});
+}
+
+bvhNode::~bvhNode() {
+    if (left) delete left;
+    if (right) delete right;
+    //this doesn't own the data, the scene class does
 }
 
 bool bvhNode::hit(Ray& ray) {
@@ -63,11 +57,7 @@ bool bvhNode::hit(Ray& ray) {
     return left->hit(ray) || right->hit(ray);
 }
 
-aabb bvhNode::getBBox() {
-    return boundingBox;
-}
-
-float bvhNode::sweepSurfaceAreaHeuristic(std::vector<std::shared_ptr<Mesh>>& objects, int index) {
+float bvhNode::sweepSurfaceAreaHeuristic(std::vector<Mesh*>& objects, int index) {
     // return f(i) = LSA(i) * i + RSA(i) * (N-i)
 
     float lsa = 0, rsa = 0;

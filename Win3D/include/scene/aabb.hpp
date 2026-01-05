@@ -11,7 +11,8 @@ private:
 public:
     aabb() = default;
     aabb(Vector min, Vector max);
-    
+    aabb(aabb box1, aabb box2);
+
     bool intersect(Ray& ray);
 
     float surfaceArea();

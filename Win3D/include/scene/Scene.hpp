@@ -10,14 +10,14 @@ private:
     std::vector<Mesh*> objects{};
     Camera camera{};
 
-    bvhNode tree{};
+    bvhNode tree;
 
 public:
-    Scene();
     ~Scene();
 
     std::vector<Mesh*>& getObjects();
     Camera& getCam();
 
     Mesh* addObject(Mesh* mesh);
+    void setUpBvh();
 };
