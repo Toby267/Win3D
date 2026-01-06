@@ -6,7 +6,7 @@
 #include <vector>
 
 bvhNode::bvhNode(std::vector<Mesh*> objects) {
-   // step 2 - if is 1 or 2 objects create them manually then return
+   // step 1 - if is 1 or 2 objects create them manually then return
    if (objects.size() == 1) {
        data = objects[0];
        boundingBox = objects[0]->calcBBox();
@@ -19,7 +19,7 @@ bvhNode::bvhNode(std::vector<Mesh*> objects) {
        return;
    }
 
-   // step 3 - work out best split, and split - currently bugged
+   // step 2 - work out best split, and split
    boundingBox = objects[0]->calcBBox();
    for (int i = 1; i < objects.size(); i++) {
        boundingBox = aabb(boundingBox, objects[i]->calcBBox());

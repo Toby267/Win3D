@@ -20,8 +20,8 @@ public:
     double farFocalDistance = 3000;
 
     //viewport
-    int screenWidth = 1280;
-    int screenHeight = 720;
+    int screenWidth = 1920;
+    int screenHeight = 1080;
 
     Matrix tranformationMatrix();
     Matrix projectionMatrix();

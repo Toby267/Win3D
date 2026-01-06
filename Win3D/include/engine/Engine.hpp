@@ -12,8 +12,8 @@ private:
     // cameras (one for raster, one for ray tracing, etc)
     // window
 
-    const int WIDTH = 1280;
-    const int HEIGHT = 720;
+    const int WIDTH = 1920;
+    const int HEIGHT = 1080;
 
     Scene scene{};
 
