@@ -1,7 +1,7 @@
 #pragma once
 
 #include "renderer/Camera.hpp"
-#include "scene/Mesh.hpp"
+#include "scene/meshes/Mesh.hpp"
 #include "scene/bvhNode.hpp"
 #include <vector>
 

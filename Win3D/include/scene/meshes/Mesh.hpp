@@ -15,10 +15,13 @@
  */
 class Mesh {
 private:
+    static std::vector<Vector> vertices_original;
+    static std::vector<Colour> colours_original;
+    static std::vector<Vector> triangles_original;
+
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> triangles;
-    std::vector<Vector> uvCoordinates;
 
     Matrix scale       = Matrix::scale(100, 100, 100);
     Matrix translation = Matrix::translate(0, 0, 0);
