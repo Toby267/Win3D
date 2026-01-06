@@ -16,12 +16,12 @@ private:
     Mesh* data = nullptr;
 
 public:
-    bvhNode() = default;
     bvhNode(std::vector<Mesh*> objects);
 
     ~bvhNode();
 
     bool hit(Ray& ray);
+    void print();
 
 private:
     float sweepSurfaceAreaHeuristic(std::vector<Mesh*>& axisOrderedObjects, int i);

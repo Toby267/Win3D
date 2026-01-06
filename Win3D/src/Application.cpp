@@ -20,8 +20,6 @@ Application::Application() {
     Mesh* sphere = scene.addObject(Mesh::icoSphere(Colour::blue()));
     sphere->setTranslation(Matrix::translate(300, 0, 1000));
 
-    scene.setUpBvh();
-
     double alpha = 0.0;
 
     for (;;) {

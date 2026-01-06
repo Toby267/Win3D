@@ -10,14 +10,19 @@ private:
     std::vector<Mesh*> objects{};
     Camera camera{};
 
-    bvhNode tree;
+    bvhNode* tree = nullptr;
 
 public:
+    Scene() = default;
     ~Scene();
 
-    std::vector<Mesh*>& getObjects();
-    Camera& getCam();
+    void prepare();
+    bool intersect(Ray& ray);
+    void cleanup();
 
     Mesh* addObject(Mesh* mesh);
-    void setUpBvh();
+
+    //dont need the rest i think
+    std::vector<Mesh*>& getObjects();
+    Camera& getCam();
 };

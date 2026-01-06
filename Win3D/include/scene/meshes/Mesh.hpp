@@ -15,9 +15,9 @@
  */
 class Mesh {
 private:
-    static std::vector<Vector> vertices_original;
-    static std::vector<Colour> colours_original;
-    static std::vector<Vector> triangles_original;
+    const std::vector<Vector> vertices_original;
+    const std::vector<Colour> colours_original;
+    const std::vector<Vector> triangles_original;
 
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
@@ -47,8 +47,8 @@ public:
     void applyAffineTransform(Matrix m);
     void applyTransform(Matrix m);
 
+    void reset();
     void clip();
-
     aabb calcBBox();
     bool hit(Ray& ray);
 

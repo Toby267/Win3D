@@ -3,12 +3,11 @@
 #include "util/Vector.hpp"
 #include "renderer/Ray.hpp"
 
-class aabb {
-private:
+struct aabb {
+public:
     Vector a = Vector(0, 0, 0);
     Vector b = Vector(0, 0, 0);
 
-public:
     aabb() = default;
     aabb(Vector min, Vector max);
     aabb(aabb box1, aabb box2);

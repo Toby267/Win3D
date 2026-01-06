@@ -1,7 +1,6 @@
 #include "renderer/RayTracer.hpp"
 
 #include "renderer/Ray.hpp"
-#include "scene/aabb.hpp"
 #include <vector>
 
 RayTracer::RayTracer(Scene& sceneRef) : scene(sceneRef) {
@@ -9,8 +8,6 @@ RayTracer::RayTracer(Scene& sceneRef) : scene(sceneRef) {
 }
 
 void RayTracer::trace(Bitmap3D& bmap) {
-    rays.clear();
-
     Camera& camera = scene.getCam();
     std::vector<Mesh*>& objects = scene.getObjects();
     
@@ -27,22 +24,12 @@ void RayTracer::trace(Bitmap3D& bmap) {
             rays.emplace_back(origin, direction, coord, col);
         }
     }
-    
-    for (Mesh* object : objects) {
-        Mesh obj = *object;
-        
-        //step 1 - transform the object into world space
-        obj.toWorldSpace();
 
-        //step 2 - transform the objects to camera space
-        obj.applyAffineTransform(camera.tranformationMatrix());
-
-        //step 3 - ray trace
-        aabb box = obj.calcBBox();
-        for (Ray& ray : rays) {
-            if (box.intersect(ray) && obj.hit(ray)) {
-                bmap.drawPixel(ray.screenCoord.x(), ray.screenCoord.y(), 1000, ray.col);
-            }
+    for (Ray& ray : rays) {
+        if (scene.intersect(ray)) {
+            bmap.drawPixel(ray.screenCoord.x(), ray.screenCoord.y(), 1000, ray.col);
         }
     }
+
+    rays.clear();
 }

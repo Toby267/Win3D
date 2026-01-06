@@ -10,7 +10,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Mesh::Mesh(std::vector<Vector> v, std::vector<Colour> c, std::vector<Vector> t)
-    : vertices(v), colours(c), triangles(t)
+    : vertices_original(v), colours_original(c), triangles_original(t), vertices(v), colours(c), triangles(t)
 {
 
 }
@@ -61,6 +61,12 @@ void Mesh::applyTransform(Matrix m) {
         vertex = m * vertex;
         vertex = vertex / vertex.w();
     }
+}
+
+void Mesh::reset() {
+    vertices = vertices_original;
+    colours = colours_original;
+    triangles = triangles_original;
 }
 
 void Mesh::clip() {
