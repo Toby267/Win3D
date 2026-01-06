@@ -1,20 +1,8 @@
-#include "renderer/CameraRasterizer.hpp"
+#include "renderer/Rasterizer.hpp"
+#include <vector>
 
-#include "util/Matrix.hpp"
+Rasterizer::Rasterizer(Scene& sceneRef) : scene(sceneRef) {
 
-// * -------------------------------------------- [ CAMERA ] -------------------------------------------- * //
-
-Matrix CameraRasterizer::tranformationMatrix() {
-    Matrix changeOfBasis = Matrix::changeOfBasis(position, direction, up);
-    Matrix translation = Matrix::translate(-position.x(), -position.y(), -position.z());
-
-    return changeOfBasis * translation;
-}
-Matrix CameraRasterizer::projectionMatrix() {
-    return Matrix::perspective(nearFocalDistance, farFocalDistance, apperatureHeight/2, apperatureWidth/2, fieldOfView);
-}
-Matrix CameraRasterizer::viewportMatrix() {
-    return Matrix::translate(screenWidth/2.0, screenHeight/2.0, 10000) * Matrix::scale(screenWidth/2.0, -screenHeight/2.0, 10000);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,29 +16,29 @@ Matrix CameraRasterizer::viewportMatrix() {
  * @param objects   the objects to rasterize
  * @param bmap      the bitmap to render onto
  */
-void CameraRasterizer::rasterize(std::vector<Mesh>& objects, Bitmap3D& bmap) {
-    for (Mesh& obj : objects) {
-        //step 0 - tesselation
+void Rasterizer::rasterize(Bitmap3D& bmap) {
+    for (Mesh* object : scene.getObjects()) {
+        //step 0 - crete a copy
+        Mesh obj = *object;
 
         //step 1 - transform the object into world space
-        obj.transform();
+        obj.toWorldSpace();
 
         //step 2 - transform the objects to camera space
-        obj.applyAffineTransformation(tranformationMatrix());
+        obj.applyAffineTransform(scene.getCam().tranformationMatrix());
 
         //step 3 - vertex shading
 
         //step 3 - transform the objects to clip space
-        obj.applyTransformation(projectionMatrix());
+        obj.applyTransform(scene.getCam().projectionMatrix());
 
         //step 5 - clip the objects
         obj.clip();
 
         //step 6 - transform the objects to screen space
-        obj.applyAffineTransformation(viewportMatrix());
-    }
-    
-    for (Mesh& obj : objects) {
+        obj.applyAffineTransform(scene.getCam().viewportMatrix());
+
+        //step 7 - rasterize
         std::vector<Vector> vertices = obj.getVertices();
         std::vector<Colour> colours = obj.getColours();
     
@@ -72,7 +60,7 @@ void CameraRasterizer::rasterize(std::vector<Mesh>& objects, Bitmap3D& bmap) {
  * @param c1, c2, c3    the colours of the vertices
  * @param bmap          the bmap to render onto
  */
-void CameraRasterizer::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
+void Rasterizer::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
     if (v1.x() > v2.x()) {
         Vector vTemp = v1;
         v1 = v2;
@@ -150,7 +138,7 @@ void CameraRasterizer::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector
  * @param end       the coodinate of the end of the line
  * @param c1, c2    the colours of the start and end of the line
  */
-void CameraRasterizer::drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour c2) {
+void Rasterizer::drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour c2) {
     int x1 = start.x(), y1 = start.y(), z1 = start.z();
     int x2 = end.x(), y2 = end.y(), z2 = end.z();
 

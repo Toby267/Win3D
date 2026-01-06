@@ -3,13 +3,17 @@
 #include "util/Vector.hpp"
 #include "renderer/Ray.hpp"
 
-class aabb {
-private:
+struct aabb {
+public:
     Vector a = Vector(0, 0, 0);
     Vector b = Vector(0, 0, 0);
 
-public:
     aabb() = default;
     aabb(Vector min, Vector max);
-    bool intersect(const Ray& ray) const;
+    aabb(aabb box1, aabb box2);
+
+    bool intersect(Ray& ray);
+
+    float surfaceArea();
+    Vector centroid();
 };

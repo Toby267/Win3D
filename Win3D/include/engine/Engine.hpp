@@ -2,9 +2,9 @@
 
 #include "engine/Bitmap3D.hpp"
 #include "engine/Window.hpp"
-#include "renderer/CameraRayTracer.hpp"
-#include "renderer/CameraRasterizer.hpp"
-#include <memory>
+#include "renderer/RayTracer.hpp"
+#include "renderer/Rasterizer.hpp"
+#include "scene/Scene.hpp"
 
 class Engine {
 private:
@@ -12,19 +12,20 @@ private:
     // cameras (one for raster, one for ray tracing, etc)
     // window
 
-    const int WIDTH = 1280;
-    const int HEIGHT = 720;
+    const int WIDTH = 1920;
+    const int HEIGHT = 1080;
 
-    CameraRasterizer cameraRaster = CameraRasterizer();
-    CameraRayTracer cameraRayTracer = CameraRayTracer();
-    Window window = Window(WIDTH, HEIGHT);
+    Scene scene{};
 
-    Bitmap3D bitmap = Bitmap3D(WIDTH, HEIGHT);
+    Rasterizer cameraRaster{scene};
+    RayTracer cameraRayTracer{scene};
+
+    Window window{WIDTH, HEIGHT};
+
+    Bitmap3D bitmap{WIDTH, HEIGHT};
 
 public:
-    // void drawCall(std::vector<std::shared_ptr<Object>>& objects);
-    void drawCall(std::vector<Mesh> objects);
-
-private:
-
+    void drawCall();
+    
+    Scene& getScene();
 };

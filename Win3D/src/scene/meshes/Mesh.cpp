@@ -1,4 +1,4 @@
-#include "renderer/objects/Mesh.hpp"
+#include "scene/meshes/Mesh.hpp"
 #include "util/Vector.hpp"
 
 #include <iostream>
@@ -9,74 +9,34 @@
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Default constructor that sets up the object based on the given vertices, colours, and triangles
- * 
- * @param vertices  the vertices of the object
- * @param colours   the colour of each vertex
- * @param triangles the indeces of the vertices array, determining the traingles of the object
- */
 Mesh::Mesh(std::vector<Vector> v, std::vector<Colour> c, std::vector<Vector> t)
-    : vertices(v), colours(c), triangles(t)
+    : vertices_original(v), colours_original(c), triangles_original(t), vertices(v), colours(c), triangles(t)
 {
-    //need to create bounding box
-    //naive solution (albeit fine for static scenes):
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//returns the vertices of the object
 std::vector<Vector>& Mesh::getVertices() {
     return vertices;
 }
-//returns the colours of the object
 std::vector<Colour>& Mesh::getColours() {
     return colours;
 }
-//returns the triangles of the object
 std::vector<Vector>& Mesh::getTriangles() {
     return triangles;
 }
 
-aabb Mesh::getBBox() const {
-    //this function is broken...
-    constexpr float MIN = std::numeric_limits<float>::lowest();
-    constexpr float MAX = std::numeric_limits<float>::max();
-    
-    Vector min(MAX, MAX, MAX);
-    Vector max(MIN, MIN, MIN);
-
-    for (Vector vertex : vertices) {
-        // vertex = affineTransform * vertex;
-        
-        if (vertex.x() > max.x()) max.x() = vertex.x();
-        if (vertex.y() > max.y()) max.y() = vertex.y();
-        if (vertex.z() > max.z()) max.z() = vertex.z();
-
-        if (vertex.x() < min.x()) min.x() = vertex.x();
-        if (vertex.y() < min.y()) min.y() = vertex.y();
-        if (vertex.z() < min.z()) min.z() = vertex.z();
-    }
-
-    // std::cout << "min, max: " << min << ", " << max << '\n';
-    // std::cin.get();
-    
-    return aabb(min, max);
-}
-
-//sets the scale of the object
 void Mesh::setScale(Matrix s) {
     scale = s;
     affineTransform = translation * rotation * scale;
 }
-//sets the translation of the object
 void Mesh::setTranslation(Matrix t) {
     translation = t;
     affineTransform = translation * rotation * scale;
 }
-//sets the rotation of the object
 void Mesh::setRotation(Matrix r) {
     rotation = r;
     affineTransform = translation * rotation * scale;
@@ -86,30 +46,29 @@ void Mesh::setRotation(Matrix r) {
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//transforms the object into world space
-void Mesh::transform() {
+void Mesh::toWorldSpace() {
     for (Vector& vertex : vertices) {
         vertex = affineTransform * vertex;
     }
 }
-//applys an affine transformation to the object
-void Mesh::applyAffineTransformation(const Matrix& m) {
+void Mesh::applyAffineTransform(Matrix m) {
     for (Vector& vertex : vertices) {
         vertex = m * vertex;
-        
     }
 }
-//applys a non-affine transformation to the object, and normalises it
-void Mesh::applyTransformation(const Matrix& m) {
+void Mesh::applyTransform(Matrix m) {
     for (Vector& vertex : vertices) {
         vertex = m * vertex;
         vertex = vertex / vertex.w();
     }
 }
 
+void Mesh::reset() {
+    vertices = vertices_original;
+    colours = colours_original;
+    triangles = triangles_original;
+}
 
-//clips the object if it is outside the canonical view volume. assumes it has already been transformed to the canonical view volume
-//TODO: this should be done in the geometry processing class, and you should fix the fact that it renders in front and behind, then clips behind.
 void Mesh::clip() {
     double xMax = vertices[0].x(), yMax = vertices[0].y(), zMax = vertices[0].z();
     double xMin = vertices[0].x(), yMin = vertices[0].y(), zMin = vertices[0].z();
@@ -128,27 +87,51 @@ void Mesh::clip() {
     if (xMax < -1 || yMax < -1 || zMax < -1) triangles.clear();
 }
 
-bool Mesh::hit(Ray& ray) const {
-    // if (!getBBox().intersect(ray)) {
-        // return false;
-    // }
+aabb Mesh::calcBBox() {
+    constexpr float MIN = std::numeric_limits<float>::lowest();
+    constexpr float MAX = std::numeric_limits<float>::max();
     
+    Vector min(MAX, MAX, MAX);
+    Vector max(MIN, MIN, MIN);
+
+    for (Vector vertex : vertices) {
+        if (vertex.x() > max.x()) max.x() = vertex.x();
+        if (vertex.y() > max.y()) max.y() = vertex.y();
+        if (vertex.z() > max.z()) max.z() = vertex.z();
+
+        if (vertex.x() < min.x()) min.x() = vertex.x();
+        if (vertex.y() < min.y()) min.y() = vertex.y();
+        if (vertex.z() < min.z()) min.z() = vertex.z();
+    }
+
+    return aabb(min, max);
+}
+
+bool Mesh::hit(Ray& ray) {
     for (Vector t : triangles) {
-        float d = mollerTrumboreIntersection(ray.origin, ray.direction, vertices[t[0]], vertices[t[1]], vertices[t[2]]);
-        
-        if (d != -1) return true;
+        if (mollerTrumboreIntersection(ray, t) != -1) {
+            return true;
+        }
     }
 
     return false;
 }
 
-float Mesh::mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Vector vert1, Vector vert2) {
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+float Mesh::mollerTrumboreIntersection(Ray ray, Vector triangle) {
     constexpr float epsilon = std::numeric_limits<float>::epsilon();
+
+    const Vector vert0 = vertices[triangle[0]];
+    const Vector vert1 = vertices[triangle[1]];
+    const Vector vert2 = vertices[triangle[2]];
 
     Vector edge1 = vert1 - vert0;
     Vector edge2 = vert2 - vert0;
 
-    Vector pvec = Vector::crossProduct(dir, edge2);
+    Vector pvec = Vector::crossProduct(ray.direction, edge2);
     float det = Vector::dotProduct(edge1, pvec);
 
     if (det > -epsilon && det < epsilon)
@@ -156,14 +139,14 @@ float Mesh::mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Ve
 
     float invDet = 1.0 / det;
 
-    Vector tvec = orig - vert0;
+    Vector tvec = ray.origin - vert0;
     float u = Vector::dotProduct(tvec, pvec) * invDet;
 
     if (u < 0.0 || u > 1.0)
         return -1;
 
     Vector qvec = Vector::crossProduct(tvec, edge1);
-    float v = Vector::dotProduct(dir, qvec) * invDet;
+    float v = Vector::dotProduct(ray.direction, qvec) * invDet;
 
     if ( v < 0.0 || u + v > 1.0)
         return -1;
@@ -176,7 +159,6 @@ float Mesh::mollerTrumboreIntersection(Vector orig, Vector dir, Vector vert0, Ve
 // * --------------------------------------- [ OPERATOR OVERLOADS ] -------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//prints out the object
 std::ostream& operator<<(std::ostream& os, const Mesh& obj) {
     os << "printing out object vertices:\n";
     for (const Vector& vertex : obj.vertices) {
@@ -189,8 +171,7 @@ std::ostream& operator<<(std::ostream& os, const Mesh& obj) {
 // * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//sets up, and returns a cube
-Mesh Mesh::cube(Colour c) {
+Mesh* Mesh::cube(Colour c) {
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> triangles;
@@ -226,10 +207,10 @@ Mesh Mesh::cube(Colour c) {
     triangles.emplace_back(0, 4, 1);
     triangles.emplace_back(1, 4, 5);
 
-    return Mesh(vertices, colours, triangles);
+    return new Mesh(vertices, colours, triangles);
 }
 
-Mesh Mesh::icoSphereSmall(Colour c) {
+Mesh* Mesh::icoSphereSmall(Colour c) {
     std::vector<Vector> vertices = std::vector<Vector>();
     std::vector<Colour> colours = std::vector<Colour>();
     std::vector<Vector> triangles = std::vector<Vector>();
@@ -284,10 +265,10 @@ Mesh Mesh::icoSphereSmall(Colour c) {
     for (Vector& i : vertices)
         i = i * 2.0;
 
-    return Mesh(vertices, colours, triangles);
+    return new Mesh(vertices, colours, triangles);
 }
 
-Mesh Mesh::icoSphere(Colour c) {
+Mesh* Mesh::icoSphere(Colour c) {
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> triangles;
@@ -2873,5 +2854,5 @@ Mesh Mesh::icoSphere(Colour c) {
     for (Vector& i : triangles)
         i = i + Vector(-1, -1, -1);
 
-    return Mesh(vertices, colours, triangles);
+    return new Mesh(vertices, colours, triangles);
 }

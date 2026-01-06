@@ -1,8 +1,7 @@
 #include "Application.hpp"
 
-#include <vector>
-
 #include "engine/Engine.hpp"
+#include <numbers>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
@@ -12,35 +11,34 @@
  * Runs the application
  */
 Application::Application() {
-    std::vector<Mesh> objects = std::vector<Mesh>();
+    Engine e{};
+    Scene& scene = e.getScene();
 
-    Mesh cube1 = Mesh::cube(Colour::blue());
-    cube1.setScale(Matrix::scale(100, 100, 100));
-    cube1.setTranslation(Matrix::translate(-300, 0, 1100));
-    cube1.setRotation(Matrix::rotation(0, 0, 0));
+    Mesh* cube1 = scene.addObject(Mesh::cube(Colour::blue()));
+    cube1->setTranslation(Matrix::translate(-800, 0, 1100));
 
-    Mesh sphere = Mesh::icoSphere(Colour::blue());
-    sphere.setScale(Matrix::scale(100, 100, 100));
-    sphere.setTranslation(Matrix::translate(300, 0, 1000));
-    sphere.setRotation(Matrix::rotation(0, 0, 0));
-    
-    objects.emplace_back(cube1);
-    objects.emplace_back(sphere);
+    Mesh* cube2 = scene.addObject(Mesh::cube(Colour::blue()));
+    cube2->setTranslation(Matrix::translate(-400, 0, 1100));
 
-    // Renderer* r = new Renderer(1280, 720);
-    Engine* e = new Engine();
+    Mesh* cube3 = scene.addObject(Mesh::cube(Colour::blue()));
+    cube3->setTranslation(Matrix::translate(400, 0, 1100));
+
+    Mesh* cube4 = scene.addObject(Mesh::cube(Colour::blue()));
+    cube4->setTranslation(Matrix::translate(800, 0, 1100));
+
+    Mesh* sphere = scene.addObject(Mesh::icoSphere(Colour::blue()));
+    sphere->setTranslation(Matrix::translate(0, 0, 1000));
 
     double alpha = 0.0;
-    double z = 500;
 
     for (;;) {
         alpha -= std::numbers::pi/16;
-        objects[0].setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        // objects[1].setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        // objects[1].setTranslation(Matrix::translate(300, 0, z+=100));
-
-        e->drawCall(objects);
-
-        // std::cin.get();
+        cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        cube2->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        cube3->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        cube4->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        sphere->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        
+        e.drawCall();
     }
 }
