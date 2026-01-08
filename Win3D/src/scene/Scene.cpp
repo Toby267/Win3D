@@ -1,5 +1,6 @@
 #include "scene/Scene.hpp"
 #include "scene/bvhNode.hpp"
+#include <vector>
 
 Scene::~Scene() {
     for (Mesh* mesh : objects) {
@@ -9,8 +10,13 @@ Scene::~Scene() {
     if (tree) delete tree;
 }
 
-std::vector<Mesh*>& Scene::getObjects() {
-    return objects;
+std::vector<Mesh> Scene::getObjects() const {
+    std::vector<Mesh> obs{};
+    
+    for (Mesh* m : objects)
+        obs.emplace_back(*m);
+
+    return obs;
 }
 
 void Scene::prepare() {

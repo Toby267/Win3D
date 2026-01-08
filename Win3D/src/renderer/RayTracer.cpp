@@ -9,7 +9,6 @@ RayTracer::RayTracer(Scene& sceneRef) : scene(sceneRef) {
 
 void RayTracer::trace(Bitmap3D& bmap) {
     const Camera& camera = scene.getCam();
-    std::vector<Mesh*>& objects = scene.getObjects();
     
     int x = camera.screenWidth/2, y = camera.screenHeight/2;
     

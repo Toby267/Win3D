@@ -23,6 +23,6 @@ public:
     Mesh* addObject(Mesh* mesh);
 
     //dont need the rest i think
-    std::vector<Mesh*>& getObjects();
+    std::vector<Mesh> getObjects() const;
     const Camera& getCam() const;
 };

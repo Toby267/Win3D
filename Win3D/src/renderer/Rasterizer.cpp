@@ -17,9 +17,8 @@ Rasterizer::Rasterizer(Scene& sceneRef) : scene(sceneRef) {
  * @param bmap      the bitmap to render onto
  */
 void Rasterizer::rasterize(Bitmap3D& bmap) {
-    for (Mesh* object : scene.getObjects()) {
+    for (Mesh obj : scene.getObjects()) {
         //step 0 - crete a copy
-        Mesh obj = *object;
 
         //step 1 - transform the object into world space
         // obj.toWorldSpace();
