@@ -2,6 +2,11 @@
 #include "scene/bvhNode.hpp"
 #include <vector>
 
+Scene::Scene(int screenWidth, int screenHeight) {
+    camera.screenHeight = screenHeight;
+    camera.screenHeight = screenHeight;
+}
+
 Scene::~Scene() {
     for (Mesh* mesh : objects) {
         delete mesh;

@@ -13,6 +13,7 @@ private:
     bvhNode* tree = nullptr;
 
 public:
+    Scene(int screenWidth, int screenHeight);
     Scene() = default;
     ~Scene();
 

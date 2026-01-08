@@ -109,7 +109,7 @@ aabb Mesh::calcBBox() const {
 
 //TODO: make this calculate the colour based on uv coordinates
 bool Mesh::hit(Ray& ray) const {
-    for (Vector t : triangles) {
+    for (const Vector& t : triangles) {
         if (mollerTrumboreIntersection(ray, t) != -1) {
             return true;
         }
@@ -122,7 +122,7 @@ bool Mesh::hit(Ray& ray) const {
 // * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-float Mesh::mollerTrumboreIntersection(Ray ray, Vector triangle) const {
+float Mesh::mollerTrumboreIntersection(Ray& ray, const Vector& triangle) const {
     constexpr float epsilon = std::numeric_limits<float>::epsilon();
 
     const Vector vert0 = vertices[triangle[0]];
