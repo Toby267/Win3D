@@ -20,8 +20,8 @@ public:
 
     ~bvhNode();
 
-    bool hit(Ray& ray);
-    void print();
+    bool hit(Ray& ray) const;
+    void print() const;
 
 private:
     float sweepSurfaceAreaHeuristic(std::vector<Mesh*>& axisOrderedObjects, int i);

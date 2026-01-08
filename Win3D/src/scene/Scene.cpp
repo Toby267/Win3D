@@ -22,7 +22,7 @@ void Scene::prepare() {
     tree = new bvhNode{objects};
 }
 
-bool Scene::intersect(Ray& ray) {
+bool Scene::intersect(Ray& ray) const {
     return tree->hit(ray);
 }
 
@@ -38,6 +38,6 @@ Mesh* Scene::addObject(Mesh* mesh) {
     return objects.emplace_back(mesh);
 }
 
-Camera& Scene::getCam() {
+const Camera& Scene::getCam() const {
     return camera;
 }

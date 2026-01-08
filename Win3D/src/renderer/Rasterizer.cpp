@@ -22,10 +22,10 @@ void Rasterizer::rasterize(Bitmap3D& bmap) {
         Mesh obj = *object;
 
         //step 1 - transform the object into world space
-        obj.toWorldSpace();
+        // obj.toWorldSpace();
 
         //step 2 - transform the objects to camera space
-        obj.applyAffineTransform(scene.getCam().tranformationMatrix());
+        // obj.applyAffineTransform(scene.getCam().tranformationMatrix());
 
         //step 3 - vertex shading
 

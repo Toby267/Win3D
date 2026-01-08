@@ -23,7 +23,7 @@ public:
 
     //public methods
     void update(const std::vector<unsigned char>& renderBuffer);
-    bool isAlive();
+    bool isAlive() const;
     void close();
 
 private:

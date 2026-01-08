@@ -87,7 +87,7 @@ void Mesh::clip() {
     if (xMax < -1 || yMax < -1 || zMax < -1) triangles.clear();
 }
 
-aabb Mesh::calcBBox() {
+aabb Mesh::calcBBox() const {
     constexpr float MIN = std::numeric_limits<float>::lowest();
     constexpr float MAX = std::numeric_limits<float>::max();
     
@@ -107,7 +107,8 @@ aabb Mesh::calcBBox() {
     return aabb(min, max);
 }
 
-bool Mesh::hit(Ray& ray) {
+//TODO: make this calculate the colour based on uv coordinates
+bool Mesh::hit(Ray& ray) const {
     for (Vector t : triangles) {
         if (mollerTrumboreIntersection(ray, t) != -1) {
             return true;
@@ -121,7 +122,7 @@ bool Mesh::hit(Ray& ray) {
 // * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-float Mesh::mollerTrumboreIntersection(Ray ray, Vector triangle) {
+float Mesh::mollerTrumboreIntersection(Ray ray, Vector triangle) const {
     constexpr float epsilon = std::numeric_limits<float>::epsilon();
 
     const Vector vert0 = vertices[triangle[0]];

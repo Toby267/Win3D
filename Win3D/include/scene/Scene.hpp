@@ -17,12 +17,12 @@ public:
     ~Scene();
 
     void prepare();
-    bool intersect(Ray& ray);
+    bool intersect(Ray& ray) const;
     void cleanup();
 
     Mesh* addObject(Mesh* mesh);
 
     //dont need the rest i think
     std::vector<Mesh*>& getObjects();
-    Camera& getCam();
+    const Camera& getCam() const;
 };

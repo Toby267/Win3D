@@ -3,7 +3,6 @@
 #include "util/Matrix.hpp"
 
 struct Camera {
-public:
     //position/orientation
     Vector position = Vector(0, 0, 0, 1);
     Vector direction = Vector(0, 0, 1, 0);
@@ -23,7 +22,7 @@ public:
     int screenWidth = 1920;
     int screenHeight = 1080;
 
-    Matrix tranformationMatrix();
-    Matrix projectionMatrix();
-    Matrix viewportMatrix();
+    Matrix tranformationMatrix() const;
+    Matrix projectionMatrix() const;
+    Matrix viewportMatrix() const;
 } typedef Camera;

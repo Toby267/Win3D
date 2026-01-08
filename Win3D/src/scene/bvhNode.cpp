@@ -53,14 +53,14 @@ bvhNode::~bvhNode() {
     //this doesn't own the data, the scene class does
 }
 
-bool bvhNode::hit(Ray& ray) {
+bool bvhNode::hit(Ray& ray) const {
     if (!boundingBox.intersect(ray))
         return false;
 
     return data && data->hit(ray) || left && left->hit(ray) || right && right->hit(ray);
 }
 
-void bvhNode::print() {
+void bvhNode::print() const {
     std::cout << "aabb: " << boundingBox.a << ", " << boundingBox.b << '\n';
     if (left != nullptr) left->print();
     if (right != nullptr) right->print();

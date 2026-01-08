@@ -16,7 +16,7 @@ aabb::aabb(aabb b1, aabb b2) {
     b.z() = b1.b.z() > b2.b.z() ? b1.b.z() : b2.b.z();
 }
 
-bool aabb::intersect(Ray& ray) {
+bool aabb::intersect(Ray& ray) const {
     //calculate the t intervals
     Vector t0 = (a - ray.origin) / ray.direction;
     Vector t1 = (b - ray.origin) / ray.direction;
@@ -40,11 +40,11 @@ bool aabb::intersect(Ray& ray) {
     return true;
 }
 
-float aabb::surfaceArea() {
+float aabb::surfaceArea() const {
     Vector d = a-b;
     return 2 * (d.x() * d.y() + d.x() * d.z() + d.y() * d.z());
 }
 
-Vector aabb::centroid() {
+Vector aabb::centroid() const {
     return (a + b) / 2;
 }

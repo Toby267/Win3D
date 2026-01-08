@@ -32,7 +32,7 @@ void Window::update(const std::vector<unsigned char>& renderBuffer) {
 }
 
 //returns whether or not the window is still 'alive'
-bool Window::isAlive() {
+bool Window::isAlive() const {
     return alive.load();
 }
 

@@ -16,9 +16,9 @@ public:
     Bitmap3D(int width, int height);
 
     //getters/setters
-    const std::vector<unsigned char>& getFrameBuffer();
-    int getWidth();
-    int getHeight();
+    const std::vector<unsigned char>& getFrameBuffer() const {return frameBuffer; };
+    int getWidth() const {return height; };
+    int getHeight() const { return width; };
 
     //public methods
     void clear();
