@@ -2,6 +2,7 @@
 
 #include "scene/Mesh.hpp"
 #include "scene/Aabb.hpp"
+
 #include <vector>
 
 //has instance(s) of either left, right, left & right, or just data
@@ -16,13 +17,15 @@ private:
     Mesh* data = nullptr;
 
 public:
+    //constructors/destructor
     BvhNode(std::vector<Mesh*> objects);
-
     ~BvhNode();
 
+    //public methods
     bool hit(Ray& ray) const;
     void print() const;
 
 private:
+    //private methods
     float sweepSurfaceAreaHeuristic(std::vector<Mesh*>& axisOrderedObjects, int i);
 };

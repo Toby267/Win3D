@@ -1,6 +1,11 @@
 #include "scene/Scene.hpp"
 #include "scene/BvhNode.hpp"
+
 #include <vector>
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Scene::Scene(int screenWidth, int screenHeight) {
     camera.screenHeight = screenHeight;
@@ -15,6 +20,14 @@ Scene::~Scene() {
     if (tree) delete tree;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const Camera& Scene::getCam() const {
+    return camera;
+}
+
 std::vector<Mesh> Scene::getObjects() const {
     std::vector<Mesh> obs{};
     
@@ -22,6 +35,14 @@ std::vector<Mesh> Scene::getObjects() const {
         obs.emplace_back(*m);
 
     return obs;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Mesh* Scene::addObject(Mesh* mesh) {
+    return objects.emplace_back(mesh);
 }
 
 void Scene::prepare() {
@@ -43,12 +64,4 @@ void Scene::cleanup() {
     }
 
     delete tree;
-}
-
-Mesh* Scene::addObject(Mesh* mesh) {
-    return objects.emplace_back(mesh);
-}
-
-const Camera& Scene::getCam() const {
-    return camera;
 }

@@ -8,10 +8,6 @@
 
 class Engine {
 private:
-    // scene (in terms of objects and lights and the such)
-    // cameras (one for raster, one for ray tracing, etc)
-    // window
-
     const int WIDTH = 640;
     const int HEIGHT = 480;
 
@@ -25,7 +21,9 @@ private:
     Bitmap3D bitmap{WIDTH, HEIGHT};
 
 public:
+    //getters/setters
+    Scene& getScene() { return scene; };
+
+    //public methods
     void drawCall();
-    
-    Scene& getScene();
 };

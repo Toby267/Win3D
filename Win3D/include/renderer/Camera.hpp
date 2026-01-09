@@ -22,6 +22,7 @@ struct Camera {
     int screenWidth = 1920;
     int screenHeight = 1080;
 
+    //methods
     Matrix tranformationMatrix() const;
     Matrix projectionMatrix() const;
     Matrix viewportMatrix() const;

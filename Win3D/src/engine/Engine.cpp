@@ -1,5 +1,10 @@
 #include "engine/Engine.hpp"
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//performs a dracall, drawing a frame into the bitmap
 void Engine::drawCall() {
     bitmap.clear();
 
@@ -11,8 +16,4 @@ void Engine::drawCall() {
     scene.cleanup();
 
     window.update(bitmap.getFrameBuffer());
-}
-
-Scene& Engine::getScene() {
-    return scene;
 }

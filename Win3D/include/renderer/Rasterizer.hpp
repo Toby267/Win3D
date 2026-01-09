@@ -8,8 +8,10 @@ private:
     Scene& scene;
 
 public:
+    //constructors/destructor
     Rasterizer(Scene& sceneRef);
 
+    //public methods
     void rasterize(Bitmap3D& bmap);
 
 private:

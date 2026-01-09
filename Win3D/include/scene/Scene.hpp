@@ -3,6 +3,7 @@
 #include "renderer/Camera.hpp"
 #include "scene/Mesh.hpp"
 #include "scene/BvhNode.hpp"
+
 #include <vector>
 
 class Scene {
@@ -13,17 +14,19 @@ private:
     BvhNode* tree = nullptr;
 
 public:
+    //constructors/destructor
     Scene(int screenWidth, int screenHeight);
     Scene() = default;
     ~Scene();
 
-    void prepare();
-    bool intersect(Ray& ray) const;
-    void cleanup();
-
+    //getters/setters
+    const Camera& getCam() const;
+    std::vector<Mesh> getObjects() const;
+    
+    //public methods
     Mesh* addObject(Mesh* mesh);
 
-    //dont need the rest i think
-    std::vector<Mesh> getObjects() const;
-    const Camera& getCam() const;
+    void prepare();
+    bool intersect(Ray& ray) const;
+    void cleanup();    
 };
