@@ -1,11 +1,11 @@
-#include "scene/bvhNode.hpp"
-#include "scene/aabb.hpp"
+#include "scene/BvhNode.hpp"
+#include "scene/Aabb.hpp"
 
 #include <algorithm>
 #include <iostream>
 #include <vector>
 
-bvhNode::bvhNode(std::vector<Mesh*> objects) {
+BvhNode::BvhNode(std::vector<Mesh*> objects) {
    // step 1 - if is 1 or 2 objects create them manually then return
    if (objects.size() == 1) {
        data = objects[0];
@@ -13,16 +13,16 @@ bvhNode::bvhNode(std::vector<Mesh*> objects) {
        return;
    }
    else if (objects.size() == 2) {
-       left = new bvhNode({objects[0]});
-       right = new bvhNode({objects[1]});
-       boundingBox = aabb(objects[0]->calcBBox(), objects[1]->calcBBox());
+       left = new BvhNode({objects[0]});
+       right = new BvhNode({objects[1]});
+       boundingBox = Aabb(objects[0]->calcBBox(), objects[1]->calcBBox());
        return;
    }
 
    // step 2 - work out best split, and split
    boundingBox = objects[0]->calcBBox();
    for (int i = 1; i < objects.size(); i++) {
-       boundingBox = aabb(boundingBox, objects[i]->calcBBox());
+       boundingBox = Aabb(boundingBox, objects[i]->calcBBox());
    }
 
    std::sort(objects.begin(), objects.end(), [](Mesh* a, Mesh* b) {
@@ -43,30 +43,30 @@ bvhNode::bvhNode(std::vector<Mesh*> objects) {
        return a->calcBBox().centroid().x() > b->calcBBox().centroid().x();
    });
 
-   left = new bvhNode({objects.begin(), objects.begin()+sahIndex});
-   right = new bvhNode({objects.begin()+sahIndex, objects.end()});
+   left = new BvhNode({objects.begin(), objects.begin()+sahIndex});
+   right = new BvhNode({objects.begin()+sahIndex, objects.end()});
 }
 
-bvhNode::~bvhNode() {
+BvhNode::~BvhNode() {
     if (left) delete left;
     if (right) delete right;
     //this doesn't own the data, the scene class does
 }
 
-bool bvhNode::hit(Ray& ray) const {
+bool BvhNode::hit(Ray& ray) const {
     if (!boundingBox.intersect(ray))
         return false;
 
     return data && data->hit(ray) || left && left->hit(ray) || right && right->hit(ray);
 }
 
-void bvhNode::print() const {
+void BvhNode::print() const {
     std::cout << "aabb: " << boundingBox.a << ", " << boundingBox.b << '\n';
     if (left != nullptr) left->print();
     if (right != nullptr) right->print();
 }
 
-float bvhNode::sweepSurfaceAreaHeuristic(std::vector<Mesh*>& objects, int index) {
+float BvhNode::sweepSurfaceAreaHeuristic(std::vector<Mesh*>& objects, int index) {
     // return f(i) = LSA(i) * i + RSA(i) * (N-i)
 
     float lsa = 0, rsa = 0;

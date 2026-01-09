@@ -1,8 +1,8 @@
 #pragma once
 
 #include "renderer/Camera.hpp"
-#include "scene/meshes/Mesh.hpp"
-#include "scene/bvhNode.hpp"
+#include "scene/Mesh.hpp"
+#include "scene/BvhNode.hpp"
 #include <vector>
 
 class Scene {
@@ -10,7 +10,7 @@ private:
     std::vector<Mesh*> objects{};
     Camera camera{};
 
-    bvhNode* tree = nullptr;
+    BvhNode* tree = nullptr;
 
 public:
     Scene(int screenWidth, int screenHeight);

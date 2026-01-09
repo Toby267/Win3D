@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "renderer/Ray.hpp"
-#include "scene/aabb.hpp"
+#include "scene/Aabb.hpp"
 #include "util/Matrix.hpp"
 #include "util/Vector.hpp"
 #include "util/Colour.hpp"
@@ -49,7 +49,7 @@ public:
 
     void reset();
     void clip();
-    aabb calcBBox() const;
+    Aabb calcBBox() const;
     bool hit(Ray& ray) const;
 
     //operator overloads

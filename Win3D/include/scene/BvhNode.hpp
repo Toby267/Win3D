@@ -1,24 +1,24 @@
 #pragma once
 
-#include "scene/meshes/Mesh.hpp"
-#include "scene/aabb.hpp"
+#include "scene/Mesh.hpp"
+#include "scene/Aabb.hpp"
 #include <vector>
 
 //has instance(s) of either left, right, left & right, or just data
 //always has an aabb
-class bvhNode {
+class BvhNode {
 private:
-    aabb boundingBox;
+    Aabb boundingBox;
 
-    bvhNode* left = nullptr;
-    bvhNode* right = nullptr;
+    BvhNode* left = nullptr;
+    BvhNode* right = nullptr;
 
     Mesh* data = nullptr;
 
 public:
-    bvhNode(std::vector<Mesh*> objects);
+    BvhNode(std::vector<Mesh*> objects);
 
-    ~bvhNode();
+    ~BvhNode();
 
     bool hit(Ray& ray) const;
     void print() const;

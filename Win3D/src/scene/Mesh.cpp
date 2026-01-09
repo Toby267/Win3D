@@ -1,4 +1,4 @@
-#include "scene/meshes/Mesh.hpp"
+#include "scene/Mesh.hpp"
 #include "util/Vector.hpp"
 
 #include <iostream>
@@ -87,7 +87,7 @@ void Mesh::clip() {
     if (xMax < -1 || yMax < -1 || zMax < -1) triangles.clear();
 }
 
-aabb Mesh::calcBBox() const {
+Aabb Mesh::calcBBox() const {
     constexpr float MIN = std::numeric_limits<float>::lowest();
     constexpr float MAX = std::numeric_limits<float>::max();
     
@@ -104,7 +104,7 @@ aabb Mesh::calcBBox() const {
         if (vertex.z() < min.z()) min.z() = vertex.z();
     }
 
-    return aabb(min, max);
+    return Aabb(min, max);
 }
 
 //TODO: make this calculate the colour based on uv coordinates

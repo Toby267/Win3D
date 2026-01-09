@@ -1,12 +1,13 @@
-#include "scene/aabb.hpp"
+#include "scene/Aabb.hpp"
+
 #include "util/Vector.hpp"
 #include <cassert>
 
-aabb::aabb(Vector min, Vector max): a(min), b(max) {
+Aabb::Aabb(Vector min, Vector max): a(min), b(max) {
     assert(min.getLength() == 3 && max.getLength() == 3);
 }
 
-aabb::aabb(aabb b1, aabb b2) {
+Aabb::Aabb(Aabb b1, Aabb b2) {
     a.x() = b1.a.x() < b2.a.x() ? b1.a.x() : b2.a.x();
     a.y() = b1.a.y() < b2.a.y() ? b1.a.y() : b2.a.y();
     a.z() = b1.a.z() < b2.a.z() ? b1.a.z() : b2.a.z();
@@ -16,7 +17,7 @@ aabb::aabb(aabb b1, aabb b2) {
     b.z() = b1.b.z() > b2.b.z() ? b1.b.z() : b2.b.z();
 }
 
-bool aabb::intersect(Ray& ray) const {
+bool Aabb::intersect(Ray& ray) const {
     //calculate the t intervals
     Vector t0 = (a - ray.origin) / ray.direction;
     Vector t1 = (b - ray.origin) / ray.direction;
@@ -40,11 +41,11 @@ bool aabb::intersect(Ray& ray) const {
     return true;
 }
 
-float aabb::surfaceArea() const {
+float Aabb::surfaceArea() const {
     Vector d = a-b;
     return 2 * (d.x() * d.y() + d.x() * d.z() + d.y() * d.z());
 }
 
-Vector aabb::centroid() const {
+Vector Aabb::centroid() const {
     return (a + b) / 2;
 }

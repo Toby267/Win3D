@@ -210,6 +210,7 @@ double Vector::dotProduct(const Vector& lhs, const Vector& rhs) {
     return retVal;
 }
 
+//assumes the vectors origin is the world origin
 Vector Vector::unitNormal(const Vector& lhs, const Vector& rhs) {
     Vector retVal = crossProduct(lhs, rhs);
     return retVal / retVal.magnitude();

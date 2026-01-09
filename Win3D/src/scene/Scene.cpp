@@ -1,5 +1,5 @@
 #include "scene/Scene.hpp"
-#include "scene/bvhNode.hpp"
+#include "scene/BvhNode.hpp"
 #include <vector>
 
 Scene::Scene(int screenWidth, int screenHeight) {
@@ -30,7 +30,7 @@ void Scene::prepare() {
         mesh->applyAffineTransform(camera.tranformationMatrix());
     }
 
-    tree = new bvhNode{objects};
+    tree = new BvhNode{objects};
 }
 
 bool Scene::intersect(Ray& ray) const {
