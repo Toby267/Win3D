@@ -15,8 +15,8 @@
  * @param width     the width of the bitmap
  * @param height    the height of the bitmap
  */
-Bitmap3D::Bitmap3D(int width, int height)
-    : width(width), height(height)
+Bitmap3D::Bitmap3D(int w, int h)
+    : width(w), height(h)
 {
     frameBuffer = std::vector<unsigned char>(width*height*4, 0);
     zBuffer = std::vector<double>(width*height, DBL_MAX);

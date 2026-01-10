@@ -15,7 +15,7 @@ private:
 
     std::atomic<bool> hasUpdated;
     std::atomic<bool> alive;
-    std::thread t;
+    std::thread thread;
 
 public:
     //constructors/destructor

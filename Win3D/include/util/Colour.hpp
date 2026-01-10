@@ -6,12 +6,12 @@
 
 class Colour {
 private:
-    Vector vect;
+    Vector data;
 public:
     //constructors/destructor
     Colour();
-    Colour(int r, int g, int b, int a);
-    Colour(int r, int g, int b);
+    Colour(int red, int green, int blue, int alpha);
+    Colour(int red, int green, int blue);
 
     //getters/setters
     double& r();
@@ -35,7 +35,7 @@ public:
     Colour operator*(double other) const;
     Colour operator/(double other) const;
 
-    friend std::ostream& operator<<(std::ostream& os, const Colour& c);
+    friend std::ostream& operator<<(std::ostream& os, const Colour& colour);
 
     //static methods
     static Colour red(), green(), blue(), cyan(), magenta(), yellow();

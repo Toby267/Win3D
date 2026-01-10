@@ -22,6 +22,6 @@ public:
 
     //public methods
     void clear();
-    void drawPixel(int x, int y, int z, Colour c);
-    void setPixel(int x, int y, Colour c);
+    void drawPixel(int x, int y, int z, Colour colour);
+    void setPixel(int x, int y, Colour colour);
 };

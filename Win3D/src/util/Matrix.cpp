@@ -13,12 +13,12 @@
 // * ------------------------------- [ CONSTRUCTORS/DESCTUCTOR/RULE OF 5 ] ------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Matrix::Matrix(int rows, int columns) : rows(rows), columns(columns) {}
+Matrix::Matrix(int r, int c) : rows(r), columns(c) {}
 
 //const reference so that im not copying each vector in the array
-Matrix::Matrix(int rows, const Vector (&a)[]) : rows(rows), columns(a[0].getLength()) {
-    for (int i = 0; i < rows; i++)
-        mat[i] = a[i];
+Matrix::Matrix(int r, const Vector (&a)[]) : rows(r), columns(a[0].getLength()) {
+    for (int i = 0; i < r; i++)
+        data[i] = a[i];
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,13 +40,13 @@ Vector& Matrix::operator[](int i) {
     if (i >= rows || i < 0)
         throw std::out_of_range(std::string("Index: " + std::to_string(i) + " out of range of Matrix"));
     
-    return mat[i];
+    return data[i];
 }
 const Vector& Matrix::operator[](int i) const {
     if (i >= rows || i < 0)
         throw std::out_of_range(std::string("Index: " + std::to_string(i) + " out of range of Matrix"));
     
-    return mat[i];
+    return data[i];
 }
 
 Matrix Matrix::operator*(const Matrix& other) const {
@@ -57,7 +57,7 @@ Matrix Matrix::operator*(const Matrix& other) const {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < other.columns; j++) {
             for (int k = 0; k < other.rows; k++)  {
-                matrix[i][j] += mat[i][k] * other[k][j];
+                matrix[i][j] += data[i][k] * other[k][j];
             }
         }
     }
@@ -71,17 +71,17 @@ Vector Matrix::operator*(const Vector& other) const {
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
-            vector[i] += mat[i][j] * other[j];
+            vector[i] += data[i][j] * other[j];
         }
     }
 
     return vector;
 }
-std::ostream& operator<<(std::ostream& os, const Matrix& m) {
+std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
     os << "\n";
 
-    for (int i = 0; i < m.rows; i++)
-        os << "|" << m[i] << "|\n";
+    for (int i = 0; i < matrix.rows; i++)
+        os << "|" << matrix[i] << "|\n";
 
     return os;
 }
@@ -129,9 +129,9 @@ Matrix Matrix::roll(double rad) {
         Vector{0,    0, 0, 1}
     });
 }
-Matrix Matrix::pitch(double rad) {
-    double ca = std::cos(rad);
-    double sa = std::sin(rad);
+Matrix Matrix::pitch(double radians) {
+    double ca = std::cos(radians);
+    double sa = std::sin(radians);
     double nsa = -1.0 * sa;
     return Matrix(4, (Vector[]){
         Vector{1,  0,   0, 0},
@@ -140,9 +140,9 @@ Matrix Matrix::pitch(double rad) {
         Vector{0,  0,   0, 1}
     });
 }
-Matrix Matrix::yaw(double rad) {
-    double ca = std::cos(rad);
-    double sa = std::sin(rad);
+Matrix Matrix::yaw(double radians) {
+    double ca = std::cos(radians);
+    double sa = std::sin(radians);
     double nsa = -1.0 * sa;
     return Matrix(4, (Vector[]){
         Vector{ca,  0, sa, 0},

@@ -5,8 +5,8 @@
 #include "renderer/Renderer.hpp"
 #include "scene/Scene.hpp"
 
-Engine::Engine(int width, int height)
-    : scene(width, height), window(width, height), bitmap(width, height)
+Engine::Engine(int w, int h)
+    : scene(w, h), window(w, h), bitmap(w, h)
 {
 
 }

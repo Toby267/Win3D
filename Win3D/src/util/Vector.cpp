@@ -11,38 +11,38 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Vector::Vector(int length) : length(length) {}
-Vector::Vector(double x, double y) : length(2), vect(x, y, 0, 0) {}
-Vector::Vector(double x, double y, double z) : length(3), vect(x, y, z, 0) {}
-Vector::Vector(double x, double y, double z, double w) : length(4), vect(x, y, z, w) {}
+Vector::Vector(double x, double y) : length(2), data(x, y, 0, 0) {}
+Vector::Vector(double x, double y, double z) : length(3), data(x, y, z, 0) {}
+Vector::Vector(double x, double y, double z, double w) : length(4), data(x, y, z, w) {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 double& Vector::x() {
-    return vect[0];
+    return data[0];
 }
 double& Vector::y(){
-    return vect[1];
+    return data[1];
 }
 double& Vector::z(){
-    return vect[2];
+    return data[2];
 }
 double& Vector::w() {
-    return vect[3];
+    return data[3];
 }
 
 const double& Vector::x() const {
-    return vect[0];
+    return data[0];
 }
 const double& Vector::y() const {
-    return vect[1];
+    return data[1];
 }
 const double& Vector::z() const {
-    return vect[2];
+    return data[2];
 }
 const double& Vector::w() const {
-    return vect[3];
+    return data[3];
 }
 
 int Vector::getLength() const {
@@ -52,7 +52,7 @@ double Vector::magnitude() const {
     double retVal = 0;
 
     for(int i = 0; i < length; i++)
-        retVal += vect[i] * vect[i];
+        retVal += data[i] * data[i];
 
     return std::sqrt(retVal);
 }
@@ -65,7 +65,7 @@ Vector Vector::normalise() {
     double mag = magnitude();
 
     for (int i = 0; i < length; i++)
-        vect[i] /= mag;
+        data[i] /= mag;
 
     return *this;
 }
@@ -82,20 +82,20 @@ double& Vector::operator[](int i) {
     if (i >= length || i < 0)
         throw std::out_of_range(std::string("Index: " + std::to_string(i) + " out of range of Vector or Matrix"));
     
-    return vect[i];
+    return data[i];
 }
 const double& Vector::operator[](int i) const {
     if (i >= length || i < 0)
         throw std::out_of_range(std::string("Index: " + std::to_string(i) + " out of range of Vector or Matrix"));
     
-    return vect[i];
+    return data[i];
 }
 
 Vector Vector::operator*(double other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
-        vector[i] = vect[i] * other;
+        vector[i] = data[i] * other;
 
     return vector;
 }
@@ -103,7 +103,7 @@ Vector Vector::operator/(double other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
-        vector[i] = vect[i] / other;
+        vector[i] = data[i] / other;
 
     return vector;
 }
@@ -111,7 +111,7 @@ Vector Vector::operator+(double other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
-        vector[i] = vect[i] + other;
+        vector[i] = data[i] + other;
 
     return vector;
 }
@@ -119,7 +119,7 @@ Vector Vector::operator-(double other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
-        vector[i] = vect[i] - other;
+        vector[i] = data[i] - other;
 
     return vector;
 }
@@ -128,7 +128,7 @@ Vector Vector::operator*(const Vector& other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
-        vector[i] = vect[i] * other[i];
+        vector[i] = data[i] * other[i];
 
     return vector;
 }
@@ -136,7 +136,7 @@ Vector Vector::operator/(const Vector& other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
-        vector[i] = vect[i] / other[i];
+        vector[i] = data[i] / other[i];
 
     return vector;
 }
@@ -144,7 +144,7 @@ Vector Vector::operator+(const Vector& other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
-        vector[i] = vect[i] + other[i];
+        vector[i] = data[i] + other[i];
 
     return vector;
 }
@@ -152,7 +152,7 @@ Vector Vector::operator-(const Vector& other) const {
     Vector vector(length);
     
     for (int i = 0; i < length; i++)
-        vector[i] = vect[i] - other[i];
+        vector[i] = data[i] - other[i];
 
     return vector;
 }
@@ -161,7 +161,7 @@ Vector Vector::operator+() const {
     Vector vector(length);
 
     for (int i = 0; i < length; i++)
-        vector[i] = +vect[i];
+        vector[i] = +data[i];
 
     return vector;
 }
@@ -169,16 +169,16 @@ Vector Vector::operator-() const {
     Vector vector(length);
 
     for (int i = 0; i < length; i++)
-        vector[i] = -vect[i];
+        vector[i] = -data[i];
 
     return vector;
 }
 
-std::ostream& operator<<(std::ostream& os, const Vector& v) {
-    os << "(" << v[0];
+std::ostream& operator<<(std::ostream& os, const Vector& vector) {
+    os << "(" << vector[0];
 
-    for (int i = 1; i < v.length; i++)
-        os << ", " << v[i];
+    for (int i = 1; i < vector.length; i++)
+        os << ", " << vector[i];
     os << ")";
 
     return os;

@@ -4,7 +4,7 @@
 
 class Vector {
 private:
-    double vect[4]{};
+    double data[4]{};
     int length{4};
 public:
     //constructors/destructor/rule of 5
@@ -49,7 +49,7 @@ public:
     Vector operator+() const;
     Vector operator-() const;
 
-    friend std::ostream& operator<<(std::ostream& os, const Vector& v);
+    friend std::ostream& operator<<(std::ostream& os, const Vector& vector);
 
     //static methods
     static Vector crossProduct(const Vector& lhs, const Vector& rhs);

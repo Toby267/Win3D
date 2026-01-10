@@ -4,8 +4,9 @@
 
 class Matrix {
 private:
-    Vector mat[4]{};
-    int rows = 4, columns = 4;
+    Vector data[4]{};
+    int rows = 4;
+    int columns = 4;
 
 public:
     //constructors/destructor/rule of 5
@@ -24,7 +25,7 @@ public:
     Matrix operator*(const Matrix& other) const;
     Vector operator*(const Vector& other) const;
 
-    friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
+    friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
 
     //static methods
     static Matrix translate(double x, double y, double z);
@@ -32,9 +33,9 @@ public:
     static Matrix identity(int size);
 
     static Matrix rotation(double roll, double pitch, double yaw);
-    static Matrix roll(double rad);
-    static Matrix pitch(double rad);
-    static Matrix yaw(double rad);
+    static Matrix roll(double radians);
+    static Matrix pitch(double radians);
+    static Matrix yaw(double radians);
 
     static Matrix orthographic(double near, double far, double top, double right);
     static Matrix perspective(double near, double far, double top, double right, double fov);

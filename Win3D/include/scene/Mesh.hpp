@@ -38,14 +38,14 @@ public:
     std::vector<Colour>& getColours();
     std::vector<Vector>& getTriangles();
 
-    void setScale(Matrix s);
-    void setTranslation(Matrix t);
-    void setRotation(Matrix r);
+    void setScale(Matrix scale);
+    void setTranslation(Matrix translation);
+    void setRotation(Matrix rotation);
 
     //general public methods
     void toWorldSpace();
-    void applyAffineTransform(Matrix m);
-    void applyTransform(Matrix m);
+    void applyAffineTransform(Matrix matrix);
+    void applyTransform(Matrix matrix);
 
     void reset();
     void clip();
@@ -53,12 +53,12 @@ public:
     bool hit(Ray& ray) const;
 
     //operator overloads
-    friend std::ostream& operator<<(std::ostream& os, const Mesh& m);
+    friend std::ostream& operator<<(std::ostream& os, const Mesh& matrix);
 
     //static methods
-    static Mesh* cube(Colour c);
-    static Mesh* icoSphereSmall(Colour c);
-    static Mesh* icoSphere(Colour c);
+    static Mesh* cube(Colour colour);
+    static Mesh* icoSphereSmall(Colour colour);
+    static Mesh* icoSphere(Colour colour);
 
 private:
     //private methods

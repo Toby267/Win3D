@@ -4,18 +4,18 @@
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Colour::Colour(int r, int g, int b, int a)
-    : vect(r, g, b, a)
+Colour::Colour(int red, int green, int blue, int alpha)
+    : data(red, green, blue, alpha)
 {
 
 }
-Colour::Colour(int r, int g, int b)
-    : vect(r, g, b, 255)
+Colour::Colour(int red, int green, int blue)
+    : data(red, green, blue, 255)
 {
 
 }
 Colour::Colour()
-    : vect(255, 255, 255, 255)
+    : data(255, 255, 255, 255)
 {
 
 }
@@ -26,29 +26,29 @@ Colour::Colour()
 
 
 double& Colour::r() {
-    return vect.x();
+    return data.x();
 }
 double& Colour::g() {
-    return vect.y();
+    return data.y();
 }
 double& Colour::b() {
-    return vect.z();
+    return data.z();
 }
 double& Colour::a() {
-    return vect.w();
+    return data.w();
 }
 
 const double& Colour::r() const {
-    return vect.x();
+    return data.x();
 }
 const double& Colour::g() const {
-    return vect.y();
+    return data.y();
 }
 const double& Colour::b() const {
-    return vect.z();
+    return data.z();
 }
 const double& Colour::a() const {
-    return vect.w();
+    return data.w();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -121,8 +121,8 @@ Colour Colour::operator/(double other) const {
     );
 }
 
-std::ostream& operator<<(std::ostream& os, const Colour& c) {
-    os << "RGBA: (" << c.r() << ", " << c.g() << ", " << c.b() << ", " << c.a() << ")";
+std::ostream& operator<<(std::ostream& os, const Colour& colour) {
+    os << "RGBA: (" << colour.r() << ", " << colour.g() << ", " << colour.b() << ", " << colour.a() << ")";
     return os;
 }
 

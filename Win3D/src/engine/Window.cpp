@@ -10,14 +10,14 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //default constructor, sets up the window with the given width and height
-Window::Window(int width, int height) {
-    this->width = width;
-    this->height = height;
-    this->hasUpdated.store(false);
-    this->alive.store(true);
-    this->frameBuffer = new unsigned char[width*height*4];
+Window::Window(int w, int h) {
+    width = w;
+    height = h;
+    hasUpdated.store(false);
+    alive.store(true);
+    frameBuffer = new unsigned char[width*height*4];
     
-    t = std::thread(&Window::run, this, &frameBuffer[0], width, height);
+    thread = std::thread(&Window::run, this, &frameBuffer[0], width, height);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,7 +38,8 @@ bool Window::isAlive() const {
 
 //closes the window
 void Window::close() {
-    t.join();
+    thread.join();
+    delete[] frameBuffer;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,6 +73,5 @@ void Window::run(unsigned char* bmap, int width, int height) {
     }
     
     CloseWindow();
-    delete[] bmap;
     alive.store(false);
 }
