@@ -21,7 +21,9 @@ public:
 
     //getters/setters
     const Camera& getCam() const;
-    const std::vector<Mesh*>& getObjects() const;
+    const std::vector<Mesh*>& getObjects() const; //should find a way to just return the triangles straight up so that the rasterizer can't modify the meshes
+    //should use a memory arena or a big std::vector of triangles which the meshes and bvh tree point into
+    //the whole point of this class is to mange meshes/triangles in a memory efficient and time efficient manor
     
     //public methods
     Mesh* addObject(Mesh* mesh);
