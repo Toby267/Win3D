@@ -33,7 +33,7 @@ TODO:
  * Runs the application
  */
 Application::Application() {
-    Engine e{};
+    Engine e = Engine(1280, 720);
     Scene& scene = e.getScene();
 
     Mesh* cube1 = scene.addObject(Mesh::cube(Colour::blue()));

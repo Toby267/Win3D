@@ -1,5 +1,16 @@
 #include "engine/Engine.hpp"
 
+#include "engine/Bitmap3D.hpp"
+#include "engine/Window.hpp"
+#include "renderer/Renderer.hpp"
+#include "scene/Scene.hpp"
+
+Engine::Engine(int width, int height)
+    : scene(width, height), window(width, height), bitmap(width, height)
+{
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -9,10 +20,10 @@ void Engine::drawCall() {
     bitmap.clear();
 
     scene.toCameraSpace();
-    cameraRayTracer.trace(bitmap);
+    Renderer::rayTrace(bitmap, scene);
 
     scene.toViewportSpace();
-    // cameraRaster.rasterize(bitmap);
+    // Renderer::rasterize(bitmap, scene);
 
     scene.cleanup();
 

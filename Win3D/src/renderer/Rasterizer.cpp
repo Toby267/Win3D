@@ -1,9 +1,12 @@
-#include "renderer/Rasterizer.hpp"
+#include "renderer/Renderer.hpp"
 #include <vector>
 
-Rasterizer::Rasterizer(Scene& sceneRef) : scene(sceneRef) {
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}
+static void drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3);
+static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour c2);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
@@ -16,19 +19,19 @@ Rasterizer::Rasterizer(Scene& sceneRef) : scene(sceneRef) {
  * @param objects   the objects to rasterize
  * @param bmap      the bitmap to render onto
  */
-void Rasterizer::rasterize(Bitmap3D& bmap) {
+void Renderer::rasterize(Bitmap3D& bmap, const Scene& scene) {
     for (Mesh* obj : scene.getObjects()) {
         std::vector<Vector> vertices = obj->getVertices();
         std::vector<Colour> colours = obj->getColours();
     
         for (Vector t : obj->getTriangles()) {
-            this->drawTriangle(bmap, vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
+            drawTriangle(bmap, vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
         }
     }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
+// * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -39,7 +42,7 @@ void Rasterizer::rasterize(Bitmap3D& bmap) {
  * @param c1, c2, c3    the colours of the vertices
  * @param bmap          the bmap to render onto
  */
-void Rasterizer::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
+static void drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
     if (v1.x() > v2.x()) {
         Vector vTemp = v1;
         v1 = v2;
@@ -96,7 +99,7 @@ void Rasterizer::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, C
         Vector vertex2 = v1 + Vector(x, dBydx13.y() * x, dBydx13.z() * x, 0);
         Colour colour1 = c1 + Colour(drBydx12 * x, dgBydx12 * x, dbBydx12 * x, daBydx12 * x);
         Colour colour2 = c1 + Colour(drBydx13 * x, dgBydx13 * x, dbBydx13 * x, daBydx13 * x);
-        this->drawLine(bmap, vertex1, vertex2, colour1, colour2);
+        drawLine(bmap, vertex1, vertex2, colour1, colour2);
     }
     for (double x = 0; x < v2ToV3.x(); x++) {
         double x2 = v1ToV2.x() + x;
@@ -104,7 +107,7 @@ void Rasterizer::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, C
         Vector vertex2 = v1 + Vector(x2, dBydx13.y() * x2, dBydx13.z() * x2, 0);
         Colour colour1 = c2 + Colour(drBydx23 * x, dgBydx23 * x, dbBydx23 * x, daBydx23 * x);
         Colour colour2 = c1 + Colour(drBydx13 * x2, dgBydx13 * x2, dbBydx13 * x2, daBydx13 * x2);
-        this->drawLine(bmap, vertex1, vertex2, colour1, colour2);
+        drawLine(bmap, vertex1, vertex2, colour1, colour2);
     }
 }
 
@@ -117,7 +120,7 @@ void Rasterizer::drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, C
  * @param end       the coodinate of the end of the line
  * @param c1, c2    the colours of the start and end of the line
  */
-void Rasterizer::drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour c2) {
+static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour c2) {
     int x1 = start.x(), y1 = start.y(), z1 = start.z();
     int x2 = end.x(), y2 = end.y(), z2 = end.z();
 
