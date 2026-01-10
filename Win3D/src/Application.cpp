@@ -5,6 +5,8 @@
 #include <iostream>
 #include <numbers>
 
+//A Hybrid rasterizer Ray-Caster Renderer for Dynamic Scenes on the CPU
+
 /*
 TODO:
     - make the ray caster use the same fov as the rasterizer
