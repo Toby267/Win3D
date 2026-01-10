@@ -17,31 +17,11 @@ Rasterizer::Rasterizer(Scene& sceneRef) : scene(sceneRef) {
  * @param bmap      the bitmap to render onto
  */
 void Rasterizer::rasterize(Bitmap3D& bmap) {
-    for (Mesh obj : scene.getObjects()) {
-        //step 0 - crete a copy
-
-        //step 1 - transform the object into world space
-        // obj.toWorldSpace();
-
-        //step 2 - transform the objects to camera space
-        // obj.applyAffineTransform(scene.getCam().tranformationMatrix());
-
-        //step 3 - vertex shading
-
-        //step 3 - transform the objects to clip space
-        obj.applyTransform(scene.getCam().projectionMatrix());
-
-        //step 5 - clip the objects
-        obj.clip();
-
-        //step 6 - transform the objects to screen space
-        obj.applyAffineTransform(scene.getCam().viewportMatrix());
-
-        //step 7 - rasterize
-        std::vector<Vector> vertices = obj.getVertices();
-        std::vector<Colour> colours = obj.getColours();
+    for (Mesh* obj : scene.getObjects()) {
+        std::vector<Vector> vertices = obj->getVertices();
+        std::vector<Colour> colours = obj->getColours();
     
-        for (Vector t : obj.getTriangles()) {
+        for (Vector t : obj->getTriangles()) {
             this->drawTriangle(bmap, vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
         }
     }

@@ -54,6 +54,7 @@ void Bitmap3D::drawPixel(int x, int y, int z, Colour c) {
 }
 
 void Bitmap3D::setPixel(int x, int y, Colour c) {
+    if (x >= width || x < 0 || y >= height || y < 0) return;
     int i = 4 * (y * width + x);
     frameBuffer[i + 0] = c.r();
     frameBuffer[i + 1] = c.g();

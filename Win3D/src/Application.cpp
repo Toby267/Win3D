@@ -5,6 +5,24 @@
 #include <iostream>
 #include <numbers>
 
+/*
+TODO:
+    - make the ray caster use the same fov as the rasterizer
+    - make the rasterizer take in a std::vector of triangles instead of objects, that way the scene class handles all mesh transformations
+    - make the bvh sort based on a std::vector of triangles, it is more efficient this way and will compliment the above
+
+    - calculate base colour of a ray-triangle intersection based on its uv coordinates and vertex colours
+    - implement brdfs
+    - hook brdfs into the ray caster
+
+    - do some testing to get the caster super efficient and the perfect hyperparameters for bvh construction
+    - turn it into a hybrid raster caster renderer
+    - implement rasterizer optimisations and get it really efficient
+
+    - import blender objects and make some scenes
+    - implement thread pool for the caster
+*/
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

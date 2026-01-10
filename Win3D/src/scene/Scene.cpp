@@ -1,4 +1,5 @@
 #include "scene/Scene.hpp"
+#include "renderer/Camera.hpp"
 #include "scene/BvhNode.hpp"
 
 #include <vector>
@@ -9,7 +10,7 @@
 
 Scene::Scene(int screenWidth, int screenHeight) {
     camera.screenHeight = screenHeight;
-    camera.screenHeight = screenHeight;
+    camera.screenWidth = screenWidth;
 }
 
 Scene::~Scene() {
@@ -28,13 +29,8 @@ const Camera& Scene::getCam() const {
     return camera;
 }
 
-std::vector<Mesh> Scene::getObjects() const {
-    std::vector<Mesh> obs{};
-    
-    for (Mesh* m : objects)
-        obs.emplace_back(*m);
-
-    return obs;
+const std::vector<Mesh*>& Scene::getObjects() const {
+    return objects;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,13 +41,21 @@ Mesh* Scene::addObject(Mesh* mesh) {
     return objects.emplace_back(mesh);
 }
 
-void Scene::prepare() {
+void Scene::toCameraSpace() {
     for (Mesh* mesh : objects) {
         mesh->toWorldSpace();
         mesh->applyAffineTransform(camera.tranformationMatrix());
     }
 
     tree = new BvhNode{objects};
+}
+
+void Scene::toViewportSpace() {
+    for (Mesh* mesh : objects) {
+        mesh->applyTransform(camera.projectionMatrix());
+        mesh->clip();
+        mesh->applyAffineTransform(camera.viewportMatrix());
+    }
 }
 
 bool Scene::intersect(Ray& ray) const {

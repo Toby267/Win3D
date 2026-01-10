@@ -8,10 +8,11 @@
 void Engine::drawCall() {
     bitmap.clear();
 
-    scene.prepare();
-
-    // cameraRaster.rasterize(bitmap);
+    scene.toCameraSpace();
     cameraRayTracer.trace(bitmap);
+
+    scene.toViewportSpace();
+    // cameraRaster.rasterize(bitmap);
 
     scene.cleanup();
 

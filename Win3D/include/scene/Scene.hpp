@@ -21,12 +21,14 @@ public:
 
     //getters/setters
     const Camera& getCam() const;
-    std::vector<Mesh> getObjects() const;
+    const std::vector<Mesh*>& getObjects() const;
     
     //public methods
     Mesh* addObject(Mesh* mesh);
 
-    void prepare();
+    void toCameraSpace();
+    void toViewportSpace();
+    
     bool intersect(Ray& ray) const;
     void cleanup();    
 };
