@@ -4,7 +4,6 @@
 #include "renderer/Ray.hpp"
 
 struct Aabb {
-public:
     Vector a = Vector(0, 0, 0);
     Vector b = Vector(0, 0, 0);
 
@@ -15,7 +14,6 @@ public:
 
     //public methods
     bool intersect(Ray& ray) const;
-
     float surfaceArea() const;
     Vector centroid() const;
 };

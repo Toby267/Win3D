@@ -4,7 +4,7 @@
 
 #include <ostream>
 
-struct Colour {
+class Colour {
 private:
     Vector vect;
 public:
