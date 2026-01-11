@@ -18,7 +18,7 @@ TODO:
     - hook brdfs into the ray caster
 
     - do some testing to get the caster super efficient and the perfect hyperparameters for bvh construction
-    - turn it into a hybrid raster caster renderer
+    - turn it into a hybrid raster caster renderer - only parameter i have left to sync between the two is fov (you can see a difference if screen dimensions is set to 720p)
     - implement rasterizer optimisations and get it really efficient
 
     - import blender objects and make some scenes
@@ -33,7 +33,7 @@ TODO:
  * Runs the application
  */
 Application::Application() {
-    Engine e = Engine(1280, 720);
+    Engine e = Engine(1920, 1080);
     Scene& scene = e.getScene();
 
     Mesh* cube1 = scene.addObject(Mesh::cube(Colour::blue()));

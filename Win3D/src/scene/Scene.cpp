@@ -9,6 +9,20 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Scene::Scene(int screenWidth, int screenHeight) {
+    //set up camera
+    camera.position = Vector(0, 0, 0, 1);
+    camera.direction = Vector(0, 0, 1, 0);
+    camera.up = Vector(0, 1, 0, 0);
+
+    //really only used to make scene management easier, but for now can be the same as the screen dimensions
+    camera.apperatureHeight = screenHeight;
+    camera.apperatureWidth = screenWidth;
+
+    camera.fieldOfView = 60.0/360.0 * 2.0*std::numbers::pi;
+
+    camera.nearFocalDistance = 1000;
+    camera.farFocalDistance = 3000;
+
     camera.screenHeight = screenHeight;
     camera.screenWidth = screenWidth;
 }

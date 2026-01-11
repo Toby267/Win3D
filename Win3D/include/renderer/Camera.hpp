@@ -4,23 +4,23 @@
 
 struct Camera {
     //position/orientation
-    Vector position = Vector(0, 0, 0, 1);
-    Vector direction = Vector(0, 0, 1, 0);
-    Vector up = Vector(0, 1, 0, 0);
+    Vector position;
+    Vector direction;
+    Vector up;
 
     //projection
-    double apperatureWidth = 1600;
-    double apperatureHeight = 900;
+    double apperatureWidth;
+    double apperatureHeight;
     
-    double fieldOfView = 60.0/360.0 * 2.0*std::numbers::pi;
+    double fieldOfView;
 
     //depth of field = farFocalDistance - nearFocalDistance
-    double nearFocalDistance = 1000;
-    double farFocalDistance = 3000;
+    double nearFocalDistance;
+    double farFocalDistance;
 
     //viewport
-    int screenWidth = 1920;
-    int screenHeight = 1080;
+    int screenWidth;
+    int screenHeight;
 
     //methods
     Matrix tranformationMatrix() const;

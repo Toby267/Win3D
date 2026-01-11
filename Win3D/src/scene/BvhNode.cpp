@@ -29,6 +29,7 @@ BvhNode::BvhNode(std::vector<Mesh*> objects) {
        boundingBox = Aabb(boundingBox, objects[i]->calcBBox());
    }
 
+   //TODO: this should by x, then y, then z to find the best split
    std::sort(objects.begin(), objects.end(), [](Mesh* a, Mesh* b) {
        return a->calcBBox().centroid().x() > b->calcBBox().centroid().x();
    });
