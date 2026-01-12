@@ -1,4 +1,5 @@
 #include "scene/Mesh.hpp"
+#include "scene/Materials.hpp"
 #include "util/Vector.hpp"
 
 #include <iostream>
@@ -111,6 +112,8 @@ Aabb Mesh::calcBBox() const {
 bool Mesh::hit(Ray& ray) const {
     for (const Vector& t : triangles) {
         if (mollerTrumboreIntersection(ray, t) != -1) {
+            // ray.col = MaterialVisitor.eval(material, Vector{}, Vector{}, Vector{});
+            
             return true;
         }
     }
