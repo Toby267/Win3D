@@ -17,12 +17,11 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
             Ray ray = Ray(
                 Vector(0, 0, 0, 1),
                 Vector(i, j, camera.nearFocalDistance, 0),//.normalise(),
-                Vector(i+x, camera.screenHeight-(j+y)),
                 Colour::blue()
             );
 
             if (scene.intersect(ray)) {
-                bmap.setPixel(ray.screenCoord.x(), ray.screenCoord.y(), ray.col);
+                bmap.setPixel(i+x, camera.screenHeight-(j+y), ray.col);
             }
         }
     }

@@ -5,11 +5,11 @@
 #include <cstdlib>
 #include <numbers>
 
-DisneyDiffuse::DisneyDiffuse(Colour c, double r, double s)
+Materials::DisneyDiffuse::DisneyDiffuse(Colour c, double r, double s)
     : baseColour(c), roughness(r), subsurface(s)
 { }
 
-Colour DisneyDiffuse::eval(Vector in, Vector out, Vector normal) {
+Colour Materials::DisneyDiffuse::eval(Vector in, Vector out, Vector normal) {
     Vector half = in + out / (in + out).magnitude();
     double cosIn = std::abs(Vector::dotProduct(normal, in));
     double cosOut = std::abs(Vector::dotProduct(normal, out));

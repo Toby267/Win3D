@@ -7,6 +7,5 @@ struct Ray {
     Vector origin;
     Vector direction;
 
-    Vector screenCoord;
     Colour col;
 } typedef Ray;
