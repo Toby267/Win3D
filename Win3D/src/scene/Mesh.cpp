@@ -129,47 +129,9 @@ bool Mesh::hit(Ray& ray) const {
 
     if (rec.t == FLOAT_MAX) return false;
 
-    std::cout << "================================\n";
-    std::cout << colours[triangles[0][0]] << '\n';
-    std::cout << colours[triangles[0][1]] << '\n';
-    std::cout << colours[triangles[0][2]] << '\n';
-
-    std::cout << rec.u << '\n';
-    std::cout << rec.v << '\n';
-    std::cout << (1 - rec.u - rec.v) << '\n';
-
-    ray.col = rec.c0 * rec.u + rec.c1 * rec.v + rec.c2 * (1 - rec.u - rec.v);
-
-    std::cout << ray.col << '\n';
-    std::cout << "================================\n";
-
-    // float u = 0.4, v = 0.3, w = 0.3;
-    // Colour c0 = Colour::red();
-    // Colour c1 = Colour::green();
-    // Colour c2 = Colour::blue();
-
-    // ray.col = c0 * u + c1 * v + c2 * w;
-    // std::cout << ray.col << '\n';
+    ray.col = rec.c1 * rec.u + rec.c2 * rec.v + rec.c0 * (1 - rec.u - rec.v);
 
     return rec.t != FLOAT_MAX;
-
-
-    /*
-    bool hit = false;
-    
-    for (const Vector& tri : triangles) {
-        float t = mollerTrumboreIntersection(ray, tri);
-        if (t != -1) return true;
-        if (t != -1 && t < ray.t) {
-            ray.t = t;
-            ray.colour = colours[tri[2]] * ray.u + colours[tri[1]] * ray.v + colours[tri[0]] * (1 - ray.u - ray.v);
-            std::cout << "u, v, w: " << ray.u << ", " << ray.v << ", " << (1 - ray.u - ray.v) << '\n';
-            hit = true;
-        }
-    }
-
-    return hit;
-    */
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
