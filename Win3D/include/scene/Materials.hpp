@@ -21,9 +21,6 @@
         // this way there are definitely efficiencies to be made since only subsets of the screen will need rays to be generated.
 
 
-// Wednesday's job:
-    // 1 - ray casting shading with barycentric coordiantes
-    // 2 - visitor interface for brdf's
 // Thursday's job:
     // 1 - disney diffuse working with single light source
     // 2 - some of the other brdfs done
@@ -37,8 +34,6 @@ struct DisneyDiffuse {
     double roughness;
     double subsurface;
 
-    Colour evaluate(Vector in, Vector out, Vector normal) const;
-
     DisneyDiffuse(Colour colour, double roughness, double subsurface);
 } typedef DisneyDiffuse;
 
@@ -46,8 +41,6 @@ struct DisneyMetal {
     Colour baseColour;
     double roughness;
     double anisotropic;
-
-    Colour evaluate(Vector in, Vector out, Vector normal) const;
 
 } typedef DisneyMetal;
 
@@ -62,8 +55,7 @@ struct visitor {
     Colour operator()(const DisneyMetal& material) const;
 };
 
-Colour eval1(const Material& mat, Vector& in, Vector& out, Vector& normal);
-Colour eval2(const Material& mat, Vector& in, Vector& out, Vector& normal);
+Colour eval(const Material& mat, Vector& in, Vector& out, Vector& normal);
 
 // struct DisneyBSDF {
 //     Colour baseColour;
