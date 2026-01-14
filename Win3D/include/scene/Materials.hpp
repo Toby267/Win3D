@@ -31,33 +31,39 @@
     // 1 - disney bsdf done
     // 2 - visitor interface working with multiple light sources
 
-namespace Materials {
-    struct DisneyDiffuse {
-        Colour baseColour;
-        double roughness;
-        double subsurface;
-    
-        DisneyDiffuse(Colour colour, double roughness, double subsurface);
-        Colour eval(Vector in, Vector out, Vector normal);
-    } typedef DisneyDiffuse;
-    
-    struct DisneyMetal {
-        Colour baseColour;
-        double roughness;
-        double anisotropic;
-    
-        Colour eval(Vector in, Vector out, Vector normal);
-    } typedef DisneyMetal;
-    
-    typedef std::variant<DisneyDiffuse, DisneyMetal> Shader;
-    
-    struct ShaderVisitor {
-        Colour eval(DisneyDiffuse& mat, Vector in, Vector out, Vector normal) {return mat.eval(in, out, normal);}
-        Colour eval(DisneyMetal& mat, Vector in, Vector out, Vector normal) {return mat.eval(in, out, normal);}
-    } typedef ShaderVisitor;
-    
-    extern ShaderVisitor visitor;
-}
+
+struct DisneyDiffuse {
+    Colour baseColour;
+    double roughness;
+    double subsurface;
+
+    Colour evaluate(Vector in, Vector out, Vector normal) const;
+
+    DisneyDiffuse(Colour colour, double roughness, double subsurface);
+} typedef DisneyDiffuse;
+
+struct DisneyMetal {
+    Colour baseColour;
+    double roughness;
+    double anisotropic;
+
+    Colour evaluate(Vector in, Vector out, Vector normal) const;
+
+} typedef DisneyMetal;
+
+typedef std::variant<DisneyDiffuse, DisneyMetal> Material;
+
+struct visitor {
+    const Vector& in;
+    const Vector& out;
+    const Vector& normal;
+
+    Colour operator()(const DisneyDiffuse& material) const;
+    Colour operator()(const DisneyMetal& material) const;
+};
+
+Colour eval1(const Material& mat, Vector& in, Vector& out, Vector& normal);
+Colour eval2(const Material& mat, Vector& in, Vector& out, Vector& normal);
 
 // struct DisneyBSDF {
 //     Colour baseColour;

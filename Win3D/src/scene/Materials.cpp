@@ -3,13 +3,60 @@
 #include "util/Vector.hpp"
 #include <cmath>
 #include <cstdlib>
+#include <iostream>
 #include <numbers>
 
-Materials::DisneyDiffuse::DisneyDiffuse(Colour c, double r, double s)
+DisneyDiffuse::DisneyDiffuse(Colour c, double r, double s)
     : baseColour(c), roughness(r), subsurface(s)
 { }
 
-Colour Materials::DisneyDiffuse::eval(Vector in, Vector out, Vector normal) {
+
+
+Colour visitor::operator()(const DisneyDiffuse& material) const {
+    // std::cout << "eval2\n";
+    return Colour::red();
+}
+Colour visitor::operator()(const DisneyMetal& material) const {
+    // std::cout << "eval2\n";
+    return Colour::red();
+}
+
+
+Colour DisneyMetal::evaluate(Vector in, Vector out, Vector normal) const {
+    // std::cout << "eval1\n";
+    return Colour::red();
+}
+Colour DisneyDiffuse::evaluate(Vector in, Vector out, Vector normal) const {
+    // std::cout << "eval1\n";
+    return Colour::red();
+}
+
+
+Colour eval1(const Material& mat, Vector& in, Vector& out, Vector& normal) {
+    return std::visit([in, out, normal](const auto& item){
+        return item.evaluate(in, out, normal);
+    }, mat);
+}
+
+Colour eval2(const Material& mat, Vector& in, Vector& out, Vector& normal) {
+    return std::visit(visitor{in, out, normal}, mat);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
     Vector half = in + out / (in + out).magnitude();
     double cosIn = std::abs(Vector::dotProduct(normal, in));
     double cosOut = std::abs(Vector::dotProduct(normal, out));
@@ -41,4 +88,4 @@ Colour Materials::DisneyDiffuse::eval(Vector in, Vector out, Vector normal) {
 
     //calculate
     return fBaseDiffuse * (1 - subsurface) + fSubsurface * fSubsurface;
-}
+*/

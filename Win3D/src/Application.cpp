@@ -1,7 +1,10 @@
 #include "Application.hpp"
 
 #include "engine/Engine.hpp"
+#include "scene/Materials.hpp"
 #include "scene/Mesh.hpp"
+#include "util/Colour.hpp"
+#include "util/Vector.hpp"
 #include <chrono>
 #include <iostream>
 #include <numbers>
@@ -36,6 +39,27 @@ TODO:
 Application::Application() {
     Engine e = Engine(1920, 1080);
     Scene& scene = e.getScene();
+
+    Vector a{};
+    Vector b{};
+    Vector c{};
+    Vector d{};
+
+    Material hi = DisneyDiffuse{Colour{}, 0.0, 0.0};
+    int val = 99999990;
+    auto start1 = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < val; i++)
+        Colour adskfas = eval1(hi, a, b, c);
+    auto middle = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < val; i++)
+        Colour adskfaa = eval2(hi, a, b, c);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> eval1Time = middle - start1;
+    std::chrono::duration<double> eval2Time = end - middle;
+    std::cout << "eval1: " << eval1Time << '\n';
+    std::cout << "eval2: " << eval2Time << '\n';
+    return;
+    std::cin.get();
 
     // Mesh* triangle = scene.addObject(Mesh::triangle());
     // triangle->setTranslation(Matrix::translate(0, 0, 2800));
