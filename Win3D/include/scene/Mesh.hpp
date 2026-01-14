@@ -59,6 +59,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Mesh& matrix);
 
     //static methods
+    static Mesh* triangle();
     static Mesh* cube(Colour colour);
     static Mesh* icoSphereSmall(Colour colour);
     static Mesh* icoSphere(Colour colour);

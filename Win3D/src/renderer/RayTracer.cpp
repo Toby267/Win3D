@@ -2,6 +2,8 @@
 
 #include "renderer/Ray.hpp"
 #include "scene/Scene.hpp"
+#include "util/Colour.hpp"
+#include <limits>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
@@ -23,6 +25,7 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
             if (scene.intersect(ray)) {
                 bmap.setPixel(i+x, camera.screenHeight-(j+y), ray.col);
             }
+
         }
     }
 }

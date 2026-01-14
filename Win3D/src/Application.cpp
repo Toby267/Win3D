@@ -1,6 +1,7 @@
 #include "Application.hpp"
 
 #include "engine/Engine.hpp"
+#include "scene/Mesh.hpp"
 #include <chrono>
 #include <iostream>
 #include <numbers>
@@ -36,8 +37,12 @@ Application::Application() {
     Engine e = Engine(1920, 1080);
     Scene& scene = e.getScene();
 
-    Mesh* cube1 = scene.addObject(Mesh::cube(Colour::blue()));
-    cube1->setTranslation(Matrix::translate(0, 0, 2800));
+    Mesh* triangle = scene.addObject(Mesh::triangle());
+    triangle->setTranslation(Matrix::translate(0, 0, 2800));
+    triangle->setScale(Matrix::scale(500, 500, 1));
+
+    // Mesh* cube1 = scene.addObject(Mesh::cube(Colour::blue()));
+    // cube1->setTranslation(Matrix::translate(0, 0, 2800));
 
     // Mesh* cube2 = scene.addObject(Mesh::cube(Colour::blue()));
     // cube2->setTranslation(Matrix::translate(-400, 0, 1100));
@@ -58,13 +63,14 @@ Application::Application() {
 
     for (int i = 0; i < frames; i++) {
         alpha -= std::numbers::pi/16;
-        cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        // cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         // cube2->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         // cube3->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         // cube4->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         // sphere->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         
         e.drawCall();
+        std::cin.get();
     }
 
     std::chrono::duration<double> duration = std::chrono::high_resolution_clock::now() - start;

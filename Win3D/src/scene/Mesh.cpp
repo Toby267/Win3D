@@ -1,5 +1,6 @@
 #include "scene/Mesh.hpp"
 #include "scene/Materials.hpp"
+#include "util/Colour.hpp"
 #include "util/Vector.hpp"
 
 #include <iostream>
@@ -111,6 +112,12 @@ Aabb Mesh::calcBBox() const {
 //TODO: make this calculate the colour based on uv coordinates
 bool Mesh::hit(Ray& ray) const {
     for (const Vector& t : triangles) {
+        // std::cout << "here i am\n";
+        // std::cout << triangles.size();
+        // std::cout << vertices[0] << "\n";
+        // std::cout << vertices[1] << "\n";
+        // std::cout << vertices[2] << "\n";
+        // std::cout << vertices[3] << "\n";
         if (mollerTrumboreIntersection(ray, t) != -1) {
             // ray.col = MaterialVisitor.eval(material, Vector{}, Vector{}, Vector{});
             
@@ -119,6 +126,24 @@ bool Mesh::hit(Ray& ray) const {
     }
 
     return false;
+
+
+    /*
+    bool hit = false;
+    
+    for (const Vector& tri : triangles) {
+        float t = mollerTrumboreIntersection(ray, tri);
+        if (t != -1) return true;
+        if (t != -1 && t < ray.t) {
+            ray.t = t;
+            ray.colour = colours[tri[2]] * ray.u + colours[tri[1]] * ray.v + colours[tri[0]] * (1 - ray.u - ray.v);
+            std::cout << "u, v, w: " << ray.u << ", " << ray.v << ", " << (1 - ray.u - ray.v) << '\n';
+            hit = true;
+        }
+    }
+
+    return hit;
+    */
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,6 +200,24 @@ std::ostream& operator<<(std::ostream& os, const Mesh& obj) {
 // * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+Mesh* Mesh::triangle() {
+    std::vector<Vector> vertices;
+    std::vector<Colour> colours;
+    std::vector<Vector> triangles;
+
+    vertices.emplace_back(-1, -1, -1, 1);
+    vertices.emplace_back(0,  1, 1, 1);
+    vertices.emplace_back( 1, -1, -1, 1);
+
+    colours.emplace_back(Colour::red());
+    colours.emplace_back(Colour::green());
+    colours.emplace_back(Colour::blue());
+    
+    triangles.emplace_back(0, 1, 2);
+
+    return new Mesh(vertices, colours, triangles);
+}
+
 Mesh* Mesh::cube(Colour c) {
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
@@ -202,7 +245,7 @@ Mesh* Mesh::cube(Colour c) {
     triangles.emplace_back(1, 3, 2);
     triangles.emplace_back(4, 5, 6);
     triangles.emplace_back(5, 6, 7);
-    triangles.emplace_back(0, 2, 4);
+    triangles.emplace_back(0, 1, 2);
     triangles.emplace_back(2, 6, 4);
     triangles.emplace_back(1, 5, 3);
     triangles.emplace_back(5, 7, 3);
