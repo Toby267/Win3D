@@ -66,5 +66,5 @@ public:
 
 private:
     //private methods
-    float mollerTrumboreIntersection(Ray& ray, const Vector& triangle) const;
+    bool mollerTrumboreIntersection(Ray& ray, const Vector& triangle, HitRecord& rec) const;
 };

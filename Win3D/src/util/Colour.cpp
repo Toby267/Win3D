@@ -92,7 +92,7 @@ Colour Colour::operator+(double other) const {
     return Colour(
         r() + other,
         g() + other,
-        g() + other,
+        b() + other,
         a() + other
     );
 }
@@ -100,7 +100,7 @@ Colour Colour::operator-(double other) const {
     return Colour(
         r() - other,
         g() - other,
-        g() - other,
+        b() - other,
         a() - other
     );
 }
@@ -108,7 +108,7 @@ Colour Colour::operator*(double other) const {
     return Colour(
         r() * other,
         g() * other,
-        g() * other,
+        b() * other,
         a() * other
     );
 }
@@ -116,7 +116,7 @@ Colour Colour::operator/(double other) const {
     return Colour(
         r() / other,
         g() / other,
-        g() / other,
+        b() / other,
         a() / other
     );
 }

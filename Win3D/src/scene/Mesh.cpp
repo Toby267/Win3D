@@ -1,4 +1,5 @@
 #include "scene/Mesh.hpp"
+#include "renderer/Ray.hpp"
 #include "scene/Materials.hpp"
 #include "util/Colour.hpp"
 #include "util/Vector.hpp"
@@ -111,21 +112,46 @@ Aabb Mesh::calcBBox() const {
 
 //TODO: make this calculate the colour based on uv coordinates
 bool Mesh::hit(Ray& ray) const {
+    constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
+    
+    HitRecord rec;
+    rec.t = FLOAT_MAX;
+    Vector tri;
+    
     for (const Vector& t : triangles) {
-        // std::cout << "here i am\n";
-        // std::cout << triangles.size();
-        // std::cout << vertices[0] << "\n";
-        // std::cout << vertices[1] << "\n";
-        // std::cout << vertices[2] << "\n";
-        // std::cout << vertices[3] << "\n";
-        if (mollerTrumboreIntersection(ray, t) != -1) {
-            // ray.col = MaterialVisitor.eval(material, Vector{}, Vector{}, Vector{});
-            
-            return true;
+        HitRecord tempRec(colours[t[0]], colours[t[1]], colours[t[2]]);
+        bool hit = mollerTrumboreIntersection(ray, t, tempRec);
+
+        if (hit && tempRec.t < rec.t) {
+            rec = tempRec;
         }
     }
 
-    return false;
+    if (rec.t == FLOAT_MAX) return false;
+
+    std::cout << "================================\n";
+    std::cout << colours[triangles[0][0]] << '\n';
+    std::cout << colours[triangles[0][1]] << '\n';
+    std::cout << colours[triangles[0][2]] << '\n';
+
+    std::cout << rec.u << '\n';
+    std::cout << rec.v << '\n';
+    std::cout << (1 - rec.u - rec.v) << '\n';
+
+    ray.col = rec.c0 * rec.u + rec.c1 * rec.v + rec.c2 * (1 - rec.u - rec.v);
+
+    std::cout << ray.col << '\n';
+    std::cout << "================================\n";
+
+    // float u = 0.4, v = 0.3, w = 0.3;
+    // Colour c0 = Colour::red();
+    // Colour c1 = Colour::green();
+    // Colour c2 = Colour::blue();
+
+    // ray.col = c0 * u + c1 * v + c2 * w;
+    // std::cout << ray.col << '\n';
+
+    return rec.t != FLOAT_MAX;
 
 
     /*
@@ -150,7 +176,7 @@ bool Mesh::hit(Ray& ray) const {
 // * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-float Mesh::mollerTrumboreIntersection(Ray& ray, const Vector& triangle) const {
+bool Mesh::mollerTrumboreIntersection(Ray& ray, const Vector& triangle, HitRecord& rec) const {
     constexpr float epsilon = std::numeric_limits<float>::epsilon();
 
     const Vector vert0 = vertices[triangle[0]];
@@ -164,24 +190,25 @@ float Mesh::mollerTrumboreIntersection(Ray& ray, const Vector& triangle) const {
     float det = Vector::dotProduct(edge1, pvec);
 
     if (det > -epsilon && det < epsilon)
-        return -1;
+        return false;
 
     float invDet = 1.0 / det;
 
     Vector tvec = ray.origin - vert0;
-    float u = Vector::dotProduct(tvec, pvec) * invDet;
+    rec.u = Vector::dotProduct(tvec, pvec) * invDet;
 
-    if (u < 0.0 || u > 1.0)
-        return -1;
+    if (rec.u < 0.0 || rec.u > 1.0)
+        return false;
 
     Vector qvec = Vector::crossProduct(tvec, edge1);
-    float v = Vector::dotProduct(ray.direction, qvec) * invDet;
+    rec.v = Vector::dotProduct(ray.direction, qvec) * invDet;
 
-    if ( v < 0.0 || u + v > 1.0)
-        return -1;
+    if (rec.v < 0.0 || rec.u + rec.v > 1.0)
+        return false;
 
-    float t = Vector::dotProduct(edge2, qvec) * invDet;
-    return t;
+    rec.t = Vector::dotProduct(edge2, qvec) * invDet;
+
+    return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
