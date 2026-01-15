@@ -1,5 +1,6 @@
 #include "scene/Scene.hpp"
 #include "renderer/Camera.hpp"
+#include "renderer/Ray.hpp"
 #include "scene/BvhNode.hpp"
 #include "util/Colour.hpp"
 #include "util/Vector.hpp"
@@ -80,8 +81,8 @@ void Scene::toViewportSpace() {
     }
 }
 
-bool Scene::intersect(const Ray& ray, HitRecord& rec) const {
-    return tree->hit(ray, rec);
+bool Scene::intersect(const Ray& ray, TrianglePoint& triangle, float& t) const {
+    return tree->hit(ray, triangle, t);
 }
 
 void Scene::cleanup() {

@@ -56,7 +56,7 @@ public:
     void reset();
     void clip();
     Aabb calcBBox() const;
-    bool hit(const Ray& ray, HitRecord& rec) const;
+    bool hit(const Ray& ray, TrianglePoint& triangle, float& t) const;
 
     //operator overloads
     friend std::ostream& operator<<(std::ostream& os, const Mesh& matrix);

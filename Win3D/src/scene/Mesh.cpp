@@ -115,29 +115,30 @@ Aabb Mesh::calcBBox() const {
     return Aabb(min, max);
 }
 
-bool Mesh::hit(const Ray& ray, HitRecord& rec) const {
-    for (const Vector& triangle : triangles) {
-        float u, v, t;
-        bool hit = mollerTrumboreIntersection(ray, triangle, u, v, t);
+bool Mesh::hit(const Ray& ray, TrianglePoint& triangle, float& t) const {
+    for (const Vector& tri : triangles) {
+        float u, v, tNew;
+        bool hit = mollerTrumboreIntersection(ray, tri, u, v, tNew);
 
         // if hit and triangle is closer
-        if (hit && t < rec.t) {
+        if (hit && tNew < t) {
             // update record
-            rec.m = material;
-            rec.u = u;
-            rec.v = v;
-            rec.t = t;
-            rec.c0 = colours[triangle[0]];
-            rec.c1 = colours[triangle[1]];
-            rec.c2 = colours[triangle[2]];
-            rec.n0 = normals[triangle[0]];
-            rec.n1 = normals[triangle[1]];
-            rec.n2 = normals[triangle[2]];
+            t = tNew;
+
+            triangle.mat = material;
+            triangle.u = u;
+            triangle.v = v;
+            triangle.c0 = colours[tri[0]];
+            triangle.c1 = colours[tri[1]];
+            triangle.c2 = colours[tri[2]];
+            triangle.n0 = normals[tri[0]];
+            triangle.n1 = normals[tri[1]];
+            triangle.n2 = normals[tri[2]];
         }
     }
 
     constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
-    return rec.t != FLOAT_MAX;
+    return t != FLOAT_MAX;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

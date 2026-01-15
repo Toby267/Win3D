@@ -4,6 +4,7 @@
 #include "scene/PointLight.hpp"
 #include "scene/Scene.hpp"
 #include "util/Colour.hpp"
+#include "util/Vector.hpp"
 #include <limits>
 #include <vector>
 
@@ -26,11 +27,18 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
                 Vector(i, j, camera.nearFocalDistance, 0)//.normalise(),
             );
 
-            HitRecord rec(FLOAT_MAX);
+            TrianglePoint triangle;
+            float t = FLOAT_MAX;
+            
+            //TODO: fix this such that it correctly pases the right things to the brdf and is shaded properly
+            if (scene.intersect(ray, triangle, t)) {
+                Colour baseColour = triangle.c0 * (1 - triangle.u - triangle.v) + triangle.c1 * triangle.u + triangle.c2 * triangle.v;
+                // baseColour = lights[0].colour * lights[0].intensity * baseColour;
 
-            if (scene.intersect(ray, rec)) {
-                Colour colour = Mat::eval(rec.m, lights[0].position, -ray.direction, Vector{}, rec.c0, rec.c1, rec.c2, rec.u, rec.v);
-                bmap.setPixel(i+x, camera.screenHeight-(j+y), colour);
+                Vector interpolatedNormal = triangle.n0 * (1 - triangle.u - triangle.v) + triangle.n1 * triangle.u + triangle.n2 * triangle.v;
+
+                Colour finalColour = Mat::eval(triangle.mat, -ray.direction, lights[0].position, interpolatedNormal, baseColour); // should pass light direction, not position
+                bmap.setPixel(i+x, camera.screenHeight-(j+y), finalColour);
             }
         }
     }

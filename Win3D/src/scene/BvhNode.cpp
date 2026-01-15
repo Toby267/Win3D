@@ -62,11 +62,12 @@ BvhNode::~BvhNode() {
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool BvhNode::hit(const Ray& ray, HitRecord& rec) const {
+bool BvhNode::hit(const Ray& ray, TrianglePoint& triangle, float& t) const {
     if (!boundingBox.intersect(ray))
         return false;
 
-    return data && data->hit(ray, rec) || left && left->hit(ray, rec) || right && right->hit(ray, rec);
+    // TODO: if it intersects two objects, there is a chance that it just returns the values for one of them
+    return data && data->hit(ray, triangle, t) || left && left->hit(ray, triangle, t) || right && right->hit(ray, triangle, t);
 }
 
 void BvhNode::print() const {

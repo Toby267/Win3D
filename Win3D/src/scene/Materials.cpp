@@ -5,6 +5,14 @@
 #include <cstdlib>
 #include <numbers>
 
+// * -------------------------------------- [ POLYMORPHISM STUFF ] --------------------------------------- * //
+
+Colour Mat::eval(const Material& mat, Vector cameraDirection, Vector lightDirection, Vector normal, Colour colour) {
+    return std::visit(Mat::visitor{lightDirection, cameraDirection, normal, colour}, mat);
+}
+
+// * ---------------------------------------- [ DISNEY_DIFFUSE ] ----------------------------------------- * //
+
 Mat::DisneyDiffuse::DisneyDiffuse(double r, double s)
     : roughness(r), subsurface(s)
 { }
@@ -45,11 +53,8 @@ Colour Mat::visitor::operator()(const DisneyDiffuse& mat) const {
     return fBaseDiffuse * (1 - mat.subsurface) + fSubsurface * fSubsurface;
 }
 
+// * ----------------------------------------- [ DISNEY_METAL ] ------------------------------------------ * //
+
 Colour Mat::visitor::operator()(const DisneyMetal& material) const {
     return colour;
-}
-
-Colour Mat::eval(const Mat::Material& mat, Vector in, Vector out, Vector normal, Colour c0, Colour c1, Colour c2, float u, float v) {
-    Colour c = c0 * (1 - u - v) + c1 * u + c2 * v;
-    return std::visit(Mat::visitor{in, out, normal, c}, mat);
 }
