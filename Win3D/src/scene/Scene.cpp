@@ -1,6 +1,8 @@
 #include "scene/Scene.hpp"
 #include "renderer/Camera.hpp"
 #include "scene/BvhNode.hpp"
+#include "util/Colour.hpp"
+#include "util/Vector.hpp"
 
 #include <vector>
 
@@ -25,6 +27,10 @@ Scene::Scene(int screenWidth, int screenHeight) {
 
     camera.screenHeight = screenHeight;
     camera.screenWidth = screenWidth;
+
+    
+    //add a single light. TODO: move this to a addLight() method for use in Application.cpp
+    lights.emplace_back(Vector(0, 0, 0, 1), Colour::red(), 1.0);
 }
 
 Scene::~Scene() {
@@ -42,7 +48,9 @@ Scene::~Scene() {
 const Camera& Scene::getCam() const {
     return camera;
 }
-
+const std::vector<PointLight>& Scene::getLights() const {
+    return lights;
+}
 const std::vector<Mesh*>& Scene::getObjects() const {
     return objects;
 }

@@ -1,8 +1,10 @@
 #include "renderer/Renderer.hpp"
 
 #include "renderer/Ray.hpp"
+#include "scene/PointLight.hpp"
 #include "scene/Scene.hpp"
 #include "util/Colour.hpp"
+#include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
@@ -10,6 +12,7 @@
 
 void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
     const Camera& camera = scene.getCam();
+    const std::vector<PointLight> lights = scene.getLights();
     const int x = camera.screenWidth/2, y = camera.screenHeight/2;
 
     //loop through each pixel of the window

@@ -16,13 +16,15 @@
  */
 class Mesh {
 private:
-    const std::vector<Vector> vertices_original;
-    const std::vector<Colour> colours_original;
-    const std::vector<Vector> triangles_original;
+    const std::vector<Vector> VERTICES_ORIGINAL;
+    const std::vector<Colour> COLOURS_ORIGINAL;
+    const std::vector<Vector> TRIANGLES_ORIGINAL;
+    const std::vector<Vector> NORMALS_ORIGINAL;
 
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> triangles;
+    std::vector<Vector> normals;
 
     Matrix scale       = Matrix::scale(100, 100, 100);
     Matrix translation = Matrix::translate(0, 0, 0);
@@ -35,6 +37,7 @@ private:
 public:
     //constructors/destructor
     Mesh(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles);
+    Mesh(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles, std::vector<Vector> normals);
 
     //getters/setters
     std::vector<Vector>& getVertices();
@@ -59,6 +62,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Mesh& matrix);
 
     //static methods
+    static Mesh* cubeWithNormals();
     static Mesh* triangle();
     static Mesh* cube(Colour colour);
     static Mesh* icoSphereSmall(Colour colour);

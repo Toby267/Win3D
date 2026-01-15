@@ -52,7 +52,7 @@ Application::Application() {
     // triangle->setTranslation(Matrix::translate(0, 0, 2800));
     // triangle->setScale(Matrix::scale(500, 500, 1));
 
-    Mesh* cube1 = scene.addObject(Mesh::cube(Colour::blue()));
+    Mesh* cube1 = scene.addObject(Mesh::cubeWithNormals());
     cube1->setTranslation(Matrix::translate(0, 0, 2800));
 
     // Mesh* cube2 = scene.addObject(Mesh::cube(Colour::blue()));

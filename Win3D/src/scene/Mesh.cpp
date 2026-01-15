@@ -13,7 +13,12 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Mesh::Mesh(std::vector<Vector> v, std::vector<Colour> c, std::vector<Vector> t)
-    : vertices_original(v), colours_original(c), triangles_original(t), vertices(v), colours(c), triangles(t)
+    : VERTICES_ORIGINAL(v), COLOURS_ORIGINAL(c), TRIANGLES_ORIGINAL(t), vertices(v), colours(c), triangles(t)
+{
+
+}
+Mesh::Mesh(std::vector<Vector> v, std::vector<Colour> c, std::vector<Vector> t, std::vector<Vector> n)
+    : VERTICES_ORIGINAL(v), COLOURS_ORIGINAL(c), TRIANGLES_ORIGINAL(t), NORMALS_ORIGINAL(n), vertices(v), colours(c), triangles(t), normals(n)
 {
 
 }
@@ -67,9 +72,9 @@ void Mesh::applyTransform(Matrix m) {
 }
 
 void Mesh::reset() {
-    vertices = vertices_original;
-    colours = colours_original;
-    triangles = triangles_original;
+    vertices = VERTICES_ORIGINAL;
+    colours = COLOURS_ORIGINAL;
+    triangles = TRIANGLES_ORIGINAL;
 }
 
 void Mesh::clip() {
@@ -114,9 +119,7 @@ Aabb Mesh::calcBBox() const {
 bool Mesh::hit(Ray& ray) const {
     constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
     
-    HitRecord rec;
-    rec.t = FLOAT_MAX;
-    Vector tri;
+    HitRecord rec(FLOAT_MAX);
     
     for (const Vector& t : triangles) {
         HitRecord tempRec(colours[t[0]], colours[t[1]], colours[t[2]]);
@@ -127,12 +130,12 @@ bool Mesh::hit(Ray& ray) const {
         }
     }
 
-    if (rec.t == FLOAT_MAX) return false;
+    if (rec.t != FLOAT_MAX) {
+        ray.col = Mat::eval(material, -ray.direction, Vector{}, Vector{}, rec.c0, rec.c1, rec.c2, rec.u, rec.v);
+        return true;
+    }
 
-    // ray.col = rec.c1 * rec.u + rec.c2 * rec.v + rec.c0 * (1 - rec.u - rec.v);
-    ray.col = Mat::eval(material, -ray.direction, Vector{}, Vector{}, rec.c0, rec.c1, rec.c2, rec.u, rec.v);
-
-    return rec.t != FLOAT_MAX;
+    return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -206,6 +209,55 @@ Mesh* Mesh::triangle() {
     triangles.emplace_back(0, 1, 2);
 
     return new Mesh(vertices, colours, triangles);
+}
+
+Mesh* Mesh::cubeWithNormals() {
+    std::vector<Vector> vertices;
+    std::vector<Colour> colours;
+    std::vector<Vector> triangles;
+    std::vector<Vector> normals;
+
+    vertices.emplace_back( 1,  1, -1, 1);
+    vertices.emplace_back( 1, -1, -1, 1);
+    vertices.emplace_back( 1,  1,  1, 1);
+    vertices.emplace_back( 1, -1,  1, 1);
+    vertices.emplace_back(-1,  1, -1, 1);
+    vertices.emplace_back(-1, -1, -1, 1);
+    vertices.emplace_back(-1,  1,  1, 1);
+    vertices.emplace_back(-1, -1,  1, 1);
+
+    colours.emplace_back(Colour::red());
+    colours.emplace_back(Colour::blue());
+    colours.emplace_back(Colour::blue());
+    colours.emplace_back(Colour::blue());
+    colours.emplace_back(Colour::blue());
+    colours.emplace_back(Colour::blue());
+    colours.emplace_back(Colour::blue());
+    colours.emplace_back(Colour::green());
+    
+    normals.emplace_back(0.5774, 0.5773, -0.5773);
+    normals.emplace_back(0.5773, -0.5774, -0.5774);
+    normals.emplace_back(0.5773, 0.5774, 0.5774);
+    normals.emplace_back(0.5774, -0.5773, 0.5773);
+    normals.emplace_back(-0.5773, 0.5774, -0.5774);
+    normals.emplace_back(-0.5774, -0.5773, -0.5773);
+    normals.emplace_back(-0.5774, 0.5773, 0.5773);
+    normals.emplace_back(-0.5773, -0.5774, 0.5774);
+    
+    triangles.emplace_back(4, 2, 0);
+    triangles.emplace_back(2, 7, 3);
+    triangles.emplace_back(6, 5, 7);
+    triangles.emplace_back(1, 7, 5);
+    triangles.emplace_back(0, 3, 1);
+    triangles.emplace_back(4, 1, 5);
+    triangles.emplace_back(4, 6, 2);
+    triangles.emplace_back(2, 6, 7);
+    triangles.emplace_back(6, 4, 5);
+    triangles.emplace_back(1, 3, 7);
+    triangles.emplace_back(0, 2, 3);
+    triangles.emplace_back(4, 0, 1);
+
+    return new Mesh(vertices, colours, triangles, normals);
 }
 
 Mesh* Mesh::cube(Colour c) {
