@@ -30,7 +30,7 @@ private:
 
     Matrix affineTransform = translation * scale * rotation;
 
-    Material material = DisneyDiffuse{Colour::blue(), 0.5, 0.5};
+    Mat::Material material = Mat::DisneyDiffuse{0.5, 0.5};
 
 public:
     //constructors/destructor

@@ -28,34 +28,34 @@
     // 1 - disney bsdf done
     // 2 - visitor interface working with multiple light sources
 
+namespace Mat {
+    struct DisneyDiffuse {
+        double roughness;
+        double subsurface;
+    
+        DisneyDiffuse(double roughness, double subsurface);
+    } typedef DisneyDiffuse;
+    
+    struct DisneyMetal {
+        double roughness;
+        double anisotropic;
+    
+    } typedef DisneyMetal;
+    
+    typedef std::variant<DisneyDiffuse, DisneyMetal> Material;
+    
+    struct visitor {
+        const Vector& in;
+        const Vector& out;
+        const Vector& normal;
+        const Colour& colour;
+    
+        Colour operator()(const DisneyDiffuse& material) const;
+        Colour operator()(const DisneyMetal& material) const;
+    };
 
-struct DisneyDiffuse {
-    Colour baseColour;
-    double roughness;
-    double subsurface;
-
-    DisneyDiffuse(Colour colour, double roughness, double subsurface);
-} typedef DisneyDiffuse;
-
-struct DisneyMetal {
-    Colour baseColour;
-    double roughness;
-    double anisotropic;
-
-} typedef DisneyMetal;
-
-typedef std::variant<DisneyDiffuse, DisneyMetal> Material;
-
-struct visitor {
-    const Vector& in;
-    const Vector& out;
-    const Vector& normal;
-
-    Colour operator()(const DisneyDiffuse& material) const;
-    Colour operator()(const DisneyMetal& material) const;
-};
-
-Colour eval(const Material& mat, Vector& in, Vector& out, Vector& normal);
+    Colour eval(const Material& mat, Vector in, Vector out, Vector normal, Colour c0, Colour c1, Colour c2, float u, float v);
+}
 
 // struct DisneyBSDF {
 //     Colour baseColour;

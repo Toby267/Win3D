@@ -40,13 +40,13 @@ Application::Application() {
     Engine e = Engine(1920, 1080);
     Scene& scene = e.getScene();
 
-    Vector a{};
-    Vector b{};
-    Vector c{};
-    Vector d{};
+    // Vector a{};
+    // Vector b{};
+    // Vector c{};
+    // Vector d{};
 
-    Material hi = DisneyDiffuse{Colour{}, 0.0, 0.0};
-    Colour adskfas = eval(hi, a, b, c);
+    // Mat::Material hi = Mat::DisneyDiffuse{Colour{}, 0.0, 0.0};
+    // Colour adskfas = eval(hi, a, b, c);
 
     // Mesh* triangle = scene.addObject(Mesh::triangle());
     // triangle->setTranslation(Matrix::translate(0, 0, 2800));

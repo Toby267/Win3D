@@ -129,7 +129,8 @@ bool Mesh::hit(Ray& ray) const {
 
     if (rec.t == FLOAT_MAX) return false;
 
-    ray.col = rec.c1 * rec.u + rec.c2 * rec.v + rec.c0 * (1 - rec.u - rec.v);
+    // ray.col = rec.c1 * rec.u + rec.c2 * rec.v + rec.c0 * (1 - rec.u - rec.v);
+    ray.col = Mat::eval(material, -ray.direction, Vector{}, Vector{}, rec.c0, rec.c1, rec.c2, rec.u, rec.v);
 
     return rec.t != FLOAT_MAX;
 }
