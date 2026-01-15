@@ -234,7 +234,7 @@ Mesh* Mesh::cube(Colour c) {
     triangles.emplace_back(1, 3, 2);
     triangles.emplace_back(4, 5, 6);
     triangles.emplace_back(5, 6, 7);
-    triangles.emplace_back(0, 1, 2);
+    triangles.emplace_back(0, 2, 4);
     triangles.emplace_back(2, 6, 4);
     triangles.emplace_back(1, 5, 3);
     triangles.emplace_back(5, 7, 3);
