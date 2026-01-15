@@ -25,7 +25,7 @@ Aabb::Aabb(Aabb b1, Aabb b2) {
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool Aabb::intersect(Ray& ray) const {
+bool Aabb::intersect(const Ray& ray) const {
     //calculate the t intervals
     Vector t0 = (a - ray.origin) / ray.direction;
     Vector t1 = (b - ray.origin) / ray.direction;

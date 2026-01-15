@@ -56,7 +56,7 @@ public:
     void reset();
     void clip();
     Aabb calcBBox() const;
-    bool hit(Ray& ray) const;
+    bool hit(const Ray& ray, HitRecord& rec) const;
 
     //operator overloads
     friend std::ostream& operator<<(std::ostream& os, const Mesh& matrix);
@@ -70,5 +70,5 @@ public:
 
 private:
     //private methods
-    bool mollerTrumboreIntersection(Ray& ray, const Vector& triangle, HitRecord& rec) const;
+    bool mollerTrumboreIntersection(const Ray& ray, const Vector& triangle, float& u, float& v, float &t) const;
 };

@@ -22,7 +22,7 @@ public:
     ~BvhNode();
 
     //public methods
-    bool hit(Ray& ray) const;
+    bool hit(const Ray& ray, HitRecord& rec) const;
     void print() const;
 
 private:

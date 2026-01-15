@@ -115,34 +115,36 @@ Aabb Mesh::calcBBox() const {
     return Aabb(min, max);
 }
 
-//TODO: make this calculate the colour based on uv coordinates
-bool Mesh::hit(Ray& ray) const {
-    constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
-    
-    HitRecord rec(FLOAT_MAX);
-    
-    for (const Vector& t : triangles) {
-        HitRecord tempRec(colours[t[0]], colours[t[1]], colours[t[2]]);
-        bool hit = mollerTrumboreIntersection(ray, t, tempRec);
+bool Mesh::hit(const Ray& ray, HitRecord& rec) const {
+    for (const Vector& triangle : triangles) {
+        float u, v, t;
+        bool hit = mollerTrumboreIntersection(ray, triangle, u, v, t);
 
-        if (hit && tempRec.t < rec.t) {
-            rec = tempRec;
+        // if hit and triangle is closer
+        if (hit && t < rec.t) {
+            // update record
+            rec.m = material;
+            rec.u = u;
+            rec.v = v;
+            rec.t = t;
+            rec.c0 = colours[triangle[0]];
+            rec.c1 = colours[triangle[1]];
+            rec.c2 = colours[triangle[2]];
+            rec.n0 = normals[triangle[0]];
+            rec.n1 = normals[triangle[1]];
+            rec.n2 = normals[triangle[2]];
         }
     }
 
-    if (rec.t != FLOAT_MAX) {
-        ray.col = Mat::eval(material, -ray.direction, Vector{}, Vector{}, rec.c0, rec.c1, rec.c2, rec.u, rec.v);
-        return true;
-    }
-
-    return false;
+    constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
+    return rec.t != FLOAT_MAX;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool Mesh::mollerTrumboreIntersection(Ray& ray, const Vector& triangle, HitRecord& rec) const {
+bool Mesh::mollerTrumboreIntersection(const Ray& ray, const Vector& triangle, float& u, float& v, float &t) const {
     constexpr float epsilon = std::numeric_limits<float>::epsilon();
 
     const Vector vert0 = vertices[triangle[0]];
@@ -161,18 +163,18 @@ bool Mesh::mollerTrumboreIntersection(Ray& ray, const Vector& triangle, HitRecor
     float invDet = 1.0 / det;
 
     Vector tvec = ray.origin - vert0;
-    rec.u = Vector::dotProduct(tvec, pvec) * invDet;
+    u = Vector::dotProduct(tvec, pvec) * invDet;
 
-    if (rec.u < 0.0 || rec.u > 1.0)
+    if (u < 0.0 || u > 1.0)
         return false;
 
     Vector qvec = Vector::crossProduct(tvec, edge1);
-    rec.v = Vector::dotProduct(ray.direction, qvec) * invDet;
+    v = Vector::dotProduct(ray.direction, qvec) * invDet;
 
-    if (rec.v < 0.0 || rec.u + rec.v > 1.0)
+    if (v < 0.0 || u + v > 1.0)
         return false;
 
-    rec.t = Vector::dotProduct(edge2, qvec) * invDet;
+    t = Vector::dotProduct(edge2, qvec) * invDet;
 
     return true;
 }

@@ -1,13 +1,12 @@
 #pragma once
 
+#include "scene/Materials.hpp"
 #include "util/Colour.hpp"
 #include "util/Vector.hpp"
 
 struct Ray {
     Vector origin;
     Vector direction;
-
-    Colour col;
 } typedef Ray;
 
 struct HitRecord {
@@ -19,9 +18,14 @@ struct HitRecord {
     Colour c1;
     Colour c2;
 
+    Vector n0;
+    Vector n1;
+    Vector n2;
+
+    Mat::Material m = Mat::DisneyDiffuse{0.0, 0.0};
+
     HitRecord() = default;
     HitRecord(float t) : t(t) {};
-    HitRecord(Colour c0, Colour c1, Colour c2) : c0(c0), c1(c1), c2(c2) {};
 } typedef HitRecord;
 
 

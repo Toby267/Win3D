@@ -13,7 +13,7 @@ struct Aabb {
     Aabb(Aabb box1, Aabb box2);
 
     //public methods
-    bool intersect(Ray& ray) const;
+    bool intersect(const Ray& ray) const;
     float surfaceArea() const;
     Vector centroid() const;
 };

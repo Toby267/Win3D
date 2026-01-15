@@ -80,8 +80,8 @@ void Scene::toViewportSpace() {
     }
 }
 
-bool Scene::intersect(Ray& ray) const {
-    return tree->hit(ray);
+bool Scene::intersect(const Ray& ray, HitRecord& rec) const {
+    return tree->hit(ray, rec);
 }
 
 void Scene::cleanup() {

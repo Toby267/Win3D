@@ -62,11 +62,11 @@ BvhNode::~BvhNode() {
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool BvhNode::hit(Ray& ray) const {
+bool BvhNode::hit(const Ray& ray, HitRecord& rec) const {
     if (!boundingBox.intersect(ray))
         return false;
 
-    return data && data->hit(ray) || left && left->hit(ray) || right && right->hit(ray);
+    return data && data->hit(ray, rec) || left && left->hit(ray, rec) || right && right->hit(ray, rec);
 }
 
 void BvhNode::print() const {
