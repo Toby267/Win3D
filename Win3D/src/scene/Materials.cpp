@@ -21,49 +21,50 @@ Mat::DisneyDiffuse::DisneyDiffuse(double r, double s)
 Colour Mat::visitor::operator()(const DisneyDiffuse& mat) const {
     // return colour;
 
-    std::cout << "in, out, normal, colour:\n";
-    std::cout << in << '\n' << out << '\n' << normal << '\n' << colour << '\n';
-    // std::cin.get();
-
     Vector half = (in + out) / (in + out).magnitude();
     double cosIn = std::abs(Vector::dotProduct(normal, in));
     double cosOut = std::abs(Vector::dotProduct(normal, out));
     double hout = std::abs(Vector::dotProduct(half, out));
-    // std::cout << "cosin, cosout, hout: " << cosIn << ", " << cosOut << ", " << hout << '\n';
-    
+    std::cout << "cosIn, cosOut, hout: " << cosIn << ", " << cosOut << ", " << hout << '\n';
+
     //calculate fBaseDiffuse
     double fd90 = 0.5 + 2 * mat.roughness * hout * hout;
-    // std::cout << "fd90" <<  ", " << fd90 << '\n';
+    std::cout << "fd90" <<  ", " << fd90 << '\n';
 
     double fdIn = std::pow((1 - cosIn), 5);
     fdIn = 1 + (fd90 - 1) * fdIn;
-    // std::cout << "fdin" <<  ", " << fdIn << '\n';
+    std::cout << "fdIn" <<  ", " << fdIn << '\n';
 
     double fdOut = std::pow((1 - cosOut), 5);
     fdOut = 1 + (fd90 - 1) * fdOut;
-    // std::cout << "fdout" <<  ", " << fdOut << '\n';
+    std::cout << "fdOut" <<  ", " << fdOut << '\n';
 
     Colour fBaseDiffuse = colour * std::numbers::inv_pi * fdIn * fdOut * cosOut;
-    // std::cout << "fBaseDiffuse" << fBaseDiffuse << '\n';
-    // std::cin.get();
+    std::cout << "fBaseDiffuse" << fBaseDiffuse << '\n';
     
     //calculate fSubsurface
     double fss90 = mat.roughness * hout * hout;
 
     double fssIn = std::pow((1 - cosIn), 5);
     fssIn = 1 + (fss90 - 1) * fssIn;
+    std::cout << "fssIn" <<  ", " << fssIn << '\n';
 
     double fssOut = std::pow((1 - cosOut), 5);
     fssOut = 1 + (fss90 - 1) * fssOut;
+    std::cout << "fssOut" <<  ", " << fssOut << '\n';
 
     Colour fSubsurface = colour * 1.25 * std::numbers::inv_pi;
     double term = (1 / (cosIn + cosOut)) - 0.5;
     fSubsurface = fSubsurface * (fssIn * fssOut * term + 0.5) * cosOut;
-    // std::cout << "fSubsurface" << fSubsurface << '\n';
-    
+    std::cout << "fSubsurface" <<  ", " << fSubsurface << '\n';
     
     //calculate result
-    return fBaseDiffuse * (1 - mat.subsurface) + fSubsurface * fSubsurface;
+    Colour result = fBaseDiffuse * (1 - mat.subsurface) + fSubsurface * fSubsurface;
+    result.reNormalise();
+
+    std::cout << "colour: " << result << '\n';
+
+    return result;
 }
 
 // * ----------------------------------------- [ DISNEY_METAL ] ------------------------------------------ * //

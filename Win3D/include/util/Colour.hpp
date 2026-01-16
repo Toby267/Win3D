@@ -24,6 +24,9 @@ public:
     const double& b() const;
     const double& a() const;
 
+    //public methods
+    void reNormalise();
+
     //operator overloads
     Colour operator+(const Colour& other) const;
     Colour operator-(const Colour& other) const;

@@ -82,7 +82,6 @@ Application::Application() {
         // sphere->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         
         e.drawCall();
-        // std::cin.get();
     }
 
     std::chrono::duration<double> duration = std::chrono::high_resolution_clock::now() - start;

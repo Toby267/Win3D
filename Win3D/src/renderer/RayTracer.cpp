@@ -26,7 +26,7 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
         for (int j = -y; j < y; j++) {
             Ray ray = Ray(
                 Vector(0, 0, 0),
-                Vector(i, j, camera.nearFocalDistance)//.normalise()
+                Vector(i, j, camera.nearFocalDistance).normalise()
             );
 
             TrianglePoint triangle;
@@ -35,17 +35,13 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
             //TODO: fix this such that it correctly pases the right things to the brdf and is shaded properly
             if (scene.intersect(ray, triangle, t)) {
                 Colour baseColour = triangle.c0 * (1 - triangle.u - triangle.v) + triangle.c1 * triangle.u + triangle.c2 * triangle.v;
-                // baseColour = lights[0].colour * lights[0].intensity * baseColour;
-                std::cout << "baseColour: " << baseColour << '\n';
+                baseColour = baseColour * /*lights[0].colour */ lights[0].intensity;
 
                 Vector normal = triangle.n0 * (1 - triangle.u - triangle.v) + triangle.n1 * triangle.u + triangle.n2 * triangle.v;
                 Vector position = triangle.v0 * (1 - triangle.u - triangle.v) + triangle.v1 * triangle.u + triangle.v2 * triangle.v;
-                std::cout << "triangle position:\n";
-                std::cout << triangle.v0 << ", " << triangle.v1 << ", " << triangle.v2 << '\n' << '\n';
 
-                Colour finalColour = Mat::eval(triangle.mat, -ray.direction, -(lights[0].position - position), normal, baseColour); // should pass light direction, not position
-                std::cout << "colour: " << finalColour << '\n';
-                bmap.setPixel(i+x, camera.screenHeight-(j+y), baseColour);
+                Colour finalColour = Mat::eval(triangle.mat, -ray.direction, (lights[0].position - position).normalise(), normal, baseColour); // should pass light direction, not position
+                bmap.setPixel(i+x, camera.screenHeight-(j+y), finalColour);
             }
         }
     }

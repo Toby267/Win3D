@@ -223,14 +223,14 @@ Mesh* Mesh::cubeWithNormals() {
     std::vector<Vector> triangles;
     std::vector<Vector> normals;
 
-    vertices.emplace_back( 1,  1, -1, 1);
-    vertices.emplace_back( 1, -1, -1, 1);
-    vertices.emplace_back( 1,  1,  1, 1);
-    vertices.emplace_back( 1, -1,  1, 1);
-    vertices.emplace_back(-1,  1, -1, 1);
-    vertices.emplace_back(-1, -1, -1, 1);
-    vertices.emplace_back(-1,  1,  1, 1);
-    vertices.emplace_back(-1, -1,  1, 1);
+    vertices.emplace_back( 1.000000, 1.000000, -1.000000, 1 );
+    vertices.emplace_back( 1.000000, -1.000000, -1.000000, 1 );
+    vertices.emplace_back( 1.000000, 1.000000, 1.000000, 1 );
+    vertices.emplace_back( 1.000000, -1.000000, 1.000000, 1 );
+    vertices.emplace_back( -1.000000, 1.000000, -1.000000, 1 );
+    vertices.emplace_back( -1.000000, -1.000000, -1.000000, 1 );
+    vertices.emplace_back( -1.000000, 1.000000, 1.000000, 1 );
+    vertices.emplace_back( -1.000000, -1.000000, 1.000000, 1 );
 
     colours.emplace_back(Colour::red());
     colours.emplace_back(Colour::blue());
@@ -241,27 +241,31 @@ Mesh* Mesh::cubeWithNormals() {
     colours.emplace_back(Colour::blue());
     colours.emplace_back(Colour::green());
     
-    normals.emplace_back(0.5774, 0.5773, -0.5773);
-    normals.emplace_back(0.5773, -0.5774, -0.5774);
-    normals.emplace_back(0.5773, 0.5774, 0.5774);
-    normals.emplace_back(0.5774, -0.5773, 0.5773);
-    normals.emplace_back(-0.5773, 0.5774, -0.5774);
-    normals.emplace_back(-0.5774, -0.5773, -0.5773);
-    normals.emplace_back(-0.5774, 0.5773, 0.5773);
-    normals.emplace_back(-0.5773, -0.5774, 0.5774);
+    normals.emplace_back( 0.5774, 0.5773, -0.5773 );
+    normals.emplace_back( 0.5773, -0.5774, -0.5774 );
+    normals.emplace_back( 0.5773, 0.5774, 0.5774 );
+    normals.emplace_back( 0.5774, -0.5773, 0.5773 );
+    normals.emplace_back( -0.5773, 0.5774, -0.5774 );
+    normals.emplace_back( -0.5774, -0.5773, -0.5773 );
+    normals.emplace_back( -0.5774, 0.5773, 0.5773 );
+    normals.emplace_back( -0.5773, -0.5774, 0.5774 );
     
-    triangles.emplace_back(4, 2, 0);
-    triangles.emplace_back(2, 7, 3);
-    triangles.emplace_back(6, 5, 7);
-    triangles.emplace_back(1, 7, 5);
-    triangles.emplace_back(0, 3, 1);
-    triangles.emplace_back(4, 1, 5);
-    triangles.emplace_back(4, 6, 2);
-    triangles.emplace_back(2, 6, 7);
-    triangles.emplace_back(6, 4, 5);
-    triangles.emplace_back(1, 3, 7);
-    triangles.emplace_back(0, 2, 3);
-    triangles.emplace_back(4, 0, 1);
+    triangles.emplace_back( 5, 3, 1 );
+    triangles.emplace_back( 3, 8, 4 );
+    triangles.emplace_back( 7, 6, 8 );
+    triangles.emplace_back( 2, 8, 6 );
+    triangles.emplace_back( 1, 4, 2 );
+    triangles.emplace_back( 5, 2, 6 );
+    triangles.emplace_back( 5, 7, 3 );
+    triangles.emplace_back( 3, 7, 8 );
+    triangles.emplace_back( 7, 5, 6 );
+    triangles.emplace_back( 2, 4, 8 );
+    triangles.emplace_back( 1, 3, 4 );
+    triangles.emplace_back( 5, 1, 2 );
+
+    for (Vector& i : triangles)
+        i = i + Vector(-1, -1, -1);
+    
 
     return new Mesh(vertices, colours, triangles, normals);
 }
