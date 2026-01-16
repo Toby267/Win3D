@@ -70,7 +70,7 @@ Vector Vector::normalise() {
     return *this;
 }
 
-void Vector::cut() {
+void Vector::toVec3() {
     length = 3;
 }
 

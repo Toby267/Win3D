@@ -30,7 +30,7 @@ public:
 
     //public methods
     Vector normalise();
-    void cut();
+    void toVec3();
 
     //operator overloads
     double& operator[](int i);

@@ -134,6 +134,9 @@ bool Mesh::hit(const Ray& ray, TrianglePoint& triangle, float& t) const {
             triangle.n0 = normals[tri[0]];
             triangle.n1 = normals[tri[1]];
             triangle.n2 = normals[tri[2]];
+            triangle.v0 = vertices[tri[0]];
+            triangle.v1 = vertices[tri[1]];
+            triangle.v2 = vertices[tri[2]];
         }
     }
 
@@ -148,9 +151,9 @@ bool Mesh::hit(const Ray& ray, TrianglePoint& triangle, float& t) const {
 bool Mesh::mollerTrumboreIntersection(const Ray& ray, const Vector& triangle, float& u, float& v, float &t) const {
     constexpr float epsilon = std::numeric_limits<float>::epsilon();
 
-    const Vector vert0 = vertices[triangle[0]];
-    const Vector vert1 = vertices[triangle[1]];
-    const Vector vert2 = vertices[triangle[2]];
+    const Vector vert0 = Vector( vertices[triangle[0]].x(), vertices[triangle[0]].y(), vertices[triangle[0]].z() );
+    const Vector vert1 = Vector( vertices[triangle[1]].x(), vertices[triangle[1]].y(), vertices[triangle[1]].z() );
+    const Vector vert2 = Vector( vertices[triangle[2]].x(), vertices[triangle[2]].y(), vertices[triangle[2]].z() );
 
     Vector edge1 = vert1 - vert0;
     Vector edge2 = vert2 - vert0;

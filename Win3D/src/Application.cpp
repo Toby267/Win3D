@@ -17,9 +17,9 @@ TODO:
     - make the rasterizer take in a std::vector of triangles instead of objects, that way the scene class handles all mesh transformations
     - make the bvh sort based on a std::vector of triangles, it is more efficient this way and will compliment the above
 
-    - calculate base colour of a ray-triangle intersection based on its uv coordinates and vertex colours
+    + calculate base colour of a ray-triangle intersection based on its uv coordinates and vertex colours
     - implement brdfs
-    - hook brdfs into the ray caster
+    + hook brdfs into the ray caster
 
     - do some testing to get the caster super efficient and the perfect hyperparameters for bvh construction
     - turn it into a hybrid raster caster renderer - only parameter i have left to sync between the two is fov (you can see a difference if screen dimensions is set to 720p)
@@ -82,6 +82,7 @@ Application::Application() {
         // sphere->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         
         e.drawCall();
+        // std::cin.get();
     }
 
     std::chrono::duration<double> duration = std::chrono::high_resolution_clock::now() - start;

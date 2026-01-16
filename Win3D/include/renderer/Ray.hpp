@@ -21,6 +21,10 @@ struct TrianglePoint {
     Vector n1;
     Vector n2;
 
+    Vector v0;
+    Vector v1;
+    Vector v2;
+
     Mat::Material mat = Mat::DisneyDiffuse{0.0, 0.0};
 
     TrianglePoint() = default;
