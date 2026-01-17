@@ -31,7 +31,7 @@ Scene::Scene(int screenWidth, int screenHeight) {
 
     
     //add a single light. TODO: move this to a addLight() method for use in Application.cpp
-    lights.emplace_back(Vector(0, 0, 0), Colour::red(), 1.0);
+    lights.emplace_back(Vector(0, 0, 0), Colour::red(), 100);
 }
 
 Scene::~Scene() {

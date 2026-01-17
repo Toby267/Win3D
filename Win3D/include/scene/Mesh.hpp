@@ -47,6 +47,7 @@ public:
     void setScale(Matrix scale);
     void setTranslation(Matrix translation);
     void setRotation(Matrix rotation);
+    void setMaterial(Mat::Material material);
 
     //general public methods
     void toWorldSpace();
@@ -62,11 +63,10 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Mesh& matrix);
 
     //static methods
-    static Mesh* cubeWithNormals();
+    static Mesh* cube();
+    static Mesh* sphere();
+    static Mesh* monkey();
     static Mesh* triangle();
-    static Mesh* cube(Colour colour);
-    static Mesh* icoSphereSmall(Colour colour);
-    static Mesh* icoSphere(Colour colour);
 
 private:
     //private methods

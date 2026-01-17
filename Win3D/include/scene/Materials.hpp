@@ -28,6 +28,9 @@
     // 1 - disney bsdf done
     // 2 - visitor interface working with multiple light sources
 
+
+// think i need gamma correction
+
 namespace Mat {
     // * ------------------------------------------- [ MATERIALS ] ------------------------------------------- * //
 

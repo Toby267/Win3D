@@ -9,6 +9,20 @@
 #include <iostream>
 #include <numbers>
 
+// features:
+// got:
+// dynamic scenes
+// raster renderer /w triangle colour interpolation
+// ray casting renderer /w triangle colour interpolation
+// getting:
+// bxdf material system
+// bvh optimisation
+// gamma correction
+// might get:
+// cpu multi-threading
+// raster optimisations
+
+
 //A Hybrid rasterizer Ray-Caster Renderer for Dynamic Scenes on the CPU
 
 /*
@@ -52,8 +66,8 @@ Application::Application() {
     // triangle->setTranslation(Matrix::translate(0, 0, 2800));
     // triangle->setScale(Matrix::scale(500, 500, 1));
 
-    Mesh* cube1 = scene.addObject(Mesh::cubeWithNormals());
-    cube1->setTranslation(Matrix::translate(0, 0, 2800));
+    Mesh* cube1 = scene.addObject(Mesh::cube());
+    cube1->setTranslation(Matrix::translate(0, 0, 1100));
 
     // Mesh* cube2 = scene.addObject(Mesh::cube(Colour::blue()));
     // cube2->setTranslation(Matrix::translate(-400, 0, 1100));
@@ -72,7 +86,19 @@ Application::Application() {
     
     auto start = std::chrono::high_resolution_clock::now();
 
+    // double roughness = 0.0;
+    // double subsurface = 0.0;
+
     for (int i = 0; i < frames; i++) {
+        // roughness += 0.1;
+        // if (roughness > 1.0) {
+        //     roughness = 0.0;
+        //     subsurface += 0.1;
+
+        //     if (subsurface > 1.0) {
+        //         break;
+        //     }
+        // }
         alpha -= std::numbers::pi/16;
         // triangle->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
