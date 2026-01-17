@@ -30,6 +30,8 @@
 
 
 // think i need gamma correction
+// also if colour values are in [0, 1] instead of [0, 255], then when multiplying them, they won't explode
+// also, i need to check if the fragment actually has a line of sight on the point light or not...
 
 namespace Mat {
     // * ------------------------------------------- [ MATERIALS ] ------------------------------------------- * //
