@@ -40,10 +40,11 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
                 Vector normal = triangle.n0 * (1 - triangle.u - triangle.v) + triangle.n1 * triangle.u + triangle.n2 * triangle.v;
                 Vector position = triangle.v0 * (1 - triangle.u - triangle.v) + triangle.v1 * triangle.u + triangle.v2 * triangle.v;
 
-
+                // baseColour  = baseColour / 255;
                 Colour finalColour = Mat::eval(triangle.mat, -ray.direction, (lights[0].position - position).normalise(), normal, baseColour); // should pass light direction, not position
+                // finalColour = finalColour * 255;
                 // finalColour.reNormalise();
-                bmap.setPixel(i+x, camera.screenHeight-(j+y), finalColour);
+                bmap.setPixel(i+x, camera.screenHeight-(j+y), baseColour);
             }
         }
     }

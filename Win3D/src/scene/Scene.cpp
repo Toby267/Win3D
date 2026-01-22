@@ -89,6 +89,8 @@ void Scene::cleanup() {
     for (Mesh* mesh : objects) {
         mesh->reset();
     }
+    // indexBuffer = INDEX_BUFFER;
+    // vertexBuffer = VERTEX_BUFFER;
 
     delete tree;
 }

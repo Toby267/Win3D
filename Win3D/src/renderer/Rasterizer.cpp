@@ -20,13 +20,15 @@ static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour
  * @param bmap      the bitmap to render onto
  */
 void Renderer::rasterize(Bitmap3D& bmap, const Scene& scene) {
-    for (Mesh* obj : scene.getObjects()) {
-        std::vector<Vector> vertices = obj->getVertices();
-        std::vector<Colour> colours = obj->getColours();
+    return;
     
-        for (Vector t : obj->getTriangles()) {
-            drawTriangle(bmap, vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
-        }
+    for (Mesh* obj : scene.getObjects()) {
+        // std::vector<Vector> vertices = obj->getVertices();
+        // std::vector<Colour> colours = obj->getColours();
+    
+        // for (Vector t : obj->getTriangles()) {
+            // drawTriangle(bmap, vertices[t[0]], vertices[t[1]], vertices[t[2]], colours[t[0]], colours[t[1]], colours[t[2]]);
+        // }
     }
 }
 

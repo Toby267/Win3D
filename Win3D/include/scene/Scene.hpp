@@ -4,11 +4,18 @@
 #include "scene/Mesh.hpp"
 #include "scene/BvhNode.hpp"
 #include "scene/PointLight.hpp"
+#include "scene/Util.hpp"
 
 #include <vector>
 
 class Scene {
 private:
+    // const IndexBuffer INDEX_BUFFER;
+    // const VertexBuffer VERTEX_BUFFER;
+// 
+    // IndexBuffer indexBuffer;
+    // VertexBuffer vertexBuffer;
+
     std::vector<Mesh*> objects{};
     std::vector<PointLight> lights{};
     Camera camera{};
