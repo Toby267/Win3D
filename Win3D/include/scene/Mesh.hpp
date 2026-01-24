@@ -5,11 +5,7 @@
 #include "scene/Materials.hpp"
 #include "util/Matrix.hpp"
 #include "util/Vector.hpp"
-#include "util/Colour.hpp"
 #include "scene/Util.hpp"
-
-#include <cstddef>
-#include <vector>
 
 /**
  * stores the data of an object. the vertices is just a list of vectors, one per vertex. colours[i] is the colour of vertices[i].
@@ -18,28 +14,10 @@
  */
 class Mesh {
 private:
-    // const std::vector<Vector> VERTICES_ORIGINAL;
-    // const std::vector<Colour> COLOURS_ORIGINAL;
-    // const std::vector<Vector> TRIANGLES_ORIGINAL;
-    // const std::vector<Vector> NORMALS_ORIGINAL;
-// 
-    // std::vector<Vector> vertices;
-    // std::vector<Colour> colours;
-    // std::vector<Vector> triangles;
-    // std::vector<Vector> normals;
-
-    const IndexBuffer INDEX_BUFFER;
     const VertexBuffer VERTEX_BUFFER;
 
     IndexBuffer indexBuffer;
     VertexBuffer vertexBuffer;
-
-    //references to the index and vertex buffer of the batch its rendered in
-    // IndexBuffer* indexBuffer = nullptr;
-    // VertexBuffer* vertexBuffer = nullptr;
-
-    //offset and count into the index and vertex buffers that this mesh lies
-    size_t offset, count;
 
     Matrix scale       = Matrix::scale(100, 100, 100);
     Matrix translation = Matrix::translate(0, 0, 0);
@@ -51,14 +29,11 @@ private:
 
 public:
     //constructors/destructor
-    // Mesh(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles);
-    // Mesh(std::vector<Vector> vertices, std::vector<Colour> colours, std::vector<Vector> triangles, std::vector<Vector> normals);
     Mesh(IndexBuffer indexBuffer, VertexBuffer vertexBuffer);
 
     //getters/setters
-    // std::vector<Vector>& getVertices();
-    // std::vector<Colour>& getColours();
-    // std::vector<Vector>& getTriangles();
+    const IndexBuffer& getIndexBuffer() { return indexBuffer; }
+    VertexBuffer& getVertexBuffer() { return vertexBuffer; }
 
     void setScale(Matrix scale);
     void setTranslation(Matrix translation);
@@ -81,7 +56,6 @@ public:
     //static methods
     static Mesh* cube();
     static Mesh* sphere();
-    static Mesh* monkey();
     static Mesh* triangle();
 
 private:

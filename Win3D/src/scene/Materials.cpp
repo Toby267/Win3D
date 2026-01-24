@@ -22,7 +22,7 @@ Mat::DisneyDiffuse::DisneyDiffuse(double r, double s)
 Colour Mat::visitor::operator()(const DisneyDiffuse& mat) const {
     // return colour;
 
-    std::cout << "colour: " << colour << '\n';
+    // std::cout << "colour: " << colour << '\n';
 
     Vector half = in + out;
     half.normalise();
@@ -64,7 +64,7 @@ Colour Mat::visitor::operator()(const DisneyDiffuse& mat) const {
     
     //calculate result
     Colour result = fBaseDiffuse * (1 - mat.subsurface) + fSubsurface * fSubsurface;
-    std::cout << "resulting colour: " << result << '\n';
+    // std::cout << "resulting colour: " << result << '\n';
     // result.reNormalise(); // i actually think this is breaking it becuase if one pixel as a colour of 999, 999, 999, and the other has 1, 1, 1, then they will both result in the same colour
     // this means there is a bug somewhere else in here...
 

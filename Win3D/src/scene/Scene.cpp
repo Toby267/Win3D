@@ -2,6 +2,7 @@
 #include "renderer/Camera.hpp"
 #include "renderer/Ray.hpp"
 #include "scene/BvhNode.hpp"
+#include "scene/Util.hpp"
 #include "util/Colour.hpp"
 #include "util/Vector.hpp"
 
@@ -28,7 +29,6 @@ Scene::Scene(int screenWidth, int screenHeight) {
 
     camera.screenHeight = screenHeight;
     camera.screenWidth = screenWidth;
-
     
     //add a single light. TODO: move this to a addLight() method for use in Application.cpp
     lights.emplace_back(Vector(0, 0, 0), Colour::red(), 100);
@@ -40,20 +40,6 @@ Scene::~Scene() {
     }
 
     if (tree) delete tree;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-const Camera& Scene::getCam() const {
-    return camera;
-}
-const std::vector<PointLight>& Scene::getLights() const {
-    return lights;
-}
-const std::vector<Mesh*>& Scene::getObjects() const {
-    return objects;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,8 +75,6 @@ void Scene::cleanup() {
     for (Mesh* mesh : objects) {
         mesh->reset();
     }
-    // indexBuffer = INDEX_BUFFER;
-    // vertexBuffer = VERTEX_BUFFER;
 
     delete tree;
 }

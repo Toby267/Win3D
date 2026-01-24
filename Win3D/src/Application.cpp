@@ -54,58 +54,30 @@ Application::Application() {
     Engine e = Engine(1920, 1080);
     Scene& scene = e.getScene();
 
-    // Vector a{};
-    // Vector b{};
-    // Vector c{};
-    // Vector d{};
-
-    // Mat::Material hi = Mat::DisneyDiffuse{Colour{}, 0.0, 0.0};
-    // Colour adskfas = eval(hi, a, b, c);
-
     // Mesh* triangle = scene.addObject(Mesh::triangle());
     // triangle->setTranslation(Matrix::translate(0, 0, 2800));
     // triangle->setScale(Matrix::scale(500, 500, 1));
 
-    Mesh* cube1 = scene.addObject(Mesh::cube());
-    cube1->setTranslation(Matrix::translate(0, 0, 1100));
+    // Mesh* cube1 = scene.addObject(Mesh::cube());
+    // cube1->setTranslation(Matrix::translate(0, 0, 1100));
 
-    // Mesh* cube2 = scene.addObject(Mesh::cube(Colour::blue()));
-    // cube2->setTranslation(Matrix::translate(-400, 0, 1100));
+    Mesh* sphere1 = scene.addObject(Mesh::sphere());
+    sphere1->setTranslation(Matrix::translate(-400, 0, 1000));
 
-    // Mesh* cube3 = scene.addObject(Mesh::cube(Colour::blue()));
-    // cube3->setTranslation(Matrix::translate(400, 0, 1100));
-
-    // Mesh* cube4 = scene.addObject(Mesh::cube(Colour::blue()));
-    // cube4->setTranslation(Matrix::translate(800, 0, 1100));
-
-    // Mesh* sphere = scene.addObject(Mesh::icoSphere(Colour::blue()));
-    // sphere->setTranslation(Matrix::translate(0, 0, 1000));
+    Mesh* sphere2 = scene.addObject(Mesh::sphere());
+    sphere2->setTranslation(Matrix::translate(400, 0, 1000));
 
     double alpha = 0.0;
-    const int frames = 50;
+    const int frames = 25;
     
     auto start = std::chrono::high_resolution_clock::now();
 
-    // double roughness = 0.0;
-    // double subsurface = 0.0;
-
     for (int i = 0; i < frames; i++) {
-        // roughness += 0.1;
-        // if (roughness > 1.0) {
-        //     roughness = 0.0;
-        //     subsurface += 0.1;
-
-        //     if (subsurface > 1.0) {
-        //         break;
-        //     }
-        // }
         alpha -= std::numbers::pi/16;
         // triangle->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        // cube2->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        // cube3->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        // cube4->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        // sphere->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        // cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        sphere1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        sphere2->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         
         e.drawCall();
     }
