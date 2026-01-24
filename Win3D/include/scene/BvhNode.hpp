@@ -2,6 +2,8 @@
 
 #include "scene/Mesh.hpp"
 #include "scene/Aabb.hpp"
+#include "scene/Util.hpp"
+#include "util/Vector.hpp"
 
 #include <vector>
 
@@ -18,7 +20,8 @@ private:
 
 public:
     //constructors/destructor
-    BvhNode(std::vector<Mesh*> objects);
+    BvhNode(std::vector<Mesh*> objects); //constructs a bvh tree on a mesh by mesh basis
+    BvhNode(std::vector<Vector> triangles); // constructs a bvh tree on a triangle by traingle basis 
     ~BvhNode();
 
     //public methods

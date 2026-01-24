@@ -9,6 +9,11 @@
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+BvhNode::BvhNode(std::vector<Vector> triangles) {
+    //TODO: pray
+}
+
+
 BvhNode::BvhNode(std::vector<Mesh*> objects) {
    // step 1 - if is 1 or 2 objects create them manually then return
    if (objects.size() == 1) {
@@ -48,8 +53,8 @@ BvhNode::BvhNode(std::vector<Mesh*> objects) {
        return a->calcBBox().centroid().x() > b->calcBBox().centroid().x();
    });
 
-   left = new BvhNode({objects.begin(), objects.begin()+sahIndex});
-   right = new BvhNode({objects.begin()+sahIndex, objects.end()});
+   left = new BvhNode(std::vector<Mesh*>{objects.begin(), objects.begin()+sahIndex});
+   right = new BvhNode(std::vector<Mesh*>{objects.begin()+sahIndex, objects.end()});
 }
 
 BvhNode::~BvhNode() {
