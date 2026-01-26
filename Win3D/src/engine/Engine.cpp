@@ -20,10 +20,10 @@ void Engine::drawCall() {
     bitmap.clear();
 
     scene.toCameraSpace();
-    Renderer::rayTrace(bitmap, scene);
+    // Renderer::rayTrace(bitmap, scene);
 
     scene.toViewportSpace();
-    // Renderer::rasterize(bitmap, scene);
+    Renderer::rasterize(bitmap, scene);
 
     scene.cleanup();
 
