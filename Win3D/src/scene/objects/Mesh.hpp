@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/renderer/Ray.hpp"
+#include "renderer/Ray.hpp"
 #include "scene/dataStructures/Aabb.hpp"
 #include "scene/objects/Materials.hpp"
 #include "util/Util.hpp"

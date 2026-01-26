@@ -1,6 +1,6 @@
 #include "scene/Scene.hpp"
-#include "engine/renderer/Camera.hpp"
-#include "engine/renderer/Ray.hpp"
+#include "renderer/Camera.hpp"
+#include "renderer/Ray.hpp"
 #include "scene/dataStructures/BvhNode.hpp"
 #include "util/Util.hpp"
 

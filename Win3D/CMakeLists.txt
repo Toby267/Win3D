@@ -5,9 +5,9 @@ set(CMAKE_CXX_STANDARD 20)
 
 project(Win3D)
 
-file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/core/*.cpp")
+file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 add_executable(Win3D "${MY_SOURCES}")
-target_include_directories(Win3D PUBLIC "${CMAKE_SOURCE_DIR}/core")
+target_include_directories(Win3D PUBLIC "${CMAKE_SOURCE_DIR}/src")
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="./resources/")
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/raylib-5.0)

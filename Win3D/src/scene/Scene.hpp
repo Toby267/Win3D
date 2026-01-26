@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/renderer/Camera.hpp"
+#include "renderer/Camera.hpp"
 #include "scene/objects//Mesh.hpp"
 #include "scene/dataStructures/BvhNode.hpp"
 #include "scene/objects/PointLight.hpp"
