@@ -1,6 +1,5 @@
 #include "scene/objects/Materials.hpp"
-#include "util/Colour.hpp"
-#include "util/Vector.hpp"
+#include "util/Util.hpp"
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>

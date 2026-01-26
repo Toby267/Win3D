@@ -1,4 +1,4 @@
-#include "util/Matrix.hpp"
+#include "util/Util.hpp"
 
 #include <cassert>
 #include <cmath>
@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "util/Vector.hpp"
+#include "util/Util.hpp"
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,8 +1,7 @@
 #pragma once
 
 #include "scene/dataStructures/Aabb.hpp"
-#include "util/Colour.hpp"
-#include "util/Vector.hpp"
+#include "util/Util.hpp"
 
 #include <vector>
 

@@ -2,8 +2,7 @@
 #include "engine/renderer/Camera.hpp"
 #include "engine/renderer/Ray.hpp"
 #include "scene/dataStructures/BvhNode.hpp"
-#include "util/Colour.hpp"
-#include "util/Vector.hpp"
+#include "util/Util.hpp"
 
 #include <vector>
 

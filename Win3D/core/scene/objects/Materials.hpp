@@ -1,7 +1,6 @@
 #pragma once
 
-#include "util/Colour.hpp"
-#include "util/Vector.hpp"
+#include "util/Util.hpp"
 #include <variant>
 
 // in doom, brdf calculations were only done for triangle vertices, then the colours of the triangle were interpolated

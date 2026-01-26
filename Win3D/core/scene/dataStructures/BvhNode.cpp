@@ -1,6 +1,6 @@
 #include "scene/dataStructures/BvhNode.hpp"
 #include "scene/dataStructures/Aabb.hpp"
-#include "util/Vector.hpp"
+#include "util/Util.hpp"
 
 #include <algorithm>
 #include <iostream>

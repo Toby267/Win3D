@@ -1,7 +1,6 @@
 #pragma once
 
-#include "util/Vector.hpp"
-#include "util/Colour.hpp"
+#include "util/Util.hpp"
 
 struct PointLight {
     Vector position;

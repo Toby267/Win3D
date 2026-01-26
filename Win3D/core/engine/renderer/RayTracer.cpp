@@ -3,8 +3,7 @@
 #include "engine/renderer/Ray.hpp"
 #include "scene/objects/PointLight.hpp"
 #include "scene/Scene.hpp"
-#include "util/Colour.hpp"
-#include "util/Vector.hpp"
+#include "util/Util.hpp"
 #include <limits>
 #include <vector>
 

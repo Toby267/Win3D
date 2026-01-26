@@ -1,6 +1,6 @@
 #pragma once
 
-#include "util/Matrix.hpp"
+#include "util/Util.hpp"
 
 struct Camera {
     //position/orientation

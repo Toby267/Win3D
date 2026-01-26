@@ -1,8 +1,7 @@
 #pragma once
 
 #include "scene/objects//Materials.hpp"
-#include "util/Colour.hpp"
-#include "util/Vector.hpp"
+#include "util/Util.hpp"
 
 struct Ray {
     Vector origin;

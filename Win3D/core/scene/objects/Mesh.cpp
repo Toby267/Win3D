@@ -2,8 +2,7 @@
 #include "engine/renderer/Ray.hpp"
 #include "scene/objects/Materials.hpp"
 #include "scene/SceneUtil.hpp"
-#include "util/Colour.hpp"
-#include "util/Vector.hpp"
+#include "util/Util.hpp"
 
 #include <iostream>
 #include <limits>

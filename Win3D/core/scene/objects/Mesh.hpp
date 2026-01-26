@@ -3,8 +3,7 @@
 #include "engine/renderer/Ray.hpp"
 #include "scene/dataStructures/Aabb.hpp"
 #include "scene/objects/Materials.hpp"
-#include "util/Matrix.hpp"
-#include "util/Vector.hpp"
+#include "util/Util.hpp"
 #include "scene/SceneUtil.hpp"
 
 /**
