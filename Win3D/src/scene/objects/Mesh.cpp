@@ -1,7 +1,7 @@
-#include "scene/Mesh.hpp"
-#include "renderer/Ray.hpp"
-#include "scene/Materials.hpp"
-#include "scene/Util.hpp"
+#include "scene/objects//Mesh.hpp"
+#include "engine/renderer/Ray.hpp"
+#include "scene/objects/Materials.hpp"
+#include "scene/SceneUtil.hpp"
 #include "util/Colour.hpp"
 #include "util/Vector.hpp"
 

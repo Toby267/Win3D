@@ -2,7 +2,7 @@
 
 #include "engine/Bitmap3D.hpp"
 #include "engine/Window.hpp"
-#include "renderer/Renderer.hpp"
+#include "engine/renderer/Renderer.hpp"
 #include "scene/Scene.hpp"
 
 Engine::Engine(int w, int h)

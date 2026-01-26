@@ -1,5 +1,5 @@
-#include "renderer/Renderer.hpp"
-#include "scene/Util.hpp"
+#include "engine/renderer/Renderer.hpp"
+#include "scene/SceneUtil.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //

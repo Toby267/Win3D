@@ -1,7 +1,7 @@
-#include "renderer/Renderer.hpp"
+#include "engine/renderer/Renderer.hpp"
 
-#include "renderer/Ray.hpp"
-#include "scene/PointLight.hpp"
+#include "engine/renderer/Ray.hpp"
+#include "scene/objects/PointLight.hpp"
 #include "scene/Scene.hpp"
 #include "util/Colour.hpp"
 #include "util/Vector.hpp"

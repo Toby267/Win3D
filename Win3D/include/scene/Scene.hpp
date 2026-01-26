@@ -1,9 +1,9 @@
 #pragma once
 
-#include "renderer/Camera.hpp"
-#include "scene/Mesh.hpp"
+#include "engine/renderer/Camera.hpp"
+#include "scene/objects//Mesh.hpp"
 #include "scene/dataStructures/BvhNode.hpp"
-#include "scene/PointLight.hpp"
+#include "scene/objects/PointLight.hpp"
 
 #include <vector>
 

@@ -1,8 +1,8 @@
 #include "Application.hpp"
 
 #include "engine/Engine.hpp"
-#include "scene/Materials.hpp"
-#include "scene/Mesh.hpp"
+#include "scene/objects/Materials.hpp"
+#include "scene/objects/Mesh.hpp"
 #include "util/Colour.hpp"
 #include "util/Vector.hpp"
 #include <chrono>

@@ -1,8 +1,8 @@
 #include "scene/Scene.hpp"
-#include "renderer/Camera.hpp"
-#include "renderer/Ray.hpp"
+#include "engine/renderer/Camera.hpp"
+#include "engine/renderer/Ray.hpp"
 #include "scene/dataStructures/BvhNode.hpp"
-#include "scene/Util.hpp"
+#include "scene/SceneUtil.hpp"
 #include "util/Colour.hpp"
 #include "util/Vector.hpp"
 

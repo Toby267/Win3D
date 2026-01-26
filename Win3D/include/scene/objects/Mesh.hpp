@@ -1,11 +1,11 @@
 #pragma once
 
-#include "renderer/Ray.hpp"
+#include "engine/renderer/Ray.hpp"
 #include "scene/dataStructures/Aabb.hpp"
-#include "scene/Materials.hpp"
+#include "scene/objects/Materials.hpp"
 #include "util/Matrix.hpp"
 #include "util/Vector.hpp"
-#include "scene/Util.hpp"
+#include "scene/SceneUtil.hpp"
 
 /**
  * stores the data of an object. the vertices is just a list of vectors, one per vertex. colours[i] is the colour of vertices[i].

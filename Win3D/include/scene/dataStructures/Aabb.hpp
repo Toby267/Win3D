@@ -1,7 +1,7 @@
 #pragma once
 
 #include "util/Vector.hpp"
-#include "renderer/Ray.hpp"
+#include "engine/renderer/Ray.hpp"
 #include <vector>
 
 struct Aabb {

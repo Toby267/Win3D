@@ -1,6 +1,6 @@
 #pragma once
 
-#include "scene/Materials.hpp"
+#include "scene/objects//Materials.hpp"
 #include "util/Colour.hpp"
 #include "util/Vector.hpp"
 
