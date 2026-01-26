@@ -5,7 +5,6 @@
 #include "scene/Scene.hpp"
 #include "util/Colour.hpp"
 #include "util/Vector.hpp"
-#include <iostream>
 #include <limits>
 #include <vector>
 

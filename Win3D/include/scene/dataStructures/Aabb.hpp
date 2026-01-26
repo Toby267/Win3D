@@ -2,7 +2,6 @@
 
 #include "util/Vector.hpp"
 #include "engine/renderer/Ray.hpp"
-#include <vector>
 
 struct Aabb {
     Vector a = Vector(0, 0, 0);
