@@ -1,7 +1,7 @@
 #include "scene/Scene.hpp"
 #include "renderer/Camera.hpp"
 #include "renderer/Ray.hpp"
-#include "scene/BvhNode.hpp"
+#include "scene/dataStructures/BvhNode.hpp"
 #include "scene/Util.hpp"
 #include "util/Colour.hpp"
 #include "util/Vector.hpp"

@@ -1,5 +1,7 @@
-#include "scene/BvhNode.hpp"
-#include "scene/Aabb.hpp"
+#include "scene/dataStructures/BvhNode.hpp"
+#include "scene/dataStructures/Aabb.hpp"
+#include "scene/Util.hpp"
+#include "util/Vector.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -9,9 +11,24 @@
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-BvhNode::BvhNode(std::vector<Vector> triangles) {
-    //TODO: pray
-}
+// BvhNode::BvhNode(std::vector<Triangle> tris) {
+//     // step 1 - stop recursing if minimal triangles is met
+//     if (tris.size() <= MIN_SIZE) {
+//         for (int i = 0; i < tris.size(); i++) {
+//             triangles[i] = tris[i];
+//         }
+
+//         boundingBox = Aabb(tris);
+
+//         return;
+//     }
+
+//     // step 2 - work out best split, and split
+//     boundingBox = objects[0]->calcBBox();
+//     for (int i = 1; i < objects.size(); i++) {
+//         boundingBox = Aabb(boundingBox, objects[i]->calcBBox());
+//     }
+// }
 
 
 BvhNode::BvhNode(std::vector<Mesh*> objects) {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "scene/dataStructures/Aabb.hpp"
 #include "util/Colour.hpp"
 #include "util/Vector.hpp"
 
@@ -10,6 +11,14 @@ struct Vertex {
     Colour colour;
     Vector normal;
 } typedef Vertex;
+
+struct Triangle {
+    Vertex v1;
+    Vertex v2;
+    Vertex v3;
+
+    Aabb calcBBox() const;
+} typedef Triangle;
 
 typedef std::vector<Vector> IndexBuffer;
 typedef std::vector<Vertex> VertexBuffer;

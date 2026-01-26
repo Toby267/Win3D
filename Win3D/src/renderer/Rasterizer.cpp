@@ -21,10 +21,8 @@ static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour
  */
 void Renderer::rasterize(Bitmap3D& bmap, const Scene& scene) {
     for (Mesh* obj : scene.getObjects()) {
-        VertexBuffer vb = obj->getVertexBuffer();
-
-        for (Vector t : obj->getIndexBuffer()) {
-            drawTriangle(bmap, vb[t[0]].position, vb[t[1]].position, vb[t[2]].position, vb[t[0]].colour, vb[t[1]].colour, vb[t[2]].colour);
+        for (Triangle t : obj->getTriangles()) {
+            drawTriangle(bmap, t.v1.position, t.v2.position, t.v3.position, t.v1.colour, t.v2.colour, t.v3.colour);
         }
     }
 }

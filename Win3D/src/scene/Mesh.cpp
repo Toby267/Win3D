@@ -23,6 +23,21 @@ Mesh::Mesh(IndexBuffer ib, VertexBuffer vb)
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+std::vector<Triangle> Mesh::getTriangles() {
+    std::vector<Triangle> triangles;
+    triangles.reserve(indexBuffer.size());
+
+    for (Vector& v : indexBuffer) {
+        triangles.emplace_back(
+            vertexBuffer[v[0]],
+            vertexBuffer[v[1]],
+            vertexBuffer[v[2]]
+        );
+    }
+
+    return triangles;
+}
+
 void Mesh::setScale(Matrix s) {
     scale = s;
     affineTransform = translation * rotation * scale;

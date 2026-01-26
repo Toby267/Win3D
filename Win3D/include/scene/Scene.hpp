@@ -2,7 +2,7 @@
 
 #include "renderer/Camera.hpp"
 #include "scene/Mesh.hpp"
-#include "scene/BvhNode.hpp"
+#include "scene/dataStructures/BvhNode.hpp"
 #include "scene/PointLight.hpp"
 
 #include <vector>

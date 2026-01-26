@@ -1,4 +1,4 @@
-#include "scene/Aabb.hpp"
+#include "scene/dataStructures/Aabb.hpp"
 
 #include "util/Vector.hpp"
 #include <cassert>

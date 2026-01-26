@@ -1,7 +1,7 @@
 #pragma once
 
 #include "renderer/Ray.hpp"
-#include "scene/Aabb.hpp"
+#include "scene/dataStructures/Aabb.hpp"
 #include "scene/Materials.hpp"
 #include "util/Matrix.hpp"
 #include "util/Vector.hpp"
@@ -32,8 +32,7 @@ public:
     Mesh(IndexBuffer indexBuffer, VertexBuffer vertexBuffer);
 
     //getters/setters
-    const IndexBuffer& getIndexBuffer() { return indexBuffer; }
-    VertexBuffer& getVertexBuffer() { return vertexBuffer; }
+    std::vector<Triangle> getTriangles();
 
     void setScale(Matrix scale);
     void setTranslation(Matrix translation);
