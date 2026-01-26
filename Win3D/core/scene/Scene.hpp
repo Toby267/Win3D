@@ -4,7 +4,6 @@
 #include "scene/objects//Mesh.hpp"
 #include "scene/dataStructures/BvhNode.hpp"
 #include "scene/objects/PointLight.hpp"
-
 #include <vector>
 
 class Scene {
