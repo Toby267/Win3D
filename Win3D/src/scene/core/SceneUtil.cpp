@@ -1,4 +1,4 @@
-#include "scene/SceneUtil.hpp"
+#include "scene/core/SceneUtil.hpp"
 #include "scene/dataStructures/Aabb.hpp"
 
 Aabb Triangle::calcBBox() const {

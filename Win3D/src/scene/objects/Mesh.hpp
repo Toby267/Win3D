@@ -4,7 +4,7 @@
 #include "scene/dataStructures/Aabb.hpp"
 #include "scene/objects/Materials.hpp"
 #include "util/Util.hpp"
-#include "scene/SceneUtil.hpp"
+#include "scene/core/SceneUtil.hpp"
 
 /**
  * stores the data of an object. the vertices is just a list of vectors, one per vertex. colours[i] is the colour of vertices[i].

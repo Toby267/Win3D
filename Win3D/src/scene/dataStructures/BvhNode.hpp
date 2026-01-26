@@ -2,7 +2,7 @@
 
 #include "scene/objects/Mesh.hpp"
 #include "scene/dataStructures/Aabb.hpp"
-#include "scene/SceneUtil.hpp"
+#include "scene/core/SceneUtil.hpp"
 
 #include <vector>
 

@@ -2,7 +2,7 @@
 
 #include "renderer/Ray.hpp"
 #include "scene/objects/PointLight.hpp"
-#include "scene/Scene.hpp"
+#include "scene/core/Scene.hpp"
 #include "util/Util.hpp"
 #include <limits>
 #include <vector>

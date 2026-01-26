@@ -2,7 +2,7 @@
 
 #include "engine/Bitmap3D.hpp"
 #include "engine/Window.hpp"
-#include "scene/Scene.hpp"
+#include "scene/core/Scene.hpp"
 
 class Engine {
 private:

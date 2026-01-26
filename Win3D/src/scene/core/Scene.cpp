@@ -1,4 +1,4 @@
-#include "scene/Scene.hpp"
+#include "scene/core/Scene.hpp"
 #include "renderer/Camera.hpp"
 #include "renderer/Ray.hpp"
 #include "scene/dataStructures/BvhNode.hpp"

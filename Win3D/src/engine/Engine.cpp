@@ -3,7 +3,7 @@
 #include "engine/Bitmap3D.hpp"
 #include "engine/Window.hpp"
 #include "renderer/Renderer.hpp"
-#include "scene/Scene.hpp"
+#include "scene/core/Scene.hpp"
 
 Engine::Engine(int w, int h)
     : scene(w, h), window(w, h), bitmap(w, h)
@@ -20,10 +20,10 @@ void Engine::drawCall() {
     bitmap.clear();
 
     scene.toCameraSpace();
-    // Renderer::rayTrace(bitmap, scene);
+    Renderer::rayTrace(bitmap, scene);
 
     scene.toViewportSpace();
-    Renderer::rasterize(bitmap, scene);
+    // Renderer::rasterize(bitmap, scene);
 
     scene.cleanup();
 
