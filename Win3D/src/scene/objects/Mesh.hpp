@@ -31,7 +31,7 @@ public:
     Mesh(IndexBuffer indexBuffer, VertexBuffer vertexBuffer);
 
     //getters/setters
-    std::vector<Triangle> getTriangles();
+    std::vector<Triangle> getTriangles() const;
 
     void setScale(Matrix scale);
     void setTranslation(Matrix translation);

@@ -188,6 +188,15 @@ std::ostream& operator<<(std::ostream& os, const Vector& vector) {
 // * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+Vector Vector::min() {
+    constexpr float MIN = std::numeric_limits<float>::lowest();
+    return Vector(MIN, MIN, MIN);
+}
+Vector Vector::max() {
+    constexpr float MAX = std::numeric_limits<float>::max();
+    return Vector(MAX, MAX, MAX);
+}
+
 //aka vector product
 Vector Vector::crossProduct(const Vector& lhs, const Vector& rhs) {
     //

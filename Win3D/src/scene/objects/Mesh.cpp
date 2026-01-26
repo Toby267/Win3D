@@ -22,11 +22,11 @@ Mesh::Mesh(IndexBuffer ib, VertexBuffer vb)
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-std::vector<Triangle> Mesh::getTriangles() {
+std::vector<Triangle> Mesh::getTriangles() const {
     std::vector<Triangle> triangles;
     triangles.reserve(indexBuffer.size());
 
-    for (Vector& v : indexBuffer) {
+    for (const Vector& v : indexBuffer) {
         triangles.emplace_back(
             vertexBuffer[v[0]],
             vertexBuffer[v[1]],
@@ -97,11 +97,8 @@ void Mesh::clip() {
 }
 
 Aabb Mesh::calcBBox() const {
-    constexpr float MIN = std::numeric_limits<float>::lowest();
-    constexpr float MAX = std::numeric_limits<float>::max();
-    
-    Vector min(MAX, MAX, MAX);
-    Vector max(MIN, MIN, MIN);
+    Vector min = Vector::max();
+    Vector max = Vector::min();
 
     for (const Vertex& vertex : vertexBuffer) {
         if (vertex.position.x() > max.x()) max.x() = vertex.position.x();

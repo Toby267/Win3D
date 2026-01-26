@@ -16,7 +16,7 @@ struct Triangle {
     Vertex v2;
     Vertex v3;
 
-    Aabb calcBBox() const;
+    Aabb boundingBox;
 } typedef Triangle;
 
 typedef std::vector<Vector> IndexBuffer;

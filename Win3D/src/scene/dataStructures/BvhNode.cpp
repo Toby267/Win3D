@@ -1,34 +1,96 @@
 #include "scene/dataStructures/BvhNode.hpp"
+#include "scene/core/SceneUtil.hpp"
 #include "scene/dataStructures/Aabb.hpp"
 #include "util/Util.hpp"
 
 #include <algorithm>
+#include <cstddef>
 #include <iostream>
 #include <vector>
+
+#define MAX_DEPTH (10)
+#define MIN_TRIANGLES (4)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// BvhNode::BvhNode(std::vector<Triangle> tris) {
-//     // step 1 - stop recursing if minimal triangles is met
-//     if (tris.size() <= MIN_SIZE) {
-//         for (int i = 0; i < tris.size(); i++) {
-//             triangles[i] = tris[i];
-//         }
+BvhNode::BvhNode(std::vector<Triangle>& tris) {
+    // calculates the bounding box of each triangle
+    for (Triangle& t : tris) {
+        t.boundingBox = Aabb();
+        t.boundingBox.grow(t.v1.position);
+        t.boundingBox.grow(t.v2.position);
+        t.boundingBox.grow(t.v3.position);
+    }
 
-//         boundingBox = Aabb(tris);
+    construct(tris, 0, tris.size()-1);
+}
 
-//         return;
-//     }
+// this class should also do moller trumbore intersection...
 
-//     // step 2 - work out best split, and split
-//     boundingBox = objects[0]->calcBBox();
-//     for (int i = 1; i < objects.size(); i++) {
-//         boundingBox = Aabb(boundingBox, objects[i]->calcBBox());
-//     }
-// }
+/**
+ * @param maxDepth - the maximum depth of the hierarchy
+ * @param minTriangles - the minimum number of traingles per node
+*/
+void BvhNode::construct(std::vector<Triangle>& tris, size_t start, size_t end) {
+    // step 0 - calculate containing bbox
+    for (const Triangle& t : tris) {
+        // boundingBox.grow(t.boundingBox);
+        // TODO: implement this and swap
+        boundingBox.grow(t.v1.position);
+        boundingBox.grow(t.v2.position);
+        boundingBox.grow(t.v3.position);
+    }
+    
+    // step 1 - stop recursing if minimal triangles is met - or splitting will result in a node with less than the minimal triangles
+    if (tris.size() < 2 * MIN_TRIANGLES) {
+        triangles.reserve(tris.size());
 
+        //store triangles for intersection
+        for (const Triangle& t : tris)
+            triangles.emplace_back(t);
+
+        return;
+    }
+
+    // step 2 - calculate optimal split, then recurse & split
+
+    // sort start-end by the centroid coordinate in the extent with greatest size
+    // split in half
+    // recurse
+
+
+
+
+}
+
+BvhNode::~BvhNode() {
+    if (left) delete left;
+    if (right) delete right;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool BvhNode::hit(const Ray& ray, TrianglePoint& triangle, float& t) const {
+    if (!boundingBox.intersect(ray))
+        return false;
+
+    // TODO: if it intersects two objects, there is a chance that it just returns the values for one of them
+    return data && data->hit(ray, triangle, t) || left && left->hit(ray, triangle, t) || right && right->hit(ray, triangle, t);
+}
+
+void BvhNode::print() const {
+    std::cout << "aabb: " << boundingBox.min << ", " << boundingBox.max << '\n';
+    if (left != nullptr) left->print();
+    if (right != nullptr) right->print();
+}
+
+// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
+// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 BvhNode::BvhNode(std::vector<Mesh*> objects) {
    // step 1 - if is 1 or 2 objects create them manually then return
@@ -40,14 +102,15 @@ BvhNode::BvhNode(std::vector<Mesh*> objects) {
    else if (objects.size() == 2) {
        left = new BvhNode({objects[0]});
        right = new BvhNode({objects[1]});
-       boundingBox = Aabb(objects[0]->calcBBox(), objects[1]->calcBBox());
+       boundingBox = objects[0]->calcBBox();
+       boundingBox.grow(objects[1]->calcBBox());
        return;
    }
 
    // step 2 - work out best split, and split
    boundingBox = objects[0]->calcBBox();
    for (int i = 1; i < objects.size(); i++) {
-       boundingBox = Aabb(boundingBox, objects[i]->calcBBox());
+       boundingBox.grow(objects[i]->calcBBox());
    }
 
    //TODO: this should by x, then y, then z to find the best split
@@ -73,33 +136,9 @@ BvhNode::BvhNode(std::vector<Mesh*> objects) {
    right = new BvhNode(std::vector<Mesh*>{objects.begin()+sahIndex, objects.end()});
 }
 
-BvhNode::~BvhNode() {
-    if (left) delete left;
-    if (right) delete right;
-    //this doesn't own the data, the scene class does
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool BvhNode::hit(const Ray& ray, TrianglePoint& triangle, float& t) const {
-    if (!boundingBox.intersect(ray))
-        return false;
-
-    // TODO: if it intersects two objects, there is a chance that it just returns the values for one of them
-    return data && data->hit(ray, triangle, t) || left && left->hit(ray, triangle, t) || right && right->hit(ray, triangle, t);
-}
-
-void BvhNode::print() const {
-    std::cout << "aabb: " << boundingBox.a << ", " << boundingBox.b << '\n';
-    if (left != nullptr) left->print();
-    if (right != nullptr) right->print();
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// // * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
+// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 float BvhNode::sweepSurfaceAreaHeuristic(std::vector<Mesh*>& objects, int index) {
     // return f(i) = LSA(i) * i + RSA(i) * (N-i)

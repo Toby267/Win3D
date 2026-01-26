@@ -5,11 +5,12 @@
 #include "scene/dataStructures/Aabb.hpp"
 #include "scene/core/SceneUtil.hpp"
 
+#include <cstddef>
 #include <vector>
 
 class BvhNode {
 public:
-    BvhNode(std::vector<Triangle>& triangles, int maxDepth, int minTriangles);
+    BvhNode(std::vector<Triangle>& triangles);
     ~BvhNode();
 
     // Triangle hit(const Ray&, float& t, float& u, float& v) const; // this is the preferred method, becuase it decouples ray tracing (triangle interpolation) logic from hit logic
@@ -17,7 +18,9 @@ public:
     void print() const;
 
 private:
-    Aabb boundingBox;
+    void construct(std::vector<Triangle>& tris, size_t start, size_t end);
+
+    Aabb boundingBox = Aabb();
 
     BvhNode* left = nullptr;
     BvhNode* right = nullptr;

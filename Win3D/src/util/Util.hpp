@@ -52,6 +52,9 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Vector& vector);
 
     //static methods
+    static Vector min();
+    static Vector max();
+
     static Vector crossProduct(const Vector& lhs, const Vector& rhs);
     static double dotProduct(const Vector& lhs, const Vector& rhs);
 
