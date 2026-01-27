@@ -16,3 +16,8 @@ struct Aabb {
     float surfaceArea() const;
     Vector centroid() const;
 };
+
+struct Triangle {
+    Vertex v1, v2, v3;
+    Aabb boundingBox;
+} typedef Triangle;

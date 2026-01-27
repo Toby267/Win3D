@@ -52,14 +52,14 @@ TODO:
  * Runs the application
  */
 Application::Application() {
-    Mesh* cube = Mesh::cube();
-    cube->setTranslation(Matrix::translate(0, 0, 1100));
-
-    
-    std::vector<Triangle> triangles = cube->getTriangles();
-    BvhNode* tree = BvhNode::buildBvhTree(triangles);
-    tree->print();
-    return;
+    // Mesh* cube = Mesh::cube();
+    // cube->setTranslation(Matrix::translate(0, 0, 1100));
+// 
+    // 
+    // std::vector<Triangle> triangles = cube->getTriangles();
+    // BvhNode* tree = BvhNode::buildBvhTree(triangles);
+    // tree->print();
+    // return;
     
     
     

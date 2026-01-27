@@ -12,7 +12,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
-    constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
+    // constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
     
     const Camera& camera = scene.getCam();
     const std::vector<PointLight> lights = scene.getLights();
@@ -27,23 +27,34 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
                 Vector(i, j, camera.nearFocalDistance).normalise()
             );
 
-            TrianglePoint triangle;
-            float t = FLOAT_MAX;
+            // TrianglePoint triangle;
+            // float t = FLOAT_MAX;
+            HitRecord record;
+
+            if (scene.intersect(ray, record)) {
+                // Colour baseColour = ...
+                // Vector normal = ...
+                // Vector position = ...
+                // Colour finalColour = ...
+                // bmap.setPixel(i+x, camera.screenHeight-(j+y), baseColour);
+            }
             
             //TODO: fix this such that it correctly pases the right things to the brdf and is shaded properly
-            if (scene.intersect(ray, triangle, t)) {
-                Colour baseColour = triangle.c0 * (1 - triangle.u - triangle.v) + triangle.c1 * triangle.u + triangle.c2 * triangle.v;
+            
+            // if (scene.intersect(ray, triangle, t)) {
+                // Colour baseColour = triangle.c0 * (1 - triangle.u - triangle.v) + triangle.c1 * triangle.u + triangle.c2 * triangle.v;
                 // baseColour = baseColour * /*lights[0].colour */ lights[0].intensity;
 
-                Vector normal = triangle.n0 * (1 - triangle.u - triangle.v) + triangle.n1 * triangle.u + triangle.n2 * triangle.v;
-                Vector position = triangle.v0 * (1 - triangle.u - triangle.v) + triangle.v1 * triangle.u + triangle.v2 * triangle.v;
+                // Vector normal = triangle.n0 * (1 - triangle.u - triangle.v) + triangle.n1 * triangle.u + triangle.n2 * triangle.v;
+                // Vector position = triangle.v0 * (1 - triangle.u - triangle.v) + triangle.v1 * triangle.u + triangle.v2 * triangle.v;
 
                 // baseColour  = baseColour / 255;
-                Colour finalColour = Mat::eval(triangle.mat, -ray.direction, (lights[0].position - position).normalise(), normal, baseColour); // should pass light direction, not position
+                // Colour finalColour = Mat::eval(triangle.mat, -ray.direction, (lights[0].position - position).normalise(), normal, baseColour); // should pass light direction, not position
                 // finalColour = finalColour * 255;
                 // finalColour.reNormalise();
-                bmap.setPixel(i+x, camera.screenHeight-(j+y), baseColour);
-            }
+                // bmap.setPixel(i+x, camera.screenHeight-(j+y), baseColour);
+            // }
+            
         }
     }
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "renderer/Ray.hpp"
-#include "scene/objects/Mesh.hpp"
 #include "scene/dataStructures/Aabb.hpp"
 #include "scene/core/SceneUtil.hpp"
 
@@ -13,8 +12,7 @@ public:
     static BvhNode* buildBvhTree(std::vector<Triangle>& triangles);
     ~BvhNode();
 
-    // Triangle hit(const Ray&, float& t, float& u, float& v) const; // this is the preferred method, becuase it decouples ray tracing (triangle interpolation) logic from hit logic
-    bool hit(const Ray& ray, TrianglePoint& triangle, float& t) const;
+    int intersect(const Ray& ray, Triangle& triangle) const; //returns t
     void print() const;
 
 private:
@@ -25,16 +23,18 @@ private:
     BvhNode* left = nullptr;
     BvhNode* right = nullptr;
 
-    std::vector<Triangle> triangles{};
+    std::vector<Triangle> triangles;
+};
 
-
-
-
-
-//delete the following after implementing the better version
+class BvhTree {
 public:
-    BvhNode(std::vector<Mesh*> objects);//delete
+    BvhTree(std::vector<Triangle>& triangles);
+    ~BvhTree();
+
+    // finds all BvhNodes that the ray intersects with, determines which triangles of those nodes the ray intersects with (using moller trumbore),
+    // then finds which is the closest triangle, adds its data to the HitRecord, and returns
+    HitRecord intersect(const Ray& ray);
+
 private:
-    Mesh* data = nullptr;//delete
-    float sweepSurfaceAreaHeuristic(std::vector<Mesh*>& axisOrderedObjects, int i);//delete
+    BvhNode* root = nullptr;
 };

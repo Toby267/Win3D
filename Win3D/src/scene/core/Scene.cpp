@@ -2,8 +2,10 @@
 #include "renderer/Camera.hpp"
 #include "renderer/Ray.hpp"
 #include "scene/dataStructures/BvhNode.hpp"
+#include "scene/objects/Mesh.hpp"
 #include "util/Util.hpp"
 
+#include <limits>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -37,7 +39,7 @@ Scene::~Scene() {
         delete mesh;
     }
 
-    if (tree) delete tree;
+    // if (tree) delete tree;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,9 +54,10 @@ void Scene::toCameraSpace() {
     for (Mesh* mesh : objects) {
         mesh->toWorldSpace();
         mesh->applyAffineTransform(camera.tranformationMatrix());
+        mesh->createAccelDataStrucutre();
     }
 
-    tree = new BvhNode{objects};
+    // tree = new BvhNode{objects};
 }
 
 void Scene::toViewportSpace() {
@@ -65,8 +68,16 @@ void Scene::toViewportSpace() {
     }
 }
 
-bool Scene::intersect(const Ray& ray, TrianglePoint& triangle, float& t) const {
-    return tree->hit(ray, triangle, t);
+bool Scene::intersect(const Ray& ray, HitRecord& record) const {
+    // return tree->hit(ray, triangle, t);
+    constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
+    float t = FLOAT_MAX;
+
+    for (const Mesh* m : objects) {
+        m->intersect(ray, record, t);
+    }
+
+    return t != FLOAT_MAX;
 }
 
 void Scene::cleanup() {
@@ -74,5 +85,5 @@ void Scene::cleanup() {
         mesh->reset();
     }
 
-    delete tree;
+    // delete tree;
 }

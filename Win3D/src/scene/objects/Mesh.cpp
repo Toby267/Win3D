@@ -1,5 +1,6 @@
 #include "scene/objects/Mesh.hpp"
 #include "renderer/Ray.hpp"
+#include "scene/dataStructures/BvhNode.hpp"
 #include "scene/objects/Materials.hpp"
 #include "scene/core/SceneUtil.hpp"
 #include "util/Util.hpp"
@@ -76,6 +77,7 @@ void Mesh::applyTransform(Matrix m) {
 
 void Mesh::reset() {
     vertexBuffer = VERTEX_BUFFER;
+    delete tree;
 }
 
 void Mesh::clip() {
@@ -113,7 +115,20 @@ Aabb Mesh::calcBBox() const {
     return Aabb(min, max);
 }
 
+void Mesh::createAccelDataStrucutre() {
+    std::vector<Triangle> triangles = getTriangles();
+    tree = BvhNode::buildBvhTree(triangles);
+}
+
+void Mesh::intersect(const Ray& ray, HitRecord& record, float& t) const {
+    // Triangle closestTriagnle = tree->intersect(ray);
+}
+
 bool Mesh::hit(const Ray& ray, TrianglePoint& triangle, float& t) const {
+    // if (tree.hit(ray, triangle, t)) {
+    //     // the tree will determine the closest t, and return if the t is less than the previous t found from a previous mesh
+    //     //   
+    // }
     for (const Vector& tri : indexBuffer) {
         float u, v, tNew;
         bool hit = mollerTrumboreIntersection(ray, tri, u, v, tNew);

@@ -2,6 +2,7 @@
 
 #include "renderer/Ray.hpp"
 #include "scene/dataStructures/Aabb.hpp"
+#include "scene/dataStructures/BvhNode.hpp"
 #include "scene/objects/Materials.hpp"
 #include "util/Util.hpp"
 #include "scene/core/SceneUtil.hpp"
@@ -17,6 +18,8 @@ private:
 
     IndexBuffer indexBuffer;
     VertexBuffer vertexBuffer;
+
+    BvhNode* tree = nullptr;
 
     Matrix scale       = Matrix::scale(100, 100, 100);
     Matrix translation = Matrix::translate(0, 0, 0);
@@ -42,11 +45,16 @@ public:
     void toWorldSpace();
     void applyAffineTransform(Matrix matrix);
     void applyTransform(Matrix matrix);
-
     void reset();
-    void clip();
-    Aabb calcBBox() const;
+
+    //ray tracing stuff
+    void createAccelDataStrucutre();
+    void intersect(const Ray& ray, HitRecord& triangle, float& t) const;
     bool hit(const Ray& ray, TrianglePoint& triangle, float& t) const;
+    Aabb calcBBox() const;
+
+    //raster stuff
+    void clip();
 
     //operator overloads
     friend std::ostream& operator<<(std::ostream& os, const Mesh& matrix);

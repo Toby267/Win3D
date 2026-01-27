@@ -1,5 +1,5 @@
 #include "scene/dataStructures/Aabb.hpp"
-
+#include "renderer/Ray.hpp"
 #include "util/Util.hpp"
 #include <cassert>
 

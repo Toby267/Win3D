@@ -1,5 +1,6 @@
 #pragma once
 
+#include "scene/core/SceneUtil.hpp"
 #include "scene/objects//Materials.hpp"
 #include "util/Util.hpp"
 
@@ -7,6 +8,13 @@ struct Ray {
     Vector origin;
     Vector direction;
 } typedef Ray;
+
+struct HitRecord {
+    float u, v, t;
+    Mat::Material mat = Mat::DisneyDiffuse{0.0, 0.0};
+    Vertex v1, v2, v3;
+
+} typedef HitRecord;
 
 struct TrianglePoint {
     float u;

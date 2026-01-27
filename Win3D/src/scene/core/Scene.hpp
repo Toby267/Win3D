@@ -1,6 +1,7 @@
 #pragma once
 
 #include "renderer/Camera.hpp"
+#include "renderer/Ray.hpp"
 #include "scene/objects//Mesh.hpp"
 #include "scene/dataStructures/BvhNode.hpp"
 #include "scene/objects/PointLight.hpp"
@@ -12,7 +13,7 @@ private:
     std::vector<PointLight> lights{};
     Camera camera{};
 
-    BvhNode* tree = nullptr;
+    // BvhNode* tree = nullptr;
 
 public:
     //constructors/destructor
@@ -31,6 +32,6 @@ public:
     void toCameraSpace();
     void toViewportSpace();
     
-    bool intersect(const Ray& ray, TrianglePoint& triangle, float& t) const;
+    bool intersect(const Ray& ray, HitRecord& record) const;
     void cleanup();    
 };
