@@ -1,10 +1,14 @@
 #include "Application.hpp"
 
 #include "engine/Engine.hpp"
+#include "scene/core/SceneUtil.hpp"
+#include "scene/dataStructures/BvhNode.hpp"
 #include "scene/objects/Mesh.hpp"
 #include <chrono>
+#include <cstddef>
 #include <iostream>
 #include <numbers>
+#include <vector>
 
 // features:
 // got:
@@ -48,6 +52,20 @@ TODO:
  * Runs the application
  */
 Application::Application() {
+    Mesh* cube = Mesh::cube();
+    cube->setTranslation(Matrix::translate(0, 0, 1100));
+
+    
+    std::vector<Triangle> triangles = cube->getTriangles();
+    BvhNode* tree = BvhNode::buildBvhTree(triangles);
+    tree->print();
+    return;
+    
+    
+    
+    
+    
+    
     Engine e = Engine(1920, 1080);
     Scene& scene = e.getScene();
 

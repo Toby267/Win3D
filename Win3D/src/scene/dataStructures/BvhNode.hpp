@@ -10,7 +10,7 @@
 
 class BvhNode {
 public:
-    BvhNode(std::vector<Triangle>& triangles);
+    static BvhNode* buildBvhTree(std::vector<Triangle>& triangles);
     ~BvhNode();
 
     // Triangle hit(const Ray&, float& t, float& u, float& v) const; // this is the preferred method, becuase it decouples ray tracing (triangle interpolation) logic from hit logic
@@ -18,14 +18,14 @@ public:
     void print() const;
 
 private:
-    void construct(std::vector<Triangle>& tris, size_t start, size_t end);
+    BvhNode(std::vector<Triangle>& tris, size_t start, size_t end);
 
     Aabb boundingBox = Aabb();
 
     BvhNode* left = nullptr;
     BvhNode* right = nullptr;
 
-    std::vector<Triangle> triangles;
+    std::vector<Triangle> triangles{};
 
 
 

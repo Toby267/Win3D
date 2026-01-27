@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <iostream>
+#include <sys/types.h>
 #include <vector>
 
 #define MAX_DEPTH (10)
@@ -15,7 +16,7 @@
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-BvhNode::BvhNode(std::vector<Triangle>& tris) {
+BvhNode* BvhNode::buildBvhTree(std::vector<Triangle>& tris) {
     // calculates the bounding box of each triangle
     for (Triangle& t : tris) {
         t.boundingBox = Aabb();
@@ -24,45 +25,45 @@ BvhNode::BvhNode(std::vector<Triangle>& tris) {
         t.boundingBox.grow(t.v3.position);
     }
 
-    construct(tris, 0, tris.size()-1);
+    return new BvhNode(tris, 0, tris.size()-1);
 }
 
-// this class should also do moller trumbore intersection...
-
 /**
- * @param maxDepth - the maximum depth of the hierarchy
- * @param minTriangles - the minimum number of traingles per node
+ * @param start - the index of the first triangle
+ * @param end - the index of the last triangle
 */
-void BvhNode::construct(std::vector<Triangle>& tris, size_t start, size_t end) {
+BvhNode::BvhNode(std::vector<Triangle>& tris, size_t start, size_t end) {
     // step 0 - calculate containing bbox
-    for (const Triangle& t : tris) {
-        // boundingBox.grow(t.boundingBox);
-        // TODO: implement this and swap
-        boundingBox.grow(t.v1.position);
-        boundingBox.grow(t.v2.position);
-        boundingBox.grow(t.v3.position);
+    for (int i = start; i <= end; i++) {
+        boundingBox.grow(tris[i].boundingBox);
     }
     
     // step 1 - stop recursing if minimal triangles is met - or splitting will result in a node with less than the minimal triangles
-    if (tris.size() < 2 * MIN_TRIANGLES) {
-        triangles.reserve(tris.size());
+    int range = (end-start) + 1;
+    if (range < 2 * MIN_TRIANGLES) {
+        triangles.reserve(range);
 
         //store triangles for intersection
-        for (const Triangle& t : tris)
-            triangles.emplace_back(t);
+        for (int i = start; i <= end; i++)
+            triangles.emplace_back(tris[i]);
 
         return;
     }
 
-    // step 2 - calculate optimal split, then recurse & split
+    // step 2 - calculate optimal split, then order triangles
+    Vector span = boundingBox.max - boundingBox.min;
+    short axis = 0;
+    if (span.y() > span[axis]) axis = 1;
+    if (span.z() > span[axis]) axis = 2;
 
-    // sort start-end by the centroid coordinate in the extent with greatest size
-    // split in half
-    // recurse
+    int splitIndex = (start+end) / 2;
+    std::nth_element(tris.begin(), tris.begin() + splitIndex, tris.end(), [axis](const Triangle& a, const Triangle& b) {
+        return a.boundingBox.centroid()[axis] > b.boundingBox.centroid()[axis];
+    });
 
-
-
-
+    // step 3 - recurse
+    left = new BvhNode(tris, start, splitIndex);
+    right = new BvhNode(tris, splitIndex+1, end);
 }
 
 BvhNode::~BvhNode() {
@@ -84,6 +85,11 @@ bool BvhNode::hit(const Ray& ray, TrianglePoint& triangle, float& t) const {
 
 void BvhNode::print() const {
     std::cout << "aabb: " << boundingBox.min << ", " << boundingBox.max << '\n';
+    
+    for (const Triangle& t : triangles)
+        std::cout << "triangle\t";
+    std::cout << '\n';
+    
     if (left != nullptr) left->print();
     if (right != nullptr) right->print();
 }
