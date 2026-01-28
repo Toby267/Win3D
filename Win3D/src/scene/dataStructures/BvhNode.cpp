@@ -151,35 +151,22 @@ BvhNode::BvhNode(std::vector<Triangle>& tris, size_t start, size_t end) {
         return;
     }
 
-    //////////////////////////split on just one axis//////////////////
-    short _axis = rand()%3;
-    _axis = 0;
-    int _splitIndex = (end-start) / 2;
-
-    std::nth_element(tris.begin(), tris.begin() + _splitIndex, tris.end(), [_axis](const Triangle& a, const Triangle& b) {
-        return a.boundingBox.centroid()[_axis] > b.boundingBox.centroid()[_axis];
-    });
-    
-    left = new BvhNode(tris, start, start+_splitIndex);
-    right = new BvhNode(tris, start+_splitIndex+1, end);
-    
-    return;
-    //////////////////////////split on just one axis//////////////////
-
     // step 2 - calculate optimal split, then order triangles
     Vector span = boundingBox.max - boundingBox.min;
+    
     short axis = 0;
     if (span.y() > span[axis]) axis = 1;
     if (span.z() > span[axis]) axis = 2;
 
-    int splitIndex = (start+end) / 2;
-    std::nth_element(tris.begin(), tris.begin() + splitIndex, tris.end(), [axis](const Triangle& a, const Triangle& b) {
+    int splitIndex = (end-start) / 2;
+
+    std::nth_element(tris.begin()+start, tris.begin()+splitIndex, tris.begin()+end, [axis](const Triangle& a, const Triangle& b) {
         return a.boundingBox.centroid()[axis] > b.boundingBox.centroid()[axis];
     });
-
+    
     // step 3 - recurse
-    left = new BvhNode(tris, start, splitIndex);
-    right = new BvhNode(tris, splitIndex+1, end);
+    left = new BvhNode(tris, start, start+splitIndex);
+    right = new BvhNode(tris, start+splitIndex+1, end);
 }
 
 BvhNode::~BvhNode() {
