@@ -56,8 +56,6 @@ void Scene::toCameraSpace() {
         mesh->applyAffineTransform(camera.tranformationMatrix());
         mesh->updateAccelDataStrucutre();
     }
-
-    // tree = new BvhNode{objects};
 }
 
 void Scene::toViewportSpace() {
@@ -82,6 +80,4 @@ void Scene::cleanup() {
     for (Mesh* mesh : objects) {
         mesh->reset();
     }
-
-    // delete tree;
 }

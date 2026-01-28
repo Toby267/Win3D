@@ -3,7 +3,6 @@
 #include "renderer/Camera.hpp"
 #include "renderer/Ray.hpp"
 #include "scene/objects//Mesh.hpp"
-#include "scene/dataStructures/BvhNode.hpp"
 #include "scene/objects/PointLight.hpp"
 #include <vector>
 
@@ -12,8 +11,6 @@ private:
     std::vector<Mesh*> objects{};
     std::vector<PointLight> lights{};
     Camera camera{};
-
-    // BvhNode* tree = nullptr;
 
 public:
     //constructors/destructor

@@ -50,8 +50,6 @@ public:
     //ray tracing stuff
     void updateAccelDataStrucutre();
     HitRecord intersect(const Ray& ray) const;
-    // bool hit(const Ray& ray, TrianglePoint& triangle, float& t) const;
-    // Aabb calcBBox() const;
 
     //raster stuff
     void clip();
@@ -63,8 +61,4 @@ public:
     static Mesh* cube();
     static Mesh* sphere();
     static Mesh* triangle();
-
-// private:
-    //private methods
-    // bool mollerTrumboreIntersection(const Ray& ray, const Vector& triangle, float& u, float& v, float &t) const;
 };

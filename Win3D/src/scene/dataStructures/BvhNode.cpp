@@ -49,12 +49,7 @@ HitRecord BvhTree::intersect(const Ray& ray) {
     // find the closest intersection
     for (Triangle& tri : triangles) {
         float u, v, t;
-        // std::cout << "before moller trumbore" << '\n';
-        // std::cout << tri.v1.position << '\n';
-        // std::cout << tri.v2.position << '\n';
-        // std::cout << tri.v3.position << '\n';
         t = mollerTrumboreIntersection(ray, tri.v1.position.toVec3(), tri.v2.position.toVec3(), tri.v3.position.toVec3(), u, v);
-        // std::cout << "after moller trumbore" << '\n';
 
         if (t < record.t) {
             record.u = u;
