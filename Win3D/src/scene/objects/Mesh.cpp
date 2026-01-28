@@ -6,7 +6,6 @@
 #include "util/Util.hpp"
 
 #include <cassert>
-#include <cstddef>
 #include <iostream>
 #include <vector>
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "renderer/Ray.hpp"
-#include "scene/core/SceneUtil.hpp"
 #include "scene/dataStructures/Aabb.hpp"
 
 #include <cstddef>
