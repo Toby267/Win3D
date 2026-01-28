@@ -28,6 +28,11 @@ BvhTree::BvhTree(std::vector<Triangle>& tris) {
         t.boundingBox.grow(t.v3.position);
     }
 
+    // also delete this when fixed
+    for (Triangle& t : tris) {
+        boundingBox.grow(t.boundingBox);
+    }
+
     root = new BvhNode(tris, 0, tris.size()-1);
 }
 
@@ -38,6 +43,12 @@ BvhTree::~BvhTree() {
 // returns the closest triangle intersection
 HitRecord BvhTree::intersect(const Ray& ray) const {
     constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
+
+    if (!boundingBox.intersect(ray)) {
+        HitRecord r;
+        r.t = FLOAT_MAX;
+        return r;
+    }
 
     // find all candidate triangles
     std::vector<Triangle> triangles{};
@@ -55,9 +66,19 @@ HitRecord BvhTree::intersect(const Ray& ray) const {
             record.u = u;
             record.v = v;
             record.t = t;
-            record.v1 = tri.v1;
-            record.v2 = tri.v2;
-            record.v3 = tri.v3;
+            // record.v1 = tri.v1;
+            // record.v2 = tri.v2;
+            // record.v3 = tri.v3;
+
+            record.c0 = tri.v1.colour;
+            record.c1 = tri.v2.colour;
+            record.c2 = tri.v3.colour;
+            record.n0 = tri.v1.normal;
+            record.n1 = tri.v2.normal;
+            record.n2 = tri.v3.normal;
+            record.v0 = tri.v1.position;
+            record.v1 = tri.v2.position;
+            record.v2 = tri.v3.position;
         }
     }
 

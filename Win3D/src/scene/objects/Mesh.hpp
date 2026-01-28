@@ -61,9 +61,4 @@ public:
     static Mesh* cube();
     static Mesh* sphere();
     static Mesh* triangle();
-
-
-    bool hit(const Ray& ray, TrianglePoint& triangle, float& t) const;
-    bool mollerTrumboreIntersection(const Ray& ray, const Vector& tri, float& u, float& v, float &t) const;
-    Aabb calcBBox() const;
 };

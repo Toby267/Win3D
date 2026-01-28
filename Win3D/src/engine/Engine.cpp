@@ -20,13 +20,13 @@ Engine::Engine(int w, int h)
 void Engine::drawCall() {
     bitmap.clear();
 
-    scene.toCameraSpaceOld();
+    scene.toCameraSpace();
     Renderer::rayTrace(bitmap, scene);
 
     scene.toViewportSpace();
     // Renderer::rasterize(bitmap, scene);
 
-    scene.cleanupOld();
+    scene.cleanup();
 
     window.update(bitmap.getFrameBuffer());
 
