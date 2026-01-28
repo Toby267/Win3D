@@ -24,5 +24,5 @@ struct HitRecord {
     Vector v2;
 
     Mat::Material mat = Mat::DisneyDiffuse{0.0, 0.0};
-    float u, v, t;
+    double u, v, t;
 } typedef HitRecord;

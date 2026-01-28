@@ -35,7 +35,7 @@ public:
     void printTriangleCount() const;
 
 private:
-    static float mollerTrumboreIntersection(const Ray& ray, const Vector& v1, const Vector& v2, const Vector& v3, float& u, float& v);
+    static double mollerTrumboreIntersection(const Ray& ray, const Vector& v1, const Vector& v2, const Vector& v3, double& u, double& v);
 
     BvhNode* root = nullptr;
 

@@ -12,7 +12,7 @@
 #include <vector>
 
 #define MAX_DEPTH (10)
-#define MIN_TRIANGLES (10)
+#define MIN_TRIANGLES (4)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * -------------------------------------------- [ BVH_TREE ] ------------------------------------------- * //
@@ -43,7 +43,7 @@ BvhTree::~BvhTree() {
 
 // returns the closest triangle intersection
 HitRecord BvhTree::intersect(const Ray& ray) const {
-    constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
+    constexpr double DOUBLE_MAX = std::numeric_limits<double>::max();
 
     // if (!boundingBox.intersect(ray)) {
     //     HitRecord r;
@@ -56,11 +56,11 @@ HitRecord BvhTree::intersect(const Ray& ray) const {
     root->intersect(ray, triangles);
 
     HitRecord record;
-    record.t = FLOAT_MAX;
+    record.t = DOUBLE_MAX;
 
     // find the closest intersection
     for (Triangle& tri : triangles) {
-        float u, v, t;
+        double u, v, t;
         t = mollerTrumboreIntersection(ray, tri.v1.position.toVec3(), tri.v2.position.toVec3(), tri.v3.position.toVec3(), u, v);
 
         if (t != -1 && t < record.t) {
@@ -96,19 +96,19 @@ void BvhTree::printTriangleCount() const {
 
 // determines whether a ray intersection a triangle, and at what u, v, & t values it occurs
 // expects the vectors to be vec3
-float BvhTree::mollerTrumboreIntersection(const Ray& ray, const Vector& v1, const Vector& v2, const Vector& v3, float& u, float& v) {
-    constexpr float epsilon = std::numeric_limits<float>::epsilon();
+double BvhTree::mollerTrumboreIntersection(const Ray& ray, const Vector& v1, const Vector& v2, const Vector& v3, double& u, double& v) {
+    constexpr double epsilon = std::numeric_limits<double>::epsilon();
 
     Vector edge1 = v2 - v1;
     Vector edge2 = v3 - v1;
 
     Vector pvec = Vector::crossProduct(ray.direction, edge2);
-    float det = Vector::dotProduct(edge1, pvec);
+    double det = Vector::dotProduct(edge1, pvec);
 
     if (det > -epsilon && det < epsilon)
         return -1;
 
-    float invDet = 1.0 / det;
+    double invDet = 1.0 / det;
 
     Vector tvec = ray.origin - v1;
     u = Vector::dotProduct(tvec, pvec) * invDet;
@@ -122,7 +122,7 @@ float BvhTree::mollerTrumboreIntersection(const Ray& ray, const Vector& v1, cons
     if (v < 0.0 || u + v > 1.0)
         return -1;
 
-    float t = Vector::dotProduct(edge2, qvec) * invDet;
+    double t = Vector::dotProduct(edge2, qvec) * invDet;
 
     return t;
 }
@@ -149,6 +149,20 @@ BvhNode::BvhNode(std::vector<Triangle>& tris, size_t start, size_t end) {
 
         return;
     }
+
+    //////////////////////////split on just one axis//////////////////
+    short _axis = 0;
+    int _splitIndex = (start+end) / 2;
+
+    std::sort(tris.begin(), tris.end(), [_axis](const Triangle& a, const Triangle& b) {
+        return a.boundingBox.centroid()[_axis] > b.boundingBox.centroid()[_axis];
+    });
+    
+    left = new BvhNode(tris, start, _splitIndex);
+    right = new BvhNode(tris, _splitIndex+1, end);
+    
+    return;
+    //////////////////////////split on just one axis//////////////////
 
     // step 2 - calculate optimal split, then order triangles
     Vector span = boundingBox.max - boundingBox.min;

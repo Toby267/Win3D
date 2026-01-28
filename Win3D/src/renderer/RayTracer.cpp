@@ -12,7 +12,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
-    constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
+    constexpr double DOUBLE_MAX = std::numeric_limits<double>::max();
     
     const Camera& camera = scene.getCam();
     const std::vector<PointLight> lights = scene.getLights();
@@ -27,10 +27,10 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
             );
 
             HitRecord record;
-            record.t = FLOAT_MAX;
+            record.t = DOUBLE_MAX;
             scene.intersect(ray, record);
 
-            if (record.t != FLOAT_MAX) {
+            if (record.t != DOUBLE_MAX) {
                 Colour baseColour = record.c0 * (1 - record.u - record.v) + record.c1 * record.u + record.c2 * record.v;
                 Vector normal = record.n0 * (1 - record.u - record.v) + record.n1 * record.u + record.n2 * record.v;
                 Vector position = record.v0 * (1 - record.u - record.v) + record.v1 * record.u + record.v2 * record.v;

@@ -1036,6 +1036,8 @@ Mesh* Mesh::sphere() {
     for (int i = 0; i < normals.size(); i++)
         vertexBuffer.emplace_back(vertices[i], colours[i], normals[i]);
 
+    std::cout << "tirangles: " << indexBuffer.size() << '\n';
+
     for (Vector& i : indexBuffer)
         i = i + Vector(-1, -1, -1);
 

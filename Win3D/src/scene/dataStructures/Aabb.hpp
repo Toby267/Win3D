@@ -15,7 +15,7 @@ struct Aabb {
 
     bool intersect(const Ray& ray) const;
     
-    float surfaceArea() const;
+    double surfaceArea() const;
     Vector centroid() const;
 };
 

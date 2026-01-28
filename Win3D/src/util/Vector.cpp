@@ -189,11 +189,11 @@ std::ostream& operator<<(std::ostream& os, const Vector& vector) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Vector Vector::min() {
-    constexpr float MIN = std::numeric_limits<float>::lowest();
+    constexpr double MIN = std::numeric_limits<double>::lowest();
     return Vector(MIN, MIN, MIN);
 }
 Vector Vector::max() {
-    constexpr float MAX = std::numeric_limits<float>::max();
+    constexpr double MAX = std::numeric_limits<double>::max();
     return Vector(MAX, MAX, MAX);
 }
 

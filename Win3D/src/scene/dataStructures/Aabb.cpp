@@ -15,6 +15,9 @@ void Aabb::grow(Aabb bbox) {
     if (bbox.max.x() > max.x()) max.x() = bbox.max.x();
     if (bbox.max.y() > max.y()) max.y() = bbox.max.y();
     if (bbox.max.z() > max.z()) max.z() = bbox.max.z();
+
+    // min = min - Vector(1, 1, 1);
+    // max = max + Vector(1, 1, 1);
 }
 
 void Aabb::grow(Vector v) {
@@ -25,6 +28,9 @@ void Aabb::grow(Vector v) {
     if (v.x() > max.x()) max.x() = v.x();
     if (v.y() > max.y()) max.y() = v.y();
     if (v.z() > max.z()) max.z() = v.z();
+
+    // min = min - Vector(1, 1, 1);
+    // max = max + Vector(1, 1, 1);
 }
 
 bool Aabb::intersect(const Ray& ray) const {
@@ -51,7 +57,7 @@ bool Aabb::intersect(const Ray& ray) const {
     return true;
 }
 
-float Aabb::surfaceArea() const {
+double Aabb::surfaceArea() const {
     Vector d = min-max;
     return 2 * (d.x() * d.y() + d.x() * d.z() + d.y() * d.z());
 }
