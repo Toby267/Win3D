@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdlib>
 #include <iostream>
 #include <limits>
 #include <sys/types.h>
@@ -151,15 +152,16 @@ BvhNode::BvhNode(std::vector<Triangle>& tris, size_t start, size_t end) {
     }
 
     //////////////////////////split on just one axis//////////////////
-    short _axis = 0;
-    int _splitIndex = (start+end) / 2;
+    short _axis = rand()%3;
+    _axis = 0;
+    int _splitIndex = (end-start) / 2;
 
-    std::sort(tris.begin(), tris.end(), [_axis](const Triangle& a, const Triangle& b) {
+    std::nth_element(tris.begin(), tris.begin() + _splitIndex, tris.end(), [_axis](const Triangle& a, const Triangle& b) {
         return a.boundingBox.centroid()[_axis] > b.boundingBox.centroid()[_axis];
     });
     
-    left = new BvhNode(tris, start, _splitIndex);
-    right = new BvhNode(tris, _splitIndex+1, end);
+    left = new BvhNode(tris, start, start+_splitIndex);
+    right = new BvhNode(tris, start+_splitIndex+1, end);
     
     return;
     //////////////////////////split on just one axis//////////////////

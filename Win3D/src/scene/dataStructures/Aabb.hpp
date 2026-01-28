@@ -17,6 +17,8 @@ struct Aabb {
     
     double surfaceArea() const;
     Vector centroid() const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Aabb& b);
 };
 
 struct Triangle {

@@ -65,3 +65,8 @@ double Aabb::surfaceArea() const {
 Vector Aabb::centroid() const {
     return (min + max) / 2;
 }
+
+std::ostream& operator<<(std::ostream& os, const Aabb& b) {
+    os << "min: " << b.min << ", max: " << b.max;
+    return os;
+}
