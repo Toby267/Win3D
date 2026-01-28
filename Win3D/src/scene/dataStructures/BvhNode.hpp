@@ -13,6 +13,7 @@ public:
 
     void intersect(const Ray& ray, std::vector<Triangle>& triangles) const;
     void print() const;
+    int getTriangleCount() const;
 
 private:
     Aabb boundingBox = Aabb();
@@ -28,7 +29,9 @@ public:
     BvhTree(std::vector<Triangle>& triangles);
     ~BvhTree();
 
-    HitRecord intersect(const Ray& ray);
+    HitRecord intersect(const Ray& ray) const;
+    void print() const;
+    void printTriangleCount() const;
 
 private:
     static float mollerTrumboreIntersection(const Ray& ray, const Vector& v1, const Vector& v2, const Vector& v3, float& u, float& v);

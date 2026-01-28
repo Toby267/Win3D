@@ -1,11 +1,9 @@
 #include "scene/core/Scene.hpp"
 #include "renderer/Camera.hpp"
 #include "renderer/Ray.hpp"
-#include "scene/dataStructures/BvhNode.hpp"
 #include "scene/objects/Mesh.hpp"
 #include "util/Util.hpp"
 
-#include <limits>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -80,4 +78,26 @@ void Scene::cleanup() {
     for (Mesh* mesh : objects) {
         mesh->reset();
     }
+}
+
+
+
+
+bool Scene::intersectOld(const Ray& ray, TrianglePoint& triangle, float& t) const {
+    return treeOld->hit(ray, triangle, t);
+}
+void Scene::toCameraSpaceOld() {
+    for (Mesh* mesh : objects) {
+        mesh->toWorldSpace();
+        mesh->applyAffineTransform(camera.tranformationMatrix());
+    }
+
+    treeOld = new BvhNodeOld{objects};
+}
+void Scene::cleanupOld() {
+    for (Mesh* mesh : objects) {
+        mesh->reset();
+    }
+
+    delete treeOld;
 }

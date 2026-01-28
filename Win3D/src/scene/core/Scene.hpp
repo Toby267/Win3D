@@ -6,11 +6,15 @@
 #include "scene/objects/PointLight.hpp"
 #include <vector>
 
+#include "scene/dataStructures/BvhNodeOld.hpp"
+
 class Scene {
 private:
     std::vector<Mesh*> objects{};
     std::vector<PointLight> lights{};
     Camera camera{};
+
+    BvhNodeOld* treeOld = nullptr;
 
 public:
     //constructors/destructor
@@ -30,5 +34,11 @@ public:
     void toViewportSpace();
     
     void intersect(const Ray& ray, HitRecord& record) const;
-    void cleanup();    
+    void cleanup();
+
+
+
+    bool intersectOld(const Ray& ray, TrianglePoint& triangle, float& t) const;
+    void toCameraSpaceOld();
+    void cleanupOld();
 };

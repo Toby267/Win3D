@@ -12,7 +12,7 @@
 #include <vector>
 
 #define MAX_DEPTH (10)
-#define MIN_TRIANGLES (10)
+#define MIN_TRIANGLES (4)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * -------------------------------------------- [ BVH_TREE ] ------------------------------------------- * //
@@ -36,7 +36,7 @@ BvhTree::~BvhTree() {
 }
 
 // returns the closest triangle intersection
-HitRecord BvhTree::intersect(const Ray& ray) {
+HitRecord BvhTree::intersect(const Ray& ray) const {
     constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
 
     // find all candidate triangles
@@ -51,7 +51,7 @@ HitRecord BvhTree::intersect(const Ray& ray) {
         float u, v, t;
         t = mollerTrumboreIntersection(ray, tri.v1.position.toVec3(), tri.v2.position.toVec3(), tri.v3.position.toVec3(), u, v);
 
-        if (t < record.t) {
+        if (t != -1 && t < record.t) {
             record.u = u;
             record.v = v;
             record.t = t;
@@ -62,6 +62,14 @@ HitRecord BvhTree::intersect(const Ray& ray) {
     }
 
     return record;
+}
+
+void BvhTree::print() const {
+    root->print();
+}
+
+void BvhTree::printTriangleCount() const {
+    std::cout << "triangle count: " << root->getTriangleCount() << '\n';
 }
 
 // determines whether a ray intersection a triangle, and at what u, v, & t values it occurs
@@ -115,7 +123,7 @@ BvhNode::BvhNode(std::vector<Triangle>& tris, size_t start, size_t end) {
 
         //store triangles for intersection
         for (int i = start; i <= end; i++)
-            triangles.emplace_back(tris[i]);
+            triangles.push_back(tris[i]);
 
         return;
     }
@@ -142,11 +150,11 @@ BvhNode::~BvhNode() {
 }
 
 void BvhNode::intersect(const Ray& ray, std::vector<Triangle>& tris) const {
-    if (!boundingBox.intersect(ray))
-        return;
+    // if (!boundingBox.intersect(ray))
+        // return;
     
     // if leaf node
-    if (triangles.size()) {
+    if (!triangles.empty()) {
         tris.insert(tris.end(), triangles.begin(), triangles.end());
         return;
     }
@@ -163,8 +171,17 @@ void BvhNode::print() const {
         std::cout << "triangle\t";
     std::cout << '\n';
     
-    if (left != nullptr) left->print();
-    if (right != nullptr) right->print();
+    if (left) left->print();
+    if (right) right->print();
+}
+
+int BvhNode::getTriangleCount() const {
+    int val = triangles.size();
+
+    if (left) val += left->getTriangleCount();
+    if (right) val += right->getTriangleCount();
+
+    return val;
 }
 
 // float BvhNode::sweepSurfaceAreaHeuristic(std::vector<Mesh*>& objects, int index) {
