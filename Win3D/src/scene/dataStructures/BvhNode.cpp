@@ -1,4 +1,5 @@
 #include "scene/dataStructures/BvhNode.hpp"
+#include "renderer/Ray.hpp"
 #include "scene/core/SceneUtil.hpp"
 #include "scene/dataStructures/Aabb.hpp"
 #include "util/Util.hpp"
@@ -6,18 +7,20 @@
 #include <algorithm>
 #include <cstddef>
 #include <iostream>
+#include <limits>
 #include <sys/types.h>
 #include <vector>
 
 #define MAX_DEPTH (10)
-#define MIN_TRIANGLES (4)
+#define MIN_TRIANGLES (10)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
+// * -------------------------------------------- [ BVH_TREE ] ------------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-BvhNode* BvhNode::buildBvhTree(std::vector<Triangle>& tris) {
-    // calculates the bounding box of each triangle
+// default construction
+BvhTree::BvhTree(std::vector<Triangle>& tris) {
+    // can't assume that the bounding boxes have been calculated initially
     for (Triangle& t : tris) {
         t.boundingBox = Aabb();
         t.boundingBox.grow(t.v1.position);
@@ -25,13 +28,85 @@ BvhNode* BvhNode::buildBvhTree(std::vector<Triangle>& tris) {
         t.boundingBox.grow(t.v3.position);
     }
 
-    return new BvhNode(tris, 0, tris.size()-1);
+    root = new BvhNode(tris, 0, tris.size()-1);
 }
 
-/**
- * @param start - the index of the first triangle
- * @param end - the index of the last triangle
-*/
+BvhTree::~BvhTree() {
+    delete root;
+}
+
+// returns the closest triangle intersection
+HitRecord BvhTree::intersect(const Ray& ray) {
+    constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
+
+    // find all candidate triangles
+    std::vector<Triangle> triangles{};
+    root->intersect(ray, triangles);
+
+    HitRecord record;
+    record.t = FLOAT_MAX;
+
+    // find the closest intersection
+    for (Triangle& tri : triangles) {
+        float u, v, t;
+        // std::cout << "before moller trumbore" << '\n';
+        // std::cout << tri.v1.position << '\n';
+        // std::cout << tri.v2.position << '\n';
+        // std::cout << tri.v3.position << '\n';
+        t = mollerTrumboreIntersection(ray, tri.v1.position.toVec3(), tri.v2.position.toVec3(), tri.v3.position.toVec3(), u, v);
+        // std::cout << "after moller trumbore" << '\n';
+
+        if (t < record.t) {
+            record.u = u;
+            record.v = v;
+            record.t = t;
+            record.v1 = tri.v1;
+            record.v2 = tri.v2;
+            record.v3 = tri.v3;
+        }
+    }
+
+    return record;
+}
+
+// determines whether a ray intersection a triangle, and at what u, v, & t values it occurs
+// expects the vectors to be vec3
+float BvhTree::mollerTrumboreIntersection(const Ray& ray, const Vector& v1, const Vector& v2, const Vector& v3, float& u, float& v) {
+    constexpr float epsilon = std::numeric_limits<float>::epsilon();
+
+    Vector edge1 = v2 - v1;
+    Vector edge2 = v3 - v1;
+
+    Vector pvec = Vector::crossProduct(ray.direction, edge2);
+    float det = Vector::dotProduct(edge1, pvec);
+
+    if (det > -epsilon && det < epsilon)
+        return -1;
+
+    float invDet = 1.0 / det;
+
+    Vector tvec = ray.origin - v1;
+    u = Vector::dotProduct(tvec, pvec) * invDet;
+
+    if (u < 0.0 || u > 1.0)
+        return -1;
+
+    Vector qvec = Vector::crossProduct(tvec, edge1);
+    v = Vector::dotProduct(ray.direction, qvec) * invDet;
+
+    if (v < 0.0 || u + v > 1.0)
+        return -1;
+
+    float t = Vector::dotProduct(edge2, qvec) * invDet;
+
+    return t;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * -------------------------------------------- [ BVH_NODE ] ------------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// recursively sets up the bvh hierarchy
 BvhNode::BvhNode(std::vector<Triangle>& tris, size_t start, size_t end) {
     // step 0 - calculate containing bbox
     for (int i = start; i <= end; i++) {
@@ -71,21 +146,20 @@ BvhNode::~BvhNode() {
     if (right) delete right;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void BvhNode::intersect(const Ray& ray, std::vector<Triangle>& tris) const {
+    if (!boundingBox.intersect(ray))
+        return;
+    
+    // if leaf node
+    if (triangles.size()) {
+        tris.insert(tris.end(), triangles.begin(), triangles.end());
+        return;
+    }
 
-// void BvhNode::intersect() const {
-    // std::vector<typename Tp>
-// }
-
-// bool BvhNode::hit(const Ray& ray, TrianglePoint& triangle, float& t) const {
-    // if (!boundingBox.intersect(ray))
-        // return false;
-
-    // TODO: if it intersects two objects, there is a chance that it just returns the values for one of them
-    // return data && data->hit(ray, triangle, t) || left && left->hit(ray, triangle, t) || right && right->hit(ray, triangle, t);
-// }
+    // if non-leaf node
+    if (left) left->intersect(ray, tris);
+    if (right) right->intersect(ray, tris);
+}
 
 void BvhNode::print() const {
     std::cout << "aabb: " << boundingBox.min << ", " << boundingBox.max << '\n';
@@ -97,10 +171,6 @@ void BvhNode::print() const {
     if (left != nullptr) left->print();
     if (right != nullptr) right->print();
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // float BvhNode::sweepSurfaceAreaHeuristic(std::vector<Mesh*>& objects, int index) {
     // return f(i) = LSA(i) * i + RSA(i) * (N-i)

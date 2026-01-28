@@ -32,6 +32,6 @@ public:
     void toCameraSpace();
     void toViewportSpace();
     
-    bool intersect(const Ray& ray, HitRecord& record) const;
+    void intersect(const Ray& ray, HitRecord& record) const;
     void cleanup();    
 };

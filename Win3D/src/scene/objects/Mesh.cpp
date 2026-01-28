@@ -98,103 +98,111 @@ void Mesh::clip() {
     if (xMax < -1 || yMax < -1 || zMax < -1) indexBuffer.clear();
 }
 
-Aabb Mesh::calcBBox() const {
-    Vector min = Vector::max();
-    Vector max = Vector::min();
-
-    for (const Vertex& vertex : vertexBuffer) {
-        if (vertex.position.x() > max.x()) max.x() = vertex.position.x();
-        if (vertex.position.y() > max.y()) max.y() = vertex.position.y();
-        if (vertex.position.z() > max.z()) max.z() = vertex.position.z();
-
-        if (vertex.position.x() < min.x()) min.x() = vertex.position.x();
-        if (vertex.position.y() < min.y()) min.y() = vertex.position.y();
-        if (vertex.position.z() < min.z()) min.z() = vertex.position.z();
-    }
-
-    return Aabb(min, max);
-}
-
-void Mesh::createAccelDataStrucutre() {
-    std::vector<Triangle> triangles = getTriangles();
-    tree = BvhNode::buildBvhTree(triangles);
-}
-
-void Mesh::intersect(const Ray& ray, HitRecord& record, float& t) const {
-    // Triangle closestTriagnle = tree->intersect(ray);
-}
-
-bool Mesh::hit(const Ray& ray, TrianglePoint& triangle, float& t) const {
-    // if (tree.hit(ray, triangle, t)) {
-    //     // the tree will determine the closest t, and return if the t is less than the previous t found from a previous mesh
-    //     //   
+// Aabb Mesh::calcBBox() const {
+    // Vector min = Vector::max();
+    // Vector max = Vector::min();
+// 
+    // for (const Vertex& vertex : vertexBuffer) {
+        // if (vertex.position.x() > max.x()) max.x() = vertex.position.x();
+        // if (vertex.position.y() > max.y()) max.y() = vertex.position.y();
+        // if (vertex.position.z() > max.z()) max.z() = vertex.position.z();
+// 
+        // if (vertex.position.x() < min.x()) min.x() = vertex.position.x();
+        // if (vertex.position.y() < min.y()) min.y() = vertex.position.y();
+        // if (vertex.position.z() < min.z()) min.z() = vertex.position.z();
     // }
-    for (const Vector& tri : indexBuffer) {
-        float u, v, tNew;
-        bool hit = mollerTrumboreIntersection(ray, tri, u, v, tNew);
+// 
+    // return Aabb(min, max);
+// }
 
-        // if hit and triangle is closer
-        if (hit && tNew < t) {
-            // update record
-            t = tNew;
+void Mesh::updateAccelDataStrucutre() {
+    if (tree) delete tree;
 
-            triangle.mat = material;
-            triangle.u = u;
-            triangle.v = v;
-            triangle.c0 = vertexBuffer[tri[0]].colour;
-            triangle.c1 = vertexBuffer[tri[1]].colour;
-            triangle.c2 = vertexBuffer[tri[2]].colour;
-            triangle.n0 = vertexBuffer[tri[0]].normal;
-            triangle.n1 = vertexBuffer[tri[1]].normal;
-            triangle.n2 = vertexBuffer[tri[2]].normal;
-            triangle.v0 = vertexBuffer[tri[0]].position;
-            triangle.v1 = vertexBuffer[tri[1]].position;
-            triangle.v2 = vertexBuffer[tri[2]].position;
-        }
-    }
-
-    constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
-    return t != FLOAT_MAX;
+    std::vector<Triangle> triangles = getTriangles();
+    tree = new BvhTree(triangles);
 }
+
+HitRecord Mesh::intersect(const Ray& ray) const {
+    HitRecord rec = tree->intersect(ray);
+    rec.mat = material;
+    return rec;
+}
+
+// void Mesh::intersect(const Ray& ray, HitRecord& record, float& t) const {
+    // Triangle closestTriagnle = tree->intersect(ray);
+// }
+
+// bool Mesh::hit(const Ray& ray, TrianglePoint& triangle, float& t) const {
+    // if (tree.hit(ray, triangle, t)) {
+        // the tree will determine the closest t, and return if the t is less than the previous t found from a previous mesh
+        //   
+    // }
+    // for (const Vector& tri : indexBuffer) {
+        // float u, v, tNew;
+        // bool hit = mollerTrumboreIntersection(ray, tri, u, v, tNew);
+// 
+        // if hit and triangle is closer
+        // if (hit && tNew < t) {
+            // update record
+            // t = tNew;
+// 
+            // triangle.mat = material;
+            // triangle.u = u;
+            // triangle.v = v;
+            // triangle.c0 = vertexBuffer[tri[0]].colour;
+            // triangle.c1 = vertexBuffer[tri[1]].colour;
+            // triangle.c2 = vertexBuffer[tri[2]].colour;
+            // triangle.n0 = vertexBuffer[tri[0]].normal;
+            // triangle.n1 = vertexBuffer[tri[1]].normal;
+            // triangle.n2 = vertexBuffer[tri[2]].normal;
+            // triangle.v0 = vertexBuffer[tri[0]].position;
+            // triangle.v1 = vertexBuffer[tri[1]].position;
+            // triangle.v2 = vertexBuffer[tri[2]].position;
+        // }
+    // }
+// 
+    // constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
+    // return t != FLOAT_MAX;
+// }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool Mesh::mollerTrumboreIntersection(const Ray& ray, const Vector& tri, float& u, float& v, float &t) const {
-    constexpr float epsilon = std::numeric_limits<float>::epsilon();
+// bool Mesh::mollerTrumboreIntersection(const Ray& ray, const Vector& tri, float& u, float& v, float &t) const {
+//     constexpr float epsilon = std::numeric_limits<float>::epsilon();
 
-    const Vector vert0 = Vector( vertexBuffer[tri[0]].position.x(), vertexBuffer[tri[0]].position.y(), vertexBuffer[tri[0]].position.z() );
-    const Vector vert1 = Vector( vertexBuffer[tri[1]].position.x(), vertexBuffer[tri[1]].position.y(), vertexBuffer[tri[1]].position.z() );
-    const Vector vert2 = Vector( vertexBuffer[tri[2]].position.x(), vertexBuffer[tri[2]].position.y(), vertexBuffer[tri[2]].position.z() );
+//     const Vector vert0 = Vector( vertexBuffer[tri[0]].position.x(), vertexBuffer[tri[0]].position.y(), vertexBuffer[tri[0]].position.z() );
+//     const Vector vert1 = Vector( vertexBuffer[tri[1]].position.x(), vertexBuffer[tri[1]].position.y(), vertexBuffer[tri[1]].position.z() );
+//     const Vector vert2 = Vector( vertexBuffer[tri[2]].position.x(), vertexBuffer[tri[2]].position.y(), vertexBuffer[tri[2]].position.z() );
 
-    Vector edge1 = vert1 - vert0;
-    Vector edge2 = vert2 - vert0;
+//     Vector edge1 = vert1 - vert0;
+//     Vector edge2 = vert2 - vert0;
 
-    Vector pvec = Vector::crossProduct(ray.direction, edge2);
-    float det = Vector::dotProduct(edge1, pvec);
+//     Vector pvec = Vector::crossProduct(ray.direction, edge2);
+//     float det = Vector::dotProduct(edge1, pvec);
 
-    if (det > -epsilon && det < epsilon)
-        return false;
+//     if (det > -epsilon && det < epsilon)
+//         return false;
 
-    float invDet = 1.0 / det;
+//     float invDet = 1.0 / det;
 
-    Vector tvec = ray.origin - vert0;
-    u = Vector::dotProduct(tvec, pvec) * invDet;
+//     Vector tvec = ray.origin - vert0;
+//     u = Vector::dotProduct(tvec, pvec) * invDet;
 
-    if (u < 0.0 || u > 1.0)
-        return false;
+//     if (u < 0.0 || u > 1.0)
+//         return false;
 
-    Vector qvec = Vector::crossProduct(tvec, edge1);
-    v = Vector::dotProduct(ray.direction, qvec) * invDet;
+//     Vector qvec = Vector::crossProduct(tvec, edge1);
+//     v = Vector::dotProduct(ray.direction, qvec) * invDet;
 
-    if (v < 0.0 || u + v > 1.0)
-        return false;
+//     if (v < 0.0 || u + v > 1.0)
+//         return false;
 
-    t = Vector::dotProduct(edge2, qvec) * invDet;
+//     t = Vector::dotProduct(edge2, qvec) * invDet;
 
-    return true;
-}
+//     return true;
+// }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * --------------------------------------- [ OPERATOR OVERLOADS ] -------------------------------------- * //

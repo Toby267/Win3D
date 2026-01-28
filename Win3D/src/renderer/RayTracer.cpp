@@ -4,7 +4,9 @@
 #include "scene/objects/PointLight.hpp"
 #include "scene/core/Scene.hpp"
 #include "util/Util.hpp"
+#include <iostream>
 #include <limits>
+#include <numeric>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -12,7 +14,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
-    // constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
+    constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
     
     const Camera& camera = scene.getCam();
     const std::vector<PointLight> lights = scene.getLights();
@@ -30,13 +32,20 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
             // TrianglePoint triangle;
             // float t = FLOAT_MAX;
             HitRecord record;
+            record.t = FLOAT_MAX;
 
-            if (scene.intersect(ray, record)) {
-                // Colour baseColour = ...
-                // Vector normal = ...
-                // Vector position = ...
-                // Colour finalColour = ...
-                // bmap.setPixel(i+x, camera.screenHeight-(j+y), baseColour);
+            // std::cout << "before intersection" << '\n';
+            scene.intersect(ray, record);
+            // std::cout << "after intersection" << '\n';
+
+            if (record.t != FLOAT_MAX) {
+                // std::cout << "is intersection enter" << '\n';
+                Colour baseColour = record.v1.colour * (1 - record.u - record.v) * record.v2.colour * record.u * record.v3.colour * record.v;
+                Vector normal = record.v1.normal * (1 - record.u - record.v) * record.v2.normal * record.u * record.v3.normal * record.v;
+                Vector position = record.v1.position * (1 - record.u - record.v) * record.v2.position * record.u * record.v3.position * record.v;
+                // Colour finalColour = Mat::eval();
+                bmap.setPixel(i+x, camera.screenHeight-(j+y), baseColour);
+                // std::cout << "is intersection exit" << '\n';
             }
             
             //TODO: fix this such that it correctly pases the right things to the brdf and is shaded properly

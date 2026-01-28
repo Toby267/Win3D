@@ -2,22 +2,19 @@
 
 #include "renderer/Ray.hpp"
 #include "scene/dataStructures/Aabb.hpp"
-#include "scene/core/SceneUtil.hpp"
 
 #include <cstddef>
 #include <vector>
 
 class BvhNode {
 public:
-    static BvhNode* buildBvhTree(std::vector<Triangle>& triangles);
+    BvhNode(std::vector<Triangle>& tris, size_t start, size_t end);
     ~BvhNode();
 
-    int intersect(const Ray& ray, Triangle& triangle) const; //returns t
+    void intersect(const Ray& ray, std::vector<Triangle>& triangles) const;
     void print() const;
 
 private:
-    BvhNode(std::vector<Triangle>& tris, size_t start, size_t end);
-
     Aabb boundingBox = Aabb();
 
     BvhNode* left = nullptr;
@@ -31,10 +28,10 @@ public:
     BvhTree(std::vector<Triangle>& triangles);
     ~BvhTree();
 
-    // finds all BvhNodes that the ray intersects with, determines which triangles of those nodes the ray intersects with (using moller trumbore),
-    // then finds which is the closest triangle, adds its data to the HitRecord, and returns
     HitRecord intersect(const Ray& ray);
 
 private:
+    static float mollerTrumboreIntersection(const Ray& ray, const Vector& v1, const Vector& v2, const Vector& v3, float& u, float& v);
+
     BvhNode* root = nullptr;
 };

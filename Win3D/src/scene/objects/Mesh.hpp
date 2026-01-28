@@ -19,7 +19,7 @@ private:
     IndexBuffer indexBuffer;
     VertexBuffer vertexBuffer;
 
-    BvhNode* tree = nullptr;
+    BvhTree* tree = nullptr;
 
     Matrix scale       = Matrix::scale(100, 100, 100);
     Matrix translation = Matrix::translate(0, 0, 0);
@@ -48,10 +48,10 @@ public:
     void reset();
 
     //ray tracing stuff
-    void createAccelDataStrucutre();
-    void intersect(const Ray& ray, HitRecord& triangle, float& t) const;
-    bool hit(const Ray& ray, TrianglePoint& triangle, float& t) const;
-    Aabb calcBBox() const;
+    void updateAccelDataStrucutre();
+    HitRecord intersect(const Ray& ray) const;
+    // bool hit(const Ray& ray, TrianglePoint& triangle, float& t) const;
+    // Aabb calcBBox() const;
 
     //raster stuff
     void clip();
@@ -64,7 +64,7 @@ public:
     static Mesh* sphere();
     static Mesh* triangle();
 
-private:
+// private:
     //private methods
-    bool mollerTrumboreIntersection(const Ray& ray, const Vector& triangle, float& u, float& v, float &t) const;
+    // bool mollerTrumboreIntersection(const Ray& ray, const Vector& triangle, float& u, float& v, float &t) const;
 };

@@ -54,7 +54,7 @@ void Scene::toCameraSpace() {
     for (Mesh* mesh : objects) {
         mesh->toWorldSpace();
         mesh->applyAffineTransform(camera.tranformationMatrix());
-        mesh->createAccelDataStrucutre();
+        mesh->updateAccelDataStrucutre();
     }
 
     // tree = new BvhNode{objects};
@@ -68,16 +68,14 @@ void Scene::toViewportSpace() {
     }
 }
 
-bool Scene::intersect(const Ray& ray, HitRecord& record) const {
-    // return tree->hit(ray, triangle, t);
-    constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
-    float t = FLOAT_MAX;
+void Scene::intersect(const Ray& ray, HitRecord& record) const {
+    for (const Mesh* mesh : objects) {
+        HitRecord rec = mesh->intersect(ray);
 
-    for (const Mesh* m : objects) {
-        m->intersect(ray, record, t);
+        if (rec.t < record.t) {
+            record = rec;
+        }
     }
-
-    return t != FLOAT_MAX;
 }
 
 void Scene::cleanup() {
