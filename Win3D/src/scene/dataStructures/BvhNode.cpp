@@ -12,7 +12,7 @@
 #include <vector>
 
 #define MAX_DEPTH (10)
-#define MIN_TRIANGLES (4)
+#define MIN_TRIANGLES (10)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * -------------------------------------------- [ BVH_TREE ] ------------------------------------------- * //
@@ -29,26 +29,27 @@ BvhTree::BvhTree(std::vector<Triangle>& tris) {
     }
 
     // also delete this when fixed
-    for (Triangle& t : tris) {
-        boundingBox.grow(t.boundingBox);
-    }
+    // for (Triangle& t : tris) {
+        // boundingBox.grow(t.boundingBox);
+    // }
 
     root = new BvhNode(tris, 0, tris.size()-1);
 }
 
 BvhTree::~BvhTree() {
     delete root;
+    root = nullptr;
 }
 
 // returns the closest triangle intersection
 HitRecord BvhTree::intersect(const Ray& ray) const {
     constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
 
-    if (!boundingBox.intersect(ray)) {
-        HitRecord r;
-        r.t = FLOAT_MAX;
-        return r;
-    }
+    // if (!boundingBox.intersect(ray)) {
+    //     HitRecord r;
+    //     r.t = FLOAT_MAX;
+    //     return r;
+    // }
 
     // find all candidate triangles
     std::vector<Triangle> triangles{};
@@ -168,11 +169,13 @@ BvhNode::BvhNode(std::vector<Triangle>& tris, size_t start, size_t end) {
 BvhNode::~BvhNode() {
     if (left) delete left;
     if (right) delete right;
+    left = nullptr;
+    right = nullptr;
 }
 
 void BvhNode::intersect(const Ray& ray, std::vector<Triangle>& tris) const {
-    // if (!boundingBox.intersect(ray))
-        // return;
+    if (!boundingBox.intersect(ray))
+        return;
     
     // if leaf node
     if (!triangles.empty()) {

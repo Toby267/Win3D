@@ -29,6 +29,4 @@ void Engine::drawCall() {
     scene.cleanup();
 
     window.update(bitmap.getFrameBuffer());
-
-    std::cin.get();
 }

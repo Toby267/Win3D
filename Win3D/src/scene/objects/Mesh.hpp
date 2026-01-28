@@ -2,6 +2,7 @@
 
 #include "renderer/Ray.hpp"
 #include "scene/dataStructures/Aabb.hpp"
+#include "scene/core/SceneUtil.hpp"
 #include "scene/dataStructures/BvhNode.hpp"
 #include "scene/objects/Materials.hpp"
 #include "util/Util.hpp"
@@ -48,7 +49,7 @@ public:
     void reset();
 
     //ray tracing stuff
-    void updateAccelDataStrucutre();
+    void createAccelDataStrucutre();
     HitRecord intersect(const Ray& ray) const;
 
     //raster stuff

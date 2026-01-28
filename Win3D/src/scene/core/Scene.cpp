@@ -4,8 +4,6 @@
 #include "scene/objects/Mesh.hpp"
 #include "util/Util.hpp"
 
-#include <cstring>
-#include <iostream>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,7 +52,7 @@ void Scene::toCameraSpace() {
     for (Mesh* mesh : objects) {
         mesh->toWorldSpace();
         mesh->applyAffineTransform(camera.tranformationMatrix());
-        mesh->updateAccelDataStrucutre();
+        mesh->createAccelDataStrucutre();
     }
 }
 

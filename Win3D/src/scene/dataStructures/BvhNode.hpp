@@ -1,6 +1,7 @@
 #pragma once
 
 #include "renderer/Ray.hpp"
+#include "scene/core/SceneUtil.hpp"
 #include "scene/dataStructures/Aabb.hpp"
 
 #include <cstddef>
@@ -38,5 +39,5 @@ private:
 
     BvhNode* root = nullptr;
 
-    Aabb boundingBox = Aabb();//delete this when got it working properly
+    // Aabb boundingBox = Aabb();//delete this when got it working properly
 };

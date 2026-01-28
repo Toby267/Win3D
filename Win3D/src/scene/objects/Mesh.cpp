@@ -6,8 +6,8 @@
 #include "util/Util.hpp"
 
 #include <cassert>
+#include <cstddef>
 #include <iostream>
-#include <limits>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +79,7 @@ void Mesh::applyTransform(Matrix m) {
 void Mesh::reset() {
     vertexBuffer = VERTEX_BUFFER;
     delete tree;
+    tree = nullptr;
 }
 
 void Mesh::clip() {
@@ -99,9 +100,7 @@ void Mesh::clip() {
     if (xMax < -1 || yMax < -1 || zMax < -1) indexBuffer.clear();
 }
 
-void Mesh::updateAccelDataStrucutre() {
-    if (tree) delete tree;
-
+void Mesh::createAccelDataStrucutre() {
     std::vector<Triangle> triangles = getTriangles();
     tree = new BvhTree(triangles);
 }

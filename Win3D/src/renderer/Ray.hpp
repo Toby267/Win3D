@@ -1,6 +1,5 @@
 #pragma once
 
-#include "scene/core/SceneUtil.hpp"
 #include "scene/objects//Materials.hpp"
 #include "util/Util.hpp"
 
