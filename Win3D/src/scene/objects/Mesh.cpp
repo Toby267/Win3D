@@ -34,10 +34,6 @@ std::vector<Triangle> Mesh::getTriangles() const {
             vertexBuffer[indexBuffer[i-1]],
             vertexBuffer[indexBuffer[i]]
         );
-
-        std::cout << indexBuffer[i-2] <<
-            indexBuffer[i-1] <<
-            indexBuffer[i]<<'\n';
     }
 
     return triangles;

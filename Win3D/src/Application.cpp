@@ -1,6 +1,7 @@
 #include "Application.hpp"
 
 #include "engine/Engine.hpp"
+#include "util/WavefrontLoader.hpp"
 #include "scene/objects/Mesh.hpp"
 #include <chrono>
 #include <iostream>
@@ -55,7 +56,7 @@ Application::Application() {
     // // triangle->setTranslation(Matrix::translate(0, 0, 2800));
     // triangle->setScale(Matrix::scale(500, 500, 1));
 
-    Mesh* cube1 = scene.addObject(Mesh::cube());
+    Mesh* cube1 = scene.addObject(Wavefront::loadWavefront("Cube.obj"));
     cube1->setTranslation(Matrix::translate(0, 0, 1100));
 
     // Mesh* sphere1 = scene.addObject(Mesh::sphere());
@@ -72,12 +73,11 @@ Application::Application() {
     for (int i = 0; i < frames; i++) {
         alpha -= std::numbers::pi/16;
         // triangle->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        // cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         // sphere1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         // sphere2->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         
         e.drawCall();
-        std::cin.get();
     }
 
     std::chrono::duration<double> duration = std::chrono::high_resolution_clock::now() - start;
