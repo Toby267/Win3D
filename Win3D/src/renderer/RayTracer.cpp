@@ -4,6 +4,7 @@
 #include "scene/objects/PointLight.hpp"
 #include "scene/core/Scene.hpp"
 #include "util/Util.hpp"
+#include <iostream>
 #include <limits>
 #include <vector>
 
@@ -37,6 +38,8 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
                 Colour finalColour = Mat::eval(record.mat, -ray.direction, (lights[0].position - position).normalise(), normal, baseColour); // should pass light direction, not position
                 bmap.setPixel(i+x, camera.screenHeight-(j+y), baseColour);
             }
+
+            // std::cin.get();
         }
     }
 }

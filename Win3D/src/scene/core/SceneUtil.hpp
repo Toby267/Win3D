@@ -10,5 +10,5 @@ struct Vertex {
     Vector normal;
 } typedef Vertex;
 
-typedef std::vector<Vector> IndexBuffer;
+typedef std::vector<size_t> IndexBuffer;
 typedef std::vector<Vertex> VertexBuffer;

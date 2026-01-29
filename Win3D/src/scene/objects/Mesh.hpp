@@ -60,6 +60,6 @@ public:
 
     //static methods
     static Mesh* cube();
-    static Mesh* sphere();
+    // static Mesh* sphere();
     static Mesh* triangle();
 };

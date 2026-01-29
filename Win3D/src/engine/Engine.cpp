@@ -4,6 +4,7 @@
 #include "engine/Window.hpp"
 #include "renderer/Renderer.hpp"
 #include "scene/core/Scene.hpp"
+#include <iostream>
 
 Engine::Engine(int w, int h)
     : scene(w, h), window(w, h), bitmap(w, h)
@@ -18,6 +19,8 @@ Engine::Engine(int w, int h)
 //performs a dracall, drawing a frame into the bitmap
 void Engine::drawCall() {
     bitmap.clear();
+
+    // TODO: backface culling
 
     scene.toCameraSpace();
     Renderer::rayTrace(bitmap, scene);
