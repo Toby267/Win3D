@@ -2,6 +2,8 @@
 
 #include "renderer/Ray.hpp"
 #include "scene/dataStructures/Aabb.hpp"
+#include "scene/core/SceneUtil.hpp"
+#include "scene/dataStructures/BvhNode.hpp"
 #include "scene/objects/Materials.hpp"
 #include "util/Util.hpp"
 #include "scene/core/SceneUtil.hpp"
@@ -17,6 +19,8 @@ private:
 
     IndexBuffer indexBuffer;
     VertexBuffer vertexBuffer;
+
+    BvhTree* tree = nullptr;
 
     Matrix scale       = Matrix::scale(100, 100, 100);
     Matrix translation = Matrix::translate(0, 0, 0);
@@ -42,21 +46,20 @@ public:
     void toWorldSpace();
     void applyAffineTransform(Matrix matrix);
     void applyTransform(Matrix matrix);
-
     void reset();
+
+    //ray tracing stuff
+    void createAccelDataStrucutre();
+    HitRecord intersect(const Ray& ray) const;
+
+    //raster stuff
     void clip();
-    Aabb calcBBox() const;
-    bool hit(const Ray& ray, TrianglePoint& triangle, float& t) const;
 
     //operator overloads
     friend std::ostream& operator<<(std::ostream& os, const Mesh& matrix);
 
     //static methods
     static Mesh* cube();
-    static Mesh* sphere();
+    // static Mesh* sphere();
     static Mesh* triangle();
-
-private:
-    //private methods
-    bool mollerTrumboreIntersection(const Ray& ray, const Vector& triangle, float& u, float& v, float &t) const;
 };

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "scene/dataStructures/Aabb.hpp"
 #include "util/Util.hpp"
 
 #include <vector>
@@ -11,13 +10,5 @@ struct Vertex {
     Vector normal;
 } typedef Vertex;
 
-struct Triangle {
-    Vertex v1;
-    Vertex v2;
-    Vertex v3;
-
-    Aabb boundingBox;
-} typedef Triangle;
-
-typedef std::vector<Vector> IndexBuffer;
+typedef std::vector<size_t> IndexBuffer;
 typedef std::vector<Vertex> VertexBuffer;

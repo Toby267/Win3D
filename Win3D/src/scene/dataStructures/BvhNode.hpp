@@ -1,40 +1,40 @@
 #pragma once
 
 #include "renderer/Ray.hpp"
-#include "scene/objects/Mesh.hpp"
 #include "scene/dataStructures/Aabb.hpp"
-#include "scene/core/SceneUtil.hpp"
 
 #include <cstddef>
 #include <vector>
 
 class BvhNode {
 public:
-    static BvhNode* buildBvhTree(std::vector<Triangle>& triangles);
+    BvhNode(std::vector<Triangle>& tris, size_t start, size_t end);
     ~BvhNode();
 
-    // Triangle hit(const Ray&, float& t, float& u, float& v) const; // this is the preferred method, becuase it decouples ray tracing (triangle interpolation) logic from hit logic
-    bool hit(const Ray& ray, TrianglePoint& triangle, float& t) const;
+    void intersect(const Ray& ray, std::vector<Triangle>& triangles) const;
     void print() const;
+    int getTriangleCount() const;
 
 private:
-    BvhNode(std::vector<Triangle>& tris, size_t start, size_t end);
-
     Aabb boundingBox = Aabb();
 
     BvhNode* left = nullptr;
     BvhNode* right = nullptr;
 
-    std::vector<Triangle> triangles{};
+    std::vector<Triangle> triangles;
+};
 
-
-
-
-
-//delete the following after implementing the better version
+class BvhTree {
 public:
-    BvhNode(std::vector<Mesh*> objects);//delete
+    BvhTree(std::vector<Triangle>& triangles);
+    ~BvhTree();
+
+    HitRecord intersect(const Ray& ray) const;
+    void print() const;
+    void printTriangleCount() const;
+
 private:
-    Mesh* data = nullptr;//delete
-    float sweepSurfaceAreaHeuristic(std::vector<Mesh*>& axisOrderedObjects, int i);//delete
+    static double mollerTrumboreIntersection(const Ray& ray, const Vector& v1, const Vector& v2, const Vector& v3, double& u, double& v);
+
+    BvhNode* root = nullptr;
 };

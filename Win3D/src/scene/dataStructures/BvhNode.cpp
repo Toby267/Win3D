@@ -1,23 +1,27 @@
 #include "scene/dataStructures/BvhNode.hpp"
+#include "renderer/Ray.hpp"
 #include "scene/core/SceneUtil.hpp"
 #include "scene/dataStructures/Aabb.hpp"
 #include "util/Util.hpp"
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdlib>
 #include <iostream>
+#include <limits>
 #include <sys/types.h>
 #include <vector>
 
-#define MAX_DEPTH (10)
-#define MIN_TRIANGLES (4)
+#define MAX_DEPTH (10) // unused
+#define MIN_TRIANGLES (2)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
+// * -------------------------------------------- [ BVH_TREE ] ------------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-BvhNode* BvhNode::buildBvhTree(std::vector<Triangle>& tris) {
-    // calculates the bounding box of each triangle
+// default construction
+BvhTree::BvhTree(std::vector<Triangle>& tris) {
+    // can't assume that the bounding boxes have been calculated initially
     for (Triangle& t : tris) {
         t.boundingBox = Aabb();
         t.boundingBox.grow(t.v1.position);
@@ -25,13 +29,101 @@ BvhNode* BvhNode::buildBvhTree(std::vector<Triangle>& tris) {
         t.boundingBox.grow(t.v3.position);
     }
 
-    return new BvhNode(tris, 0, tris.size()-1);
+    root = new BvhNode(tris, 0, tris.size()-1);
 }
 
-/**
- * @param start - the index of the first triangle
- * @param end - the index of the last triangle
-*/
+BvhTree::~BvhTree() {
+    delete root;
+    root = nullptr;
+}
+
+// returns the closest triangle intersection
+HitRecord BvhTree::intersect(const Ray& ray) const {
+    constexpr double DOUBLE_MAX = std::numeric_limits<double>::max();
+
+    // find all candidate triangles
+    std::vector<Triangle> triangles{};
+    root->intersect(ray, triangles);
+
+    HitRecord record;
+    record.t = DOUBLE_MAX;
+
+    if (triangles.empty()) return record;
+
+    // find the closest intersection
+    for (Triangle& tri : triangles) {
+        double u, v, t;
+        t = mollerTrumboreIntersection(ray, tri.v1.position.toVec3(), tri.v2.position.toVec3(), tri.v3.position.toVec3(), u, v);
+
+        if (t != -1 && t < record.t) {
+            record.u = u;
+            record.v = v;
+            record.t = t;
+            // record.v1 = tri.v1;
+            // record.v2 = tri.v2;
+            // record.v3 = tri.v3;
+
+            record.c0 = tri.v1.colour;
+            record.c1 = tri.v2.colour;
+            record.c2 = tri.v3.colour;
+            record.n0 = tri.v1.normal;
+            record.n1 = tri.v2.normal;
+            record.n2 = tri.v3.normal;
+            record.v0 = tri.v1.position;
+            record.v1 = tri.v2.position;
+            record.v2 = tri.v3.position;
+        }
+    }
+
+    return record;
+}
+
+void BvhTree::print() const {
+    root->print();
+}
+
+void BvhTree::printTriangleCount() const {
+    std::cout << "triangle count: " << root->getTriangleCount() << '\n';
+}
+
+// determines whether a ray intersection a triangle, and at what u, v, & t values it occurs
+// expects the vectors to be vec3
+double BvhTree::mollerTrumboreIntersection(const Ray& ray, const Vector& v1, const Vector& v2, const Vector& v3, double& u, double& v) {
+    constexpr double epsilon = std::numeric_limits<double>::epsilon();
+
+    Vector edge1 = v2 - v1;
+    Vector edge2 = v3 - v1;
+
+    Vector pvec = Vector::crossProduct(ray.direction, edge2);
+    double det = Vector::dotProduct(edge1, pvec);
+
+    if (det > -epsilon && det < epsilon)
+        return -1;
+
+    double invDet = 1.0 / det;
+
+    Vector tvec = ray.origin - v1;
+    u = Vector::dotProduct(tvec, pvec) * invDet;
+
+    if (u < 0.0 || u > 1.0)
+        return -1;
+
+    Vector qvec = Vector::crossProduct(tvec, edge1);
+    v = Vector::dotProduct(ray.direction, qvec) * invDet;
+
+    if (v < 0.0 || u + v > 1.0)
+        return -1;
+
+    double t = Vector::dotProduct(edge2, qvec) * invDet;
+
+    return t;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * -------------------------------------------- [ BVH_NODE ] ------------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// recursively sets up the bvh hierarchy
 BvhNode::BvhNode(std::vector<Triangle>& tris, size_t start, size_t end) {
     // step 0 - calculate containing bbox
     for (int i = start; i <= end; i++) {
@@ -45,42 +137,49 @@ BvhNode::BvhNode(std::vector<Triangle>& tris, size_t start, size_t end) {
 
         //store triangles for intersection
         for (int i = start; i <= end; i++)
-            triangles.emplace_back(tris[i]);
+            triangles.push_back(tris[i]);
 
         return;
     }
 
     // step 2 - calculate optimal split, then order triangles
     Vector span = boundingBox.max - boundingBox.min;
+    
     short axis = 0;
     if (span.y() > span[axis]) axis = 1;
     if (span.z() > span[axis]) axis = 2;
 
-    int splitIndex = (start+end) / 2;
-    std::nth_element(tris.begin(), tris.begin() + splitIndex, tris.end(), [axis](const Triangle& a, const Triangle& b) {
+    int splitIndex = (end-start) / 2;
+
+    std::nth_element(tris.begin()+start, tris.begin()+splitIndex, tris.begin()+end, [axis](const Triangle& a, const Triangle& b) {
         return a.boundingBox.centroid()[axis] > b.boundingBox.centroid()[axis];
     });
-
+    
     // step 3 - recurse
-    left = new BvhNode(tris, start, splitIndex);
-    right = new BvhNode(tris, splitIndex+1, end);
+    left = new BvhNode(tris, start, start+splitIndex);
+    right = new BvhNode(tris, start+splitIndex+1, end);
 }
 
 BvhNode::~BvhNode() {
     if (left) delete left;
     if (right) delete right;
+    left = nullptr;
+    right = nullptr;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-bool BvhNode::hit(const Ray& ray, TrianglePoint& triangle, float& t) const {
+void BvhNode::intersect(const Ray& ray, std::vector<Triangle>& tris) const {
     if (!boundingBox.intersect(ray))
-        return false;
+        return;
 
-    // TODO: if it intersects two objects, there is a chance that it just returns the values for one of them
-    return data && data->hit(ray, triangle, t) || left && left->hit(ray, triangle, t) || right && right->hit(ray, triangle, t);
+    // if leaf node
+    if (!triangles.empty()) {
+        tris.insert(tris.end(), triangles.begin(), triangles.end());
+        return;
+    }
+
+    // if non-leaf node
+    if (left) left->intersect(ray, tris);
+    if (right) right->intersect(ray, tris);
 }
 
 void BvhNode::print() const {
@@ -90,73 +189,30 @@ void BvhNode::print() const {
         std::cout << "triangle\t";
     std::cout << '\n';
     
-    if (left != nullptr) left->print();
-    if (right != nullptr) right->print();
+    if (left) left->print();
+    if (right) right->print();
 }
 
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int BvhNode::getTriangleCount() const {
+    int val = triangles.size();
 
-BvhNode::BvhNode(std::vector<Mesh*> objects) {
-   // step 1 - if is 1 or 2 objects create them manually then return
-   if (objects.size() == 1) {
-       data = objects[0];
-       boundingBox = objects[0]->calcBBox();
-       return;
-   }
-   else if (objects.size() == 2) {
-       left = new BvhNode({objects[0]});
-       right = new BvhNode({objects[1]});
-       boundingBox = objects[0]->calcBBox();
-       boundingBox.grow(objects[1]->calcBBox());
-       return;
-   }
+    if (left) val += left->getTriangleCount();
+    if (right) val += right->getTriangleCount();
 
-   // step 2 - work out best split, and split
-   boundingBox = objects[0]->calcBBox();
-   for (int i = 1; i < objects.size(); i++) {
-       boundingBox.grow(objects[i]->calcBBox());
-   }
-
-   //TODO: this should by x, then y, then z to find the best split
-   std::sort(objects.begin(), objects.end(), [](Mesh* a, Mesh* b) {
-       return a->calcBBox().centroid().x() > b->calcBBox().centroid().x();
-   });
-
-   int sahIndex = 0;
-   float sahValue = sweepSurfaceAreaHeuristic(objects, 0);
-   for (int i = 0; i < objects.size(); i++) {        
-       float val = sweepSurfaceAreaHeuristic(objects, i);
-       if (val < sahValue) {
-           sahIndex = i;
-           sahValue = val;
-       }
-   }
-
-   std::nth_element(objects.begin(), objects.begin() + sahIndex, objects.end(), [](Mesh* a, Mesh* b) {
-       return a->calcBBox().centroid().x() > b->calcBBox().centroid().x();
-   });
-
-   left = new BvhNode(std::vector<Mesh*>{objects.begin(), objects.begin()+sahIndex});
-   right = new BvhNode(std::vector<Mesh*>{objects.begin()+sahIndex, objects.end()});
+    return val;
 }
 
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// // * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-float BvhNode::sweepSurfaceAreaHeuristic(std::vector<Mesh*>& objects, int index) {
+// float BvhNode::sweepSurfaceAreaHeuristic(std::vector<Mesh*>& objects, int index) {
     // return f(i) = LSA(i) * i + RSA(i) * (N-i)
-
-    float lsa = 0, rsa = 0;
-    
-    for (int i = 0; i < index; i++) {
-        lsa += objects[i]->calcBBox().surfaceArea();
-    }
-    for (int i = index; i < objects.size(); i++) {
-        rsa += objects[i]->calcBBox().surfaceArea();
-    }
-
-    return lsa * index + rsa * (objects.size()-index);
-}
+// 
+    // float lsa = 0, rsa = 0;
+    // 
+    // for (int i = 0; i < index; i++) {
+        // lsa += objects[i]->calcBBox().surfaceArea();
+    // }
+    // for (int i = index; i < objects.size(); i++) {
+        // rsa += objects[i]->calcBBox().surfaceArea();
+    // }
+// 
+    // return lsa * index + rsa * (objects.size()-index);
+// }

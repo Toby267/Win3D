@@ -1,7 +1,7 @@
 #include "scene/core/Scene.hpp"
 #include "renderer/Camera.hpp"
 #include "renderer/Ray.hpp"
-#include "scene/dataStructures/BvhNode.hpp"
+#include "scene/objects/Mesh.hpp"
 #include "util/Util.hpp"
 
 #include <vector>
@@ -37,7 +37,7 @@ Scene::~Scene() {
         delete mesh;
     }
 
-    if (tree) delete tree;
+    // if (tree) delete tree;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,9 +52,8 @@ void Scene::toCameraSpace() {
     for (Mesh* mesh : objects) {
         mesh->toWorldSpace();
         mesh->applyAffineTransform(camera.tranformationMatrix());
+        mesh->createAccelDataStrucutre();
     }
-
-    tree = new BvhNode{objects};
 }
 
 void Scene::toViewportSpace() {
@@ -65,14 +64,18 @@ void Scene::toViewportSpace() {
     }
 }
 
-bool Scene::intersect(const Ray& ray, TrianglePoint& triangle, float& t) const {
-    return tree->hit(ray, triangle, t);
+void Scene::intersect(const Ray& ray, HitRecord& record) const {
+    for (const Mesh* mesh : objects) {
+        HitRecord rec = mesh->intersect(ray);
+
+        if (rec.t < record.t) {
+            record = rec;
+        }
+    }
 }
 
 void Scene::cleanup() {
     for (Mesh* mesh : objects) {
         mesh->reset();
     }
-
-    delete tree;
 }

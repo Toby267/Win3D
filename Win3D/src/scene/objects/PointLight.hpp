@@ -5,5 +5,5 @@
 struct PointLight {
     Vector position;
     Colour colour;
-    float intensity;
+    double intensity;
 };

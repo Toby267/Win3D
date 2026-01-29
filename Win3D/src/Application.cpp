@@ -1,14 +1,11 @@
 #include "Application.hpp"
 
 #include "engine/Engine.hpp"
-#include "scene/core/SceneUtil.hpp"
-#include "scene/dataStructures/BvhNode.hpp"
+#include "util/WavefrontLoader.hpp"
 #include "scene/objects/Mesh.hpp"
 #include <chrono>
-#include <cstddef>
 #include <iostream>
 #include <numbers>
-#include <vector>
 
 // features:
 // got:
@@ -51,36 +48,22 @@ TODO:
 /**
  * Runs the application
  */
-Application::Application() {
-    Mesh* cube = Mesh::cube();
-    cube->setTranslation(Matrix::translate(0, 0, 1100));
-
-    
-    std::vector<Triangle> triangles = cube->getTriangles();
-    BvhNode* tree = BvhNode::buildBvhTree(triangles);
-    tree->print();
-    return;
-    
-    
-    
-    
-    
-    
+Application::Application() {    
     Engine e = Engine(1920, 1080);
     Scene& scene = e.getScene();
 
     // Mesh* triangle = scene.addObject(Mesh::triangle());
-    // triangle->setTranslation(Matrix::translate(0, 0, 2800));
+    // // triangle->setTranslation(Matrix::translate(0, 0, 2800));
     // triangle->setScale(Matrix::scale(500, 500, 1));
 
-    // Mesh* cube1 = scene.addObject(Mesh::cube());
-    // cube1->setTranslation(Matrix::translate(0, 0, 1100));
+    Mesh* cube1 = scene.addObject(Wavefront::loadWavefront("Cube.obj"));
+    cube1->setTranslation(Matrix::translate(0, 0, 1100));
 
-    Mesh* sphere1 = scene.addObject(Mesh::sphere());
-    sphere1->setTranslation(Matrix::translate(-400, 0, 1000));
+    // Mesh* sphere1 = scene.addObject(Mesh::sphere());
+    // sphere1->setTranslation(Matrix::translate(0, 0, 1000));
 
-    Mesh* sphere2 = scene.addObject(Mesh::sphere());
-    sphere2->setTranslation(Matrix::translate(400, 0, 1000));
+    // Mesh* sphere2 = scene.addObject(Mesh::sphere());
+    // sphere2->setTranslation(Matrix::translate(400, 0, 1000));
 
     double alpha = 0.0;
     const int frames = 25;
@@ -90,9 +73,9 @@ Application::Application() {
     for (int i = 0; i < frames; i++) {
         alpha -= std::numbers::pi/16;
         // triangle->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        // cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        sphere1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        sphere2->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        // sphere1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        // sphere2->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         
         e.drawCall();
     }

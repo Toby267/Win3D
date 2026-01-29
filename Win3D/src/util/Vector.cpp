@@ -70,8 +70,8 @@ Vector Vector::normalise() {
     return *this;
 }
 
-void Vector::toVec3() {
-    length = 3;
+Vector Vector::toVec3() const{
+    return Vector(data[0], data[1], data[2]);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,11 +189,11 @@ std::ostream& operator<<(std::ostream& os, const Vector& vector) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Vector Vector::min() {
-    constexpr float MIN = std::numeric_limits<float>::lowest();
+    constexpr double MIN = std::numeric_limits<double>::lowest();
     return Vector(MIN, MIN, MIN);
 }
 Vector Vector::max() {
-    constexpr float MAX = std::numeric_limits<float>::max();
+    constexpr double MAX = std::numeric_limits<double>::max();
     return Vector(MAX, MAX, MAX);
 }
 
