@@ -15,7 +15,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Mesh::Mesh(IndexBuffer ib, VertexBuffer vb)
-    : VERTEX_BUFFER(vb), indexBuffer(ib), vertexBuffer(vb)
+    : INDEX_BUFFER(ib), VERTEX_BUFFER(vb), indexBuffer(ib), vertexBuffer(vb)
 {
 
 }
@@ -78,6 +78,7 @@ void Mesh::applyTransform(Matrix m) {
 
 void Mesh::reset() {
     vertexBuffer = VERTEX_BUFFER;
+    indexBuffer = INDEX_BUFFER;
     delete tree;
     tree = nullptr;
 }
@@ -139,12 +140,12 @@ Mesh* Mesh::triangle() {
     vertices.emplace_back(0,  1, 1, 1);
     vertices.emplace_back( 1, -1, -1, 1);
 
-    normals.emplace_back( 0.0, 0.0, 1 );
-    normals.emplace_back( 0.0, 0.0, 1 );
-    normals.emplace_back( 0.0, 0.0, 1 );
+    normals.emplace_back( 0.0, 0.0, -1 );
+    normals.emplace_back( 0.0, 0.0, -1 );
+    normals.emplace_back( 0.0, 0.0, -1 );
 
-    colours.emplace_back(Colour::red());
-    colours.emplace_back(Colour::green());
+    colours.emplace_back(Colour::blue());
+    colours.emplace_back(Colour::blue());
     colours.emplace_back(Colour::blue());
     
     indexBuffer.emplace_back(1);

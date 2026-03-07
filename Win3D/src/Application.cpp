@@ -1,6 +1,7 @@
 #include "Application.hpp"
 
 #include "engine/Engine.hpp"
+#include "util/Util.hpp"
 #include "util/WavefrontLoader.hpp"
 #include "scene/objects/Mesh.hpp"
 #include <chrono>
@@ -49,14 +50,15 @@ TODO:
  * Runs the application
  */
 Application::Application() {    
-    Engine e = Engine(1920, 1080);
+    Engine e = Engine(400, 400);
     Scene& scene = e.getScene();
 
     // Mesh* triangle = scene.addObject(Mesh::triangle());
-    // // triangle->setTranslation(Matrix::translate(0, 0, 2800));
+    // triangle->setTranslation(Matrix::translate(0, 0, 2800));
     // triangle->setScale(Matrix::scale(500, 500, 1));
 
     Mesh* cube1 = scene.addObject(Wavefront::loadWavefront("Cube.obj"));
+    // cube1->setScale(Matrix::scale(10, 10, 10));
     cube1->setTranslation(Matrix::translate(0, 0, 1100));
 
     // Mesh* sphere1 = scene.addObject(Mesh::sphere());

@@ -41,6 +41,10 @@ namespace Mat {
     
         DisneyDiffuse(double roughness, double subsurface);
     } typedef DisneyDiffuse;
+
+    struct BlinnPhong {
+        
+    } typedef BlinnPhong;
     
     struct DisneyMetal {
         double roughness;
@@ -65,7 +69,6 @@ namespace Mat {
     } typedef DisneySheen;
 
     struct DisneyBSDF {
-        Colour baseColour;
         double roughness;
         double subsurface;
         double sheen;
@@ -82,7 +85,7 @@ namespace Mat {
 
     // * -------------------------------------- [ POLYMORPHISM STUFF ] --------------------------------------- * //
     
-    typedef std::variant<DisneyDiffuse, DisneyMetal> Material;
+    typedef std::variant<DisneyDiffuse, DisneyMetal, DisneyBSDF> Material;
     
     struct visitor {
         const Vector& in;
@@ -92,6 +95,7 @@ namespace Mat {
     
         Colour operator()(const DisneyDiffuse& material) const;
         Colour operator()(const DisneyMetal& material) const;
+        Colour operator()(const DisneyBSDF& material) const;
     };
 
     Colour eval(const Material& mat, Vector cameraDirection, Vector lightDirection, Vector normal, Colour colour);
