@@ -32,14 +32,11 @@ class Bitmap3D {
     +void drawPixel(int x, int y, int z, Colour colour)
     +void setPixel(int x, int y, Colour colour)
 }
-class Renderer {
-    void rasterize(Bitmap3D& bmap, const Scene& scene)
-    void rayTrace(Bitmap3D& bmap, const Scene& scene)
-}
 
 Engine *-- Window
 Engine *-- Bitmap3D
 Engine <-- Renderer
+Engine *-- Scene
 
 @enduml
 
