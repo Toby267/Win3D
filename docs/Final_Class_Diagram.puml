@@ -1,0 +1,225 @@
+'mostly designed at specification level (some implementation, but none conceptual)
+
+'========================================== MAIN ==========================================
+
+@startuml main
+
+class Engine {
+    -Scene scene
+    -Window Window
+    -Bitmap3D bitmap
+    +Scene& getScene()
+    +void drawCall()
+}
+class Window {
+    -int width
+    -int height
+    -unsigned char* frameBuffer
+    -std::atomic<bool> hasUpdated
+    -std::atomic<bool> alive
+    -std::thread thread
+    +void update(const std::vector<unsigned char>& renderBuffer)
+    +bool isAlive() const
+    +void close()
+    -void run(unsigned char* bmap, int width, int height)
+}
+class Bitmap3D {
+    -int width
+    -int height
+    -std::vector<unsigned char> frameBuffer
+    -std::vector<double> zBuffer
+    +void clear()
+    +void drawPixel(int x, int y, int z, Colour colour)
+    +void setPixel(int x, int y, Colour colour)
+}
+
+Engine *-- Window
+Engine *-- Bitmap3D
+
+@enduml
+
+'========================================== Renderers ==========================================
+
+@startuml renderer
+
+class Renderer {
+    void rasterize(Bitmap3D& bmap, const Scene& scene)
+    void rayTrace(Bitmap3D& bmap, const Scene& scene)
+}
+struct Ray {
+    +Vector origin
+    +Vector direction
+}
+struct HitRecord {
+    +Colour c0, c1, c2
+    +Vector n0, n1, n2
+    +Vector v0, v1, v2
+
+    +Material mat
+    +double u, v, t
+}
+struct Triangle {
+    +Vertex v1, v2, v3
+    +Aabb boundingBox
+}
+struct Vertex {
+    +Vector position
+    +Colour colour
+    +Vector normal
+}
+
+class BvhNode {
+    -Aabb boundingBox
+    -BvhNode* left = mullptr
+    -BvhNode* right = mullptr
+    -std::vector<Triangle> triangles
+    +void intersect(const Ray& ray, std::vector<Triangle>& triangles) const
+}
+class BvhTree {
+    -BvhNode* root
+    +BvhTree(std::vector<Triangle>& triangles)
+    +HitRecord intersect(const Ray& ray) const
+}
+struct Aabb {
+    +Vector min
+    +Vector max
+    
+    +void grow(Vector v)
+    +bool intersect(const Ray& ray) const
+}
+
+BvhTree *-- BvhNode
+BvhNode o-- Aabb
+
+Renderer <-- Ray
+Renderer <-- HitRecord
+Renderer <-- Triangle
+Renderer <-- Vertex
+
+@enduml
+
+'========================================== SCENE ==========================================
+@startuml scene
+
+class Scene {
+    -std::vector<Mesh*> objects
+    -std::vector<PointLight> lights
+    -Camera camera
+    +Mesh* addObject(Mesh* mesh)
+    +void toCameraSpace()
+    +void toViewportSpace()
+    +void intersect(const Ray& ray, HitRecord* record) const
+    +void cleanup()
+}
+class Mesh {
+    -IndexBuffer indexBuffer
+    -VertexBuffer vertexBuffer
+    -BvhTree* tree
+
+    -Matrix scale, translation, rotation
+    -Material material
+
+    +void toWorldSpace()
+    +void applyAffineTransform(Matrix matrix)
+    +void applyTransform(Matrix matrix)
+
+    +void reset()
+    +void createBvhTree()
+
+    +HitRecord intersect(const Ray& ray) const
+
+    +void clip()
+}
+struct Camera {
+    +Vector position;
+    +Vector direction;
+    +Vector up;
+
+    +double apperatureWidth;
+    +double apperatureHeight;
+
+    +double fieldOfView;
+
+    +double nearFocalDistance;
+    +double farFocalDistance;
+
+    +int screenWidth;
+    +int screenHeight;
+
+    +Matrix tranformationMatrix() const;
+    +Matrix projectionMatrix() const;
+    +Matrix viewportMatrix() const;
+}
+abstract class Material {
+    Colour visit(Material mat, Vector in, Vector out, Vector normal, Vector colour)
+}
+class DisneyBSDF {
+    +double roughness
+    +double subsurface
+    +double sheen
+    +double sheenTint
+    +double anisotropic
+    +double metallic
+    +double specular
+    +double specularTransmission
+    +double specularTint
+    +double clearcoat
+    +double clearcoatGloss
+    +double eta
+}
+
+Material <|-- DisneyBSDF
+Scene o-- Mesh
+Scene o-- Camera
+
+@enduml
+
+'========================================== UTILITY ==========================================
+
+@startuml utility
+
+namespace util {
+    class Matrix {
+        -Vector data[4]
+        -int rows
+        -int columns
+    
+        +Matrix operator*(const Matrix& other) const;
+        +Vector operator*(const Vector& other) const;
+    
+        +static Matrix translate(double x, double y, double z);
+        +static Matrix scale(double x, double y, double z);
+        +static Matrix identity(int size);
+    
+        +static Matrix rotation(double roll, double pitch, double yaw);
+        +static Matrix roll(double radians);
+        +static Matrix pitch(double radians);
+        +static Matrix yaw(double radians);
+    
+        +static Matrix orthographic(double n, double f, double t, double r);
+        +static Matrix perspective(double n, double f, double t, double r, double fov);
+        +static Matrix changeOfBasis(const Vector& pos, const Vector& dir, const Vector& up);
+    }
+    class Vector {
+        -double data[4];
+        -int length;
+    
+        +Vector operator+-*/(double other) const
+        +Vector operator+-*/(const Vector& other) const
+    
+        +Vector normalise()
+    
+        +static Vector crossProduct(const Vector& lhs, const Vector& rhs)
+        +static double dotProduct(const Vector& lhs, const Vector& rhs)
+        +static Vector unitNormal(const Vector& lhs, const Vector& rhs)
+        +static double cosAngle(const Vector& lhs, const Vector& rhs)
+    }
+    class Colour {    
+        Colour operator+-*/(const Colour& other) const;
+        Colour operator+-*/(double other) const;
+    
+        static Colour red(), green(), blue(), cyan(), magenta(), yellow();
+    }
+}
+
+@enduml

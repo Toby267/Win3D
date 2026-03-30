@@ -9,19 +9,9 @@ struct Ray {
 } typedef Ray;
 
 struct HitRecord {
-    // Vertex v1, v2, v3;
-
-    Colour c0;
-    Colour c1;
-    Colour c2;
-
-    Vector n0;
-    Vector n1;
-    Vector n2;
-
-    Vector v0;
-    Vector v1;
-    Vector v2;
+    Colour c0, c1, c2;
+    Vector n0, n1, n2;
+    Vector v0, v1, v2;
 
     Mat::Material mat = Mat::DisneyDiffuse{0.0, 0.0};
     double u, v, t;
