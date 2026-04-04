@@ -14,7 +14,8 @@ Matrix Camera::tranformationMatrix() const {
 
 //calculates and returns the projection matrix
 Matrix Camera::projectionMatrix() const {
-    return Matrix::perspective(nearFocalDistance, farFocalDistance, apperatureHeight/2, apperatureWidth/2, fieldOfView);
+    return Matrix::perspective(nearFocalDistance, farFocalDistance, apperatureWidth / apperatureHeight, fieldOfView);
+    // return Matrix::orthographic(nearFocalDistance, farFocalDistance, apperatureHeight/2, apperatureWidth/2);
 }
 
 //calculates and returns the viewport transform matrix translating from ndc coordinates to the screen
