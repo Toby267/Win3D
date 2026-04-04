@@ -1,4 +1,95 @@
-'mostly designed at specification level (some implementation, but none conceptual)
+'========================================== CODE OVERVIEW GRAPH ==========================================
+
+'ball and socket diagram
+
+@startuml overview
+
+top to bottom direction
+' left to right direction
+
+component renderer {
+    component rasterizer {
+
+    }
+    component ray_tracer {
+
+    }
+}
+component materials {
+    
+}
+
+component scene {
+    ' top to bottom direction
+    component :Meshes {
+
+    }
+    component :Camera {
+
+    }
+    component :Acceleration_Data_Structures {
+
+    }
+}
+component window {
+    component :hello {
+
+    }
+}
+
+component engine {
+
+}
+
+engine -(0-> scene
+engine -(0-> window
+engine -(0-> renderer
+scene -(0-> materials
+
+@enduml
+
+'========================================== CODE EXECUTION GRAPH ==========================================
+
+@startuml code_execution
+
+participant Application
+participant Engine
+participant Bitmap
+participant Scene
+participant RenderPass
+participant Window
+
+Application -> Engine :drawCall()
+
+Engine -> Bitmap :clear()
+
+Engine -> Scene :toCameraSpace()
+Scene -> Scene :toWorldSpace()
+Scene -> Scene :applyAffineTransform(cameraTransform)
+Scene -> Scene :createAccelDataStructure()
+
+Engine -> RenderPass :rayTracePass()
+RenderPass -> RenderPass :generate and intersect rays
+RenderPass -> RenderPass :evaluate ray materials/shaders
+RenderPass -> RenderPass :render onto bitmap
+
+Engine -> Scene :toViewportSpace()
+Scene -> Scene :applyTransform(cameraProjectionTransform)
+Scene -> Scene :clip()
+Scene -> Scene :applyAffineTransform(cameraViewportTransform)
+
+Engine -> RenderPass :rasterizePass()
+RenderPass -> RenderPass :rasterize triangles
+RenderPass -> RenderPass :render onto bitmap
+
+Engine -> Scene :cleanup()
+
+Scene -> Scene :reset vertex and index buffers
+Scene -> Scene :delete acceleration data structure
+
+Engine -> Window :update(frameBuffer)
+
+@enduml
 
 '========================================== MAIN ==========================================
 
