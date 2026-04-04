@@ -52,6 +52,7 @@ void Scene::toCameraSpace() {
     for (Mesh* mesh : objects) {
         mesh->toWorldSpace();
         mesh->applyAffineTransform(camera.tranformationMatrix());
+        // mesh->transformNormals(camera.rotationMatrix());
         mesh->createAccelDataStrucutre();
     }
 }

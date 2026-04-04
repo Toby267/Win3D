@@ -98,7 +98,7 @@ public:
     static Matrix yaw(double radians);
 
     static Matrix orthographic(double near, double far, double top, double right);
-    static Matrix perspective(double n, double f, double verticalAspectRatio, double fov);
+    static Matrix perspective(double n, double f, double aspect, double fov);
 
     static Matrix changeOfBasis(const Vector& position, const Vector& direction, const Vector& up);
 };

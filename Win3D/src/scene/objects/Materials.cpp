@@ -3,13 +3,14 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
+#include <functional>
 #include <iostream>
 #include <numbers>
 
 // * -------------------------------------- [ POLYMORPHISM STUFF ] --------------------------------------- * //
 
 Colour Mat::eval(const Material& mat, Vector cameraDirection, Vector lightDirection, Vector normal, Colour colour) {
-    return std::visit(Mat::visitor{lightDirection, cameraDirection, normal, colour}, mat);
+    return std::visit(Mat::evaluate{lightDirection, cameraDirection, normal, colour}, mat);
 }
 
 // * ---------------------------------------- [ DISNEY_DIFFUSE ] ----------------------------------------- * //
@@ -69,7 +70,7 @@ static Vector mon2lin(Colour x) {
 
 //NOT WORKING BECAUSE YOUR NOT TRANSLATING NORMALS WHEN MOVING OBJECTS TO WORLD SPACE AND CAMERA SPACE AND VIEW VOLUME SPACE
 static int i = 0;
-Colour Mat::visitor::operator()(const DisneyBSDF& mat) const {
+Colour Mat::evaluate::operator()(const DisneyBSDF& mat) const {
     // std::cout << "DisneyBSDF\n";
     double asdlkjf = Vector::dotProduct(normal, -in);
 
@@ -131,7 +132,7 @@ Colour Mat::visitor::operator()(const DisneyBSDF& mat) const {
     return Colour(retval[0], retval[1], retval[2]);
 }
 
-Colour Mat::visitor::operator()(const DisneyDiffuse& mat) const {
+Colour Mat::evaluate::operator()(const DisneyDiffuse& mat) const {
     // std::cout << "DisneyDiffuse\n";
     // return colour;
 
@@ -189,7 +190,7 @@ Colour Mat::visitor::operator()(const DisneyDiffuse& mat) const {
 
 // * ----------------------------------------- [ DISNEY_METAL ] ------------------------------------------ * //
 
-Colour Mat::visitor::operator()(const DisneyMetal& material) const {
+Colour Mat::evaluate::operator()(const DisneyMetal& material) const {
     // std::cout << "DisneyMetal\n";
     return colour;
 }
