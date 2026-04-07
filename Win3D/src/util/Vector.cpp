@@ -70,8 +70,8 @@ Vector Vector::normalise() {
     return *this;
 }
 
-Vector Vector::toVec3() const{
-    return Vector(data[0], data[1], data[2]);
+Vector Vector::asVec3(Vector& v){
+    return Vector(v.data[0], v.data[1], v.data[2]);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

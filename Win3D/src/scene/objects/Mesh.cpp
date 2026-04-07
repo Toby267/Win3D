@@ -75,6 +75,14 @@ void Mesh::applyTransform(Matrix m) {
         vertex.position = vertex.position / vertex.position.w();
     }
 }
+void Mesh::transformNormals(Matrix m) {
+    m = rotation * m;
+    Matrix r = Matrix::asMat3(m);
+    
+    for (Vertex& vertex : vertexBuffer) {
+        vertex.normal = r * vertex.normal;
+    }
+}
 
 void Mesh::reset() {
     vertexBuffer = VERTEX_BUFFER;

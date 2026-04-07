@@ -12,6 +12,11 @@ Matrix Camera::tranformationMatrix() const {
     return changeOfBasis * translation;
 }
 
+// returns the rotation part of the camera space transformation matrix
+Matrix Camera::rotationMatrix() const {
+    return Matrix::changeOfBasis(position, direction, up);
+}
+
 //calculates and returns the projection matrix
 Matrix Camera::projectionMatrix() const {
     return Matrix::perspective(nearFocalDistance, farFocalDistance, apperatureWidth / apperatureHeight, fieldOfView);

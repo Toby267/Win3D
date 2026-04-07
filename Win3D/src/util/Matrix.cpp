@@ -32,6 +32,14 @@ int Matrix::getRows() const {
     return rows;
 }
 
+Matrix Matrix::asMat3(Matrix& m) {
+    return Matrix(3, (Vector[]) {
+        Vector{m.data[0][0], m.data[0][1], m.data[0][2]},
+        Vector{m.data[1][0], m.data[1][1], m.data[1][2]},
+        Vector{m.data[2][0], m.data[2][1], m.data[2][2]}
+    });
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * --------------------------------------- [ OPERATOR OVERLOADS ] -------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -193,7 +201,7 @@ Matrix Matrix::perspective(double n, double f, double aspect, double fov) {
 //returns a matrix that transforms objects to a view assuming the cameria is at position position, looking down direction, and its up is up
 Matrix Matrix::changeOfBasis(const Vector& position, const Vector& direction, const Vector& up) {    
     Vector rightBasis = -Vector::unitNormal(direction, up);
-    Vector upBasis    = Vector::crossProduct(direction, rightBasis);
+    Vector upBasis    = Vector::unitNormal(direction, rightBasis);
 
     return Matrix(4, (Vector[]){
         rightBasis,

@@ -48,6 +48,7 @@ public:
     void toWorldSpace();
     void applyAffineTransform(Matrix matrix);
     void applyTransform(Matrix matrix);
+    void transformNormals(Matrix matrix);
     void reset();
 
     //ray tracing stuff

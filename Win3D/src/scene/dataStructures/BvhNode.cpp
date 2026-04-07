@@ -53,7 +53,7 @@ HitRecord BvhTree::intersect(const Ray& ray) const {
     // find the closest intersection
     for (Triangle& tri : triangles) {
         double u, v, t;
-        t = mollerTrumboreIntersection(ray, tri.v1.position.toVec3(), tri.v2.position.toVec3(), tri.v3.position.toVec3(), u, v);
+        t = mollerTrumboreIntersection(ray, Vector::asVec3(tri.v1.position), Vector::asVec3(tri.v2.position), Vector::asVec3(tri.v3.position), u, v);
 
         if (t != -1 && t < record.t) {
             record.u = u;

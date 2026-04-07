@@ -30,7 +30,7 @@ public:
 
     //public methods
     Vector normalise();
-    Vector toVec3() const;
+    static Vector asVec3(Vector& v);
 
     //operator overloads
     double& operator[](int i);
@@ -77,6 +77,8 @@ public:
     //getters/setters
     int getColumns() const;
     int getRows() const;
+
+    static Matrix asMat3(Matrix& m);
 
     //operator overloads
     Vector& operator[](int i);

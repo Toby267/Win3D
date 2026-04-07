@@ -24,6 +24,7 @@ struct Camera {
 
     //methods
     Matrix tranformationMatrix() const;
+    Matrix rotationMatrix() const;
     Matrix projectionMatrix() const;
     Matrix viewportMatrix() const;
 } typedef Camera;
