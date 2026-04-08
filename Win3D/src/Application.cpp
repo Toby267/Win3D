@@ -75,7 +75,7 @@ Application::Application() {
     for (int i = 0; i < frames; i++) {
         alpha -= std::numbers::pi/16;
         // triangle->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        // cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
+        cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         // sphere1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         // sphere2->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         

@@ -97,24 +97,26 @@ double BvhTree::mollerTrumboreIntersection(const Ray& ray, const Vector& v1, con
     Vector pvec = Vector::crossProduct(ray.direction, edge2);
     double det = Vector::dotProduct(edge1, pvec);
 
-    if (det > -epsilon && det < epsilon)
+    if (det < epsilon)
         return -1;
 
-    double invDet = 1.0 / det;
-
     Vector tvec = ray.origin - v1;
-    u = Vector::dotProduct(tvec, pvec) * invDet;
+    u = Vector::dotProduct(tvec, pvec);
 
-    if (u < 0.0 || u > 1.0)
+    if (u < 0.0 || u > det)
         return -1;
 
     Vector qvec = Vector::crossProduct(tvec, edge1);
-    v = Vector::dotProduct(ray.direction, qvec) * invDet;
+    v = Vector::dotProduct(ray.direction, qvec);
 
-    if (v < 0.0 || u + v > 1.0)
+    if (v < 0.0 || u + v > det)
         return -1;
 
-    double t = Vector::dotProduct(edge2, qvec) * invDet;
+    double t = Vector::dotProduct(edge2, qvec);
+    double invDet = 1.0 / det;
+    t *= invDet;
+    u *= invDet;
+    v *= invDet;
 
     return t;
 }
