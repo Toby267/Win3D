@@ -12,6 +12,8 @@
 #include <sys/types.h>
 #include <vector>
 
+static int sweepSurfaceAreaHeuristic(std::vector<Triangle>& tris, size_t start, size_t end);
+
 #define MAX_DEPTH (10) // unused
 #define MIN_TRIANGLES (2)
 
@@ -88,19 +90,20 @@ void BvhTree::printTriangleCount() const {
 
 // determines whether a ray intersection a triangle, and at what u, v, & t values it occurs
 // expects the vectors to be vec3
-double BvhTree::mollerTrumboreIntersection(const Ray& ray, const Vector& v1, const Vector& v2, const Vector& v3, double& u, double& v) {
+double BvhTree::mollerTrumboreIntersection(const Ray& ray, const Vector& v0, const Vector& v1, const Vector& v2, double& u, double& v) {
     constexpr double epsilon = std::numeric_limits<double>::epsilon();
 
-    Vector edge1 = v2 - v1;
-    Vector edge2 = v3 - v1;
+    Vector edge1 = v1 - v0;
+    Vector edge2 = v2 - v0;
 
     Vector pvec = Vector::crossProduct(ray.direction, edge2);
     double det = Vector::dotProduct(edge1, pvec);
 
+    // back face culling check - if winding order is opposite: if (det > -epsilon)
     if (det < epsilon)
         return -1;
 
-    Vector tvec = ray.origin - v1;
+    Vector tvec = ray.origin - v0;
     u = Vector::dotProduct(tvec, pvec);
 
     if (u < 0.0 || u > det)
@@ -204,17 +207,33 @@ int BvhNode::getTriangleCount() const {
     return val;
 }
 
-// float BvhNode::sweepSurfaceAreaHeuristic(std::vector<Mesh*>& objects, int index) {
-    // return f(i) = LSA(i) * i + RSA(i) * (N-i)
-// 
-    // float lsa = 0, rsa = 0;
-    // 
-    // for (int i = 0; i < index; i++) {
-        // lsa += objects[i]->calcBBox().surfaceArea();
-    // }
-    // for (int i = index; i < objects.size(); i++) {
-        // rsa += objects[i]->calcBBox().surfaceArea();
-    // }
-// 
-    // return lsa * index + rsa * (objects.size()-index);
-// }
+int sweepSurfaceAreaHeuristic(std::vector<Triangle>& tris, size_t start, size_t end) {
+    constexpr double MAX = std::numeric_limits<double>::max();
+    
+    float sahMin = MAX;
+    int sahIndex = -1;
+
+    // for each possible split index
+    for (int i = start; i <= end; i++) {
+        float lsa = 0, rsa = 0;
+    
+        for (int i = 0; i < sahIndex; i++) {
+            lsa += tris[i].boundingBox.surfaceArea();
+        }
+        for (int i = sahIndex; i < tris.size(); i++) {
+            rsa += tris[i].boundingBox.surfaceArea();
+        }
+
+        // calculate the surface area heuristic
+        float sah = lsa * sahIndex + rsa * (tris.size()-sahIndex);
+
+        // if better than previous
+        if (sah < sahMin) {
+            sahMin = sah;
+            sahIndex = i;
+        }
+    }
+
+    // return split index
+    return sahIndex;
+}

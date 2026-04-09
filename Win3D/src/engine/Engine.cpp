@@ -4,7 +4,6 @@
 #include "engine/Window.hpp"
 #include "renderer/Renderer.hpp"
 #include "scene/core/Scene.hpp"
-#include <iostream>
 
 Engine::Engine(int w, int h)
     : scene(w, h), window(w, h), bitmap(w, h)
