@@ -53,18 +53,20 @@ const double& Colour::a() const {
 }
 
 Colour Colour::normalise() {
-    data.x()  = data.x() / 255;
-    data.x()  = data.x() / 255;
-    data.x()  = data.x() / 255;
-    data.x()  = data.x() / 255;
-    return *this;
+    return Colour(
+        data.x() / 255,
+        data.y() / 255,
+        data.z() / 255,
+        data.w() / 255
+    );
 }
 Colour Colour::denormalise() {
-    data.x()  = data.x() * 255;
-    data.y()  = data.y() * 255;
-    data.z()  = data.z() * 255;
-    data.w()  = data.w() * 255;
-    return *this;
+    return Colour(
+        data.x() * 255,
+        data.y() * 255,
+        data.z() * 255,
+        data.w() * 255
+    );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

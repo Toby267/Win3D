@@ -3,22 +3,26 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
+#include <iostream>
 #include <numbers>
 
 // * -------------------------------------- [ POLYMORPHISM STUFF ] --------------------------------------- * //
 
 // evaluates the rendering equation, ignoring the Le term
 Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Colour colour) {
+    Colour normalisedColour = colour.normalise();
+    
     // calculate the lambert factor in the rendering equation
     double lambert = std::max(0.0, Vector::dotProduct(in, normal));
     
     // calculate the bxdf of the rendering equation
-    Colour bxdf = std::visit(Mat::evaluateBxDF{in, out, normal, colour.normalise()}, mat);
+    Colour bxdf = std::visit(Mat::evaluateBxDF{in, out, normal, normalisedColour}, mat);
 
     // incoming light has already been calculated
 
     // calculate the reflected light in the rendering equaiton
-    Colour reflected = colour * bxdf * lambert;
+    Colour reflected = colour * bxdf * lambert * 3.5; // the 3.5 is just to scale it up so that you can see it better, think of it as light intensity
+    reflected.denormalise();
 
     // ignore alpha stuff
     reflected.a() = 255;
@@ -35,9 +39,9 @@ Colour Mat::evaluateBxDF::operator()(const DisneyBSDF& mat) const {
 Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
     Vector half = in + out;
     half.normalise();
-    double cosIn =    std::clamp(   std::abs(Vector::dotProduct(normal, in)), 0.0, 1.0   );
-    double cosOut =    std::clamp(   std::abs(Vector::dotProduct(normal, out)), 0.0, 1.0   );
-    double hout =    std::clamp(   std::abs(Vector::dotProduct(half, out)), 0.0, 1.0   );
+    double cosIn =  std::abs(Vector::dotProduct(normal, in));
+    double cosOut = std::abs(Vector::dotProduct(normal, out));
+    double hout   = std::abs(Vector::dotProduct(half, out));
 
     //calculate fBaseDiffuse
     double fd90 = 0.5 + 2 * mat.roughness * hout * hout;
@@ -64,8 +68,8 @@ Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
     fSubsurface = fSubsurface * (fssIn * fssOut * term + 0.5) * cosOut;
     
     //calculate result
-    Colour result = fBaseDiffuse * (1 - mat.subsurface) + fSubsurface * fSubsurface;
-    
+    Colour result = fBaseDiffuse * (1 - mat.subsurface) + fSubsurface * mat.subsurface;
+
     return result;
 }
 
