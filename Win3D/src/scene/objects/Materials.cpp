@@ -3,11 +3,11 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
-#include <iostream>
 #include <numbers>
 
 // * -------------------------------------- [ POLYMORPHISM STUFF ] --------------------------------------- * //
 
+// evaluates the rendering equation, ignoring the Le term
 Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Colour colour) {
     // calculate the lambert factor in the rendering equation
     double lambert = std::max(0.0, Vector::dotProduct(in, normal));
