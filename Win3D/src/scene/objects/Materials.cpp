@@ -13,12 +13,12 @@ Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Colo
     double lambert = std::max(0.0, Vector::dotProduct(in, normal));
     
     // calculate the bxdf of the rendering equation
-    Colour bxdf = std::visit(Mat::evaluate{in, out, normal, colour.normalise()}, mat);
+    Colour bxdf = std::visit(Mat::evaluateBxDF{in, out, normal, colour.normalise()}, mat);
 
     // incoming light has already been calculated
 
     // calculate the reflected light in the rendering equaiton
-    Colour reflected = colour * lambert * bxdf;
+    Colour reflected = colour * bxdf * lambert;
 
     // ignore alpha stuff
     reflected.a() = 255;
@@ -28,11 +28,11 @@ Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Colo
 
 // * ---------------------------------------- [ MATERIALS ] ----------------------------------------- * //
 
-Colour Mat::evaluate::operator()(const DisneyBSDF& mat) const {
+Colour Mat::evaluateBxDF::operator()(const DisneyBSDF& mat) const {
     return Colour(1, 1, 1);
 }
 
-Colour Mat::evaluate::operator()(const DisneyDiffuse& mat) const {
+Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
     Vector half = in + out;
     half.normalise();
     double cosIn =    std::clamp(   std::abs(Vector::dotProduct(normal, in)), 0.0, 1.0   );
@@ -69,18 +69,18 @@ Colour Mat::evaluate::operator()(const DisneyDiffuse& mat) const {
     return result;
 }
 
-Colour Mat::evaluate::operator()(const DisneyMetal& material) const {
+Colour Mat::evaluateBxDF::operator()(const DisneyMetal& material) const {
     return Colour(1, 1, 1);
 }
 
-Colour Mat::evaluate::operator()(const DisneyClearcoat& material) const {
+Colour Mat::evaluateBxDF::operator()(const DisneyClearcoat& material) const {
     return Colour(1, 1, 1);
 }
 
-Colour Mat::evaluate::operator()(const DisneyGlass& material) const {
+Colour Mat::evaluateBxDF::operator()(const DisneyGlass& material) const {
     return Colour(1, 1, 1);
 }
 
-Colour Mat::evaluate::operator()(const DisneySheen& material) const {
+Colour Mat::evaluateBxDF::operator()(const DisneySheen& material) const {
     return Colour(1, 1, 1);
 }

@@ -53,7 +53,7 @@ namespace Mat {
     
     typedef std::variant<DisneyBSDF, DisneyDiffuse, DisneyMetal, DisneyClearcoat, DisneyGlass, DisneySheen> Material;
     
-    struct evaluate {
+    struct evaluateBxDF {
         const Vector& in;
         const Vector& out;
         const Vector& normal;
