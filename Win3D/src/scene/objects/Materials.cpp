@@ -79,7 +79,7 @@ Colour Mat::evaluate::operator()(const DisneyBSDF& mat) const {
     // std::cout << "colour : " << colour << '\n';
     Colour normalisedC = colour / Colour(255, 255, 255);
     // std::cout << "normalisedC : " << normalisedC << '\n';
-    Colour lambertC = normalisedC * -Vector::dotProduct(in, normal);
+    Colour lambertC = normalisedC * Vector::dotProduct(in, normal);
     if (lambertC.r() < 0) lambertC.r() = 0;// -lambertC.r();
     if (lambertC.g() < 0) lambertC.g() = 0;// -lambertC.g();
     if (lambertC.b() < 0) lambertC.b() = 0;// -lambertC.b();
