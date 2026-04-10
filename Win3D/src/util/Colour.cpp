@@ -52,9 +52,19 @@ const double& Colour::a() const {
     return data.w();
 }
 
-void Colour::reNormalise() {
-    data.normalise();
-    data = data * 255;
+Colour Colour::normalise() {
+    data.x()  = data.x() / 255;
+    data.x()  = data.x() / 255;
+    data.x()  = data.x() / 255;
+    data.x()  = data.x() / 255;
+    return *this;
+}
+Colour Colour::denormalise() {
+    data.x()  = data.x() * 255;
+    data.y()  = data.y() * 255;
+    data.z()  = data.z() * 255;
+    data.w()  = data.w() * 255;
+    return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

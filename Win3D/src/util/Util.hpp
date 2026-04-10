@@ -126,7 +126,8 @@ public:
     const double& a() const;
 
     //public methods
-    void reNormalise();
+    Colour normalise();
+    Colour denormalise();
 
     //operator overloads
     Colour operator+(const Colour& other) const;

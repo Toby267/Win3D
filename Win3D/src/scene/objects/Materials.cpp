@@ -8,164 +8,31 @@
 
 // * -------------------------------------- [ POLYMORPHISM STUFF ] --------------------------------------- * //
 
-Colour Mat::eval(const Material& mat, Vector cameraDirection, Vector lightDirection, Vector normal, Colour colour) {
-    return std::visit(Mat::evaluate{lightDirection, cameraDirection, normal, colour}, mat);
-}
-
-// * ---------------------------------------- [ DISNEY_DIFFUSE ] ----------------------------------------- * //
-
-Mat::DisneyDiffuse::DisneyDiffuse(double r, double s)
-    : roughness(r), subsurface(s)
-{ }
-
-//crap
-static double SchlickFresnel(double u) {
-    float m = std::clamp(1.0-u, 0.0, 1.0);
-    return std::pow(m, 5);
-}
-
-static double GTR1(double NdotH, double a) {
-    if (a >= 1) return std::numbers::inv_pi;
-    double a2 = a*a;
-    double t = 1 + (a2-1)*NdotH*NdotH;
-    return (a2-1) / (std::numbers::pi*std::log(a2)*t);
-}
-
-static double GTR2(double NdotH, double a) {
-    double a2 = a*a;
-    double t = 1 + (a2-1)*NdotH*NdotH;
-    return (a2-1) / (std::numbers::pi*t*t);
-}
-
-static double GTR2_aniso(double NdotH, double HdotX, double HdotY, double ax, double ay) {
-    double x = HdotX/ax, x2 = x*x;
-    double y = HdotY/ay, y2 = y*y;
-
-    double factor = x2 + y2 + NdotH*NdotH;
+Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Colour colour) {
+    // calculate the lambert factor in the rendering equation
+    double lambert = std::max(0.0, Vector::dotProduct(in, normal));
     
-    return 1 / (std::numbers::pi * ax*ay * factor * factor);
+    // calculate the bxdf of the rendering equation
+    float bxdf = std::visit(Mat::evaluate{in, out, normal, colour.normalise()}, mat);
+
+    // incoming light has already been calculated
+
+    // calculate the reflected light in the rendering equaiton
+    Colour reflected = colour * lambert * bxdf;
+
+    // ignore alpha stuff
+    reflected.a() = 255;
+
+    return reflected;
 }
 
-static double smithG_GGX(double NdotV, double alphaG) {
-    double a = alphaG*alphaG;
-    double b = NdotV*NdotV;
-    return 1 / (NdotV + std::sqrt(a + b - a*b));
+// * ---------------------------------------- [ MATERIALS ] ----------------------------------------- * //
+
+float Mat::evaluate::operator()(const DisneyBSDF& mat) const {
+    return 1;
 }
 
-static double smithG_GGX_aniso(double NdotV, double vDotX, double VdotY, double ax, double ay) {
-    double x = vDotX*ax, x2 = x*x;
-    double y = VdotY*ay, y2 = y*y;
-    double n2 = NdotV*NdotV;
-    
-    return 1 / (NdotV + std::sqrt( x2 + y2 + n2 ));
-}
-
-static Vector mon2lin(Colour x) {
-    return Vector(std::pow(x.r(), 2.2), std::pow(x.g(), 2.2), std::pow(x.b(), 2.2));
-}
-//crap
-
-#define mix(a, b, w) (a * (1.0-w) + b * w)
-
-Colour Mat::evaluate::operator()(const DisneyBSDF& mat) const {
-    // Vector L = in, V = out, N = normal;
-    // Vector H = L+V;
-    // H.normalise();
-    // int n = 100;    
-
-    // double val = std::pow(std::max(0.0, Vector::dotProduct(N, H)), n);
-    // val /= Vector::dotProduct(N, L);
-
-    // std::cout << "colour : " << colour << '\n';
-    Colour normalisedC = colour / Colour(255, 255, 255);
-    // std::cout << "normalisedC : " << normalisedC << '\n';
-    Colour lambertC = normalisedC * Vector::dotProduct(in, normal);
-    if (lambertC.r() < 0) lambertC.r() = 0;// -lambertC.r();
-    if (lambertC.g() < 0) lambertC.g() = 0;// -lambertC.g();
-    if (lambertC.b() < 0) lambertC.b() = 0;// -lambertC.b();
-    if (lambertC.a() < 0) lambertC.a() = 0;// -lambertC.a();
-
-
-    // std::cout << "lambertC : " << lambertC << '\n';
-    Colour renormalisedC = lambertC * Colour(255, 255, 255);
-    // std::cout << "renormalisedC : " << renormalisedC << '\n';
-    Colour retC = Colour(renormalisedC.r(), renormalisedC.g(), renormalisedC.b(), 255);
-    // std::cout << "retC : " << retC << '\n' << '\n';
-
-    
-    return retC;
-    
-    // return colour;
-}
-
-/*
-//NOT WORKING BECAUSE YOUR NOT TRANSLATING NORMALS WHEN MOVING OBJECTS TO WORLD SPACE AND CAMERA SPACE AND VIEW VOLUME SPACE
-static int i = 0;
-Colour Mat::evaluate::operator()(const DisneyBSDF& mat) const {
-    // std::cout << "DisneyBSDF\n";
-    double asdlkjf = Vector::dotProduct(normal, -in);
-
-    // if ((i++) % 10 == 0)
-    // std::cout << "normal, -in: " << normal << ", " << -in << '\n';
-
-    // std::cout << "asdskfjasdl: " << asdlkjf << '\n';
-
-    return colour * asdlkjf;
-    
-    Vector L = in, V = out, N = normal;
-
-    double NdotL = Vector::dotProduct(N, L);
-    double NdotV = Vector::dotProduct(N, V);
-    if (NdotL < 0 || NdotV < 0) return Colour(0.0, 0.0, 0.0, 0.0);
-
-    Vector H = L+V;
-    H = H.normalise();
-    double NdotH = Vector::dotProduct(N, H);
-    double LdotH = Vector::dotProduct(L, H);
-
-    Vector Cdlin = mon2lin(colour);
-    double Cdlum = 0.3*Cdlin[0] + 0.6*Cdlin[1] + 0.1*Cdlin[2];
-
-    Vector Ctint = Cdlum > 0 ? Cdlin/Cdlum : Vector(1, 1, 1);
-    Vector Cspec0 = mix(mix(Vector(1, 1, 1), Ctint, mat.specularTint) * mat.specular * 0.08, Cdlin, mat.metallic);
-    Vector Csheen = mix(Vector(1, 1, 1), Ctint, mat.sheenTint);
-
-    double FL = SchlickFresnel(NdotL), FV = SchlickFresnel(NdotV);
-    double Fd90 = 0.5 + 2 * LdotH*LdotH * mat.roughness;
-    double Fd = mix(1.0, Fd90, FL) * mix (1.0, Fd90, FV);
-
-    double Fss90 = LdotH*LdotH*mat.roughness;
-    double Fss = mix(1.0, Fss90, FL) * mix(1.0, Fss90, FV);
-    double ss = 1.25 * (Fss * (1 / (NdotL + NdotV) - 0.5) + 0.5);
-
-    double aspect = std::sqrt(mat.anisotropic*0.9);
-    double ax = std::max(0.001, (mat.roughness*mat.roughness) / aspect);
-    double ay = std::max(0.001, (mat.roughness*mat.roughness) * aspect);
-    // double Ds = GTR2_aniso(NdotH, Vector::dotProduct(H, X), Vector::dotProduct(H, Y), ax, ay);
-    double FH = SchlickFresnel(LdotH);
-    Vector Fs = mix(Cspec0, Vector(1, 1, 1), FH);
-    // double Gs = smithG_GGX_aniso(NdotL, Vector::dotProduct(L, X), Vector::dotProduct(L, Y), ax, ay) *
-                // smithG_GGX_aniso(NdotL, Vector::dotProduct(V, X), Vector::dotProduct(V, Y), ax, ay);
-
-    Vector Fsheen = Csheen * FH * mat.sheen;
-
-    double Dr = GTR1(NdotH, mix(0.1, 0.001, mat.clearcoatGloss));
-    double Fr = mix(0.04, 1.0, FH);
-    double Gr = smithG_GGX(NdotL, 0.25) * smithG_GGX(NdotV, 0.25);
-
-    // Vector retval = (Cdlin * std::numbers::inv_pi * mix(Fd, ss, mat.subsurface) + Fsheen)
-                    // * (1-mat.metallic)
-                    // + Fs*Gs*Ds + 0.25*mat.clearcoat*Gr*Fr*Dr;
-    Vector retval = (Cdlin * std::numbers::inv_pi * mix(Fd, ss, mat.subsurface) + Fsheen)
-                    * (1-mat.metallic)
-                    + Fs + 0.25*mat.clearcoat*Gr*Fr*Dr;
-
-    return Colour(retval[0], retval[1], retval[2]);
-}
-*/
-
-Colour Mat::evaluate::operator()(const DisneyDiffuse& mat) const {
-    // std::cout << "DisneyDiffuse\n";
+float Mat::evaluate::operator()(const DisneyDiffuse& mat) const {
     // return colour;
 
     // std::cout << "colour: " << colour << '\n';
@@ -189,7 +56,7 @@ Colour Mat::evaluate::operator()(const DisneyDiffuse& mat) const {
     fdOut = 1 + (fd90 - 1) * fdOut;
     // std::cout << "fdOut" <<  ", " << fdOut << '\n';
 
-    Colour fBaseDiffuse = colour * std::numbers::inv_pi * fdIn * fdOut * cosOut;
+    Colour fBaseDiffuse = baseColour * std::numbers::inv_pi * fdIn * fdOut * cosOut;
     // std::cout << "fBaseDiffuse" << fBaseDiffuse << '\n';
     
     //calculate fSubsurface
@@ -203,7 +70,7 @@ Colour Mat::evaluate::operator()(const DisneyDiffuse& mat) const {
     fssOut = 1 + (fss90 - 1) * fssOut;
     // std::cout << "fssOut" <<  ", " << fssOut << '\n';
 
-    Colour fSubsurface = colour * 1.25 * std::numbers::inv_pi;
+    Colour fSubsurface = baseColour * 1.25 * std::numbers::inv_pi;
     double term = (1 / (cosIn + cosOut)) - 0.5;
     fSubsurface = fSubsurface * (fssIn * fssOut * term + 0.5) * cosOut;
     // std::cout << "fSubsurface" <<  ", " << fSubsurface << '\n';
@@ -217,12 +84,22 @@ Colour Mat::evaluate::operator()(const DisneyDiffuse& mat) const {
     // std::cout << "colour: " << result << '\n';
 
     // std::cin.get();
-    return result;
+    // return result;
+    return 1;
 }
 
-// * ----------------------------------------- [ DISNEY_METAL ] ------------------------------------------ * //
+float Mat::evaluate::operator()(const DisneyMetal& material) const {
+    return 1;
+}
 
-Colour Mat::evaluate::operator()(const DisneyMetal& material) const {
-    // std::cout << "DisneyMetal\n";
-    return colour;
+float Mat::evaluate::operator()(const DisneyClearcoat& material) const {
+    return 1;
+}
+
+float Mat::evaluate::operator()(const DisneyGlass& material) const {
+    return 1;
+}
+
+float Mat::evaluate::operator()(const DisneySheen& material) const {
+    return 1;
 }

@@ -3,48 +3,29 @@
 #include "util/Util.hpp"
 #include <variant>
 
-// in doom, brdf calculations were only done for triangle vertices, then the colours of the triangle were interpolated
-
-// todo:
-// perspective correct interpolation using uv coordiantes
-// get brdfs working in the ray tracer per fragment, using the above to interpolate the base colour
-    // if too slow, get it working per vertex and interpoalte - will need to increase the number of triangles
-
-// key decision: ray casting (per vertex) -> rasterization (with perspective correct interpolation)
-//           or: rasterization -> ray casting (per fragment with perspective correct interpolation) - this one, is faster for single thread rendering
-
-// i think, for efficiency, i need to do a version where only certain key objects use ray casting at all, then rest only do rasterization
-    // the ray casting for all vertices then rasterization to interpolate method is too slow for me, as i can't do the trick he did with only having 320 rays
-    // therefore i will do a raster pass with perspective correct interpolation, on a data structure that only holds raster objects
-    // then a ray tracing pass on a bvh only containing ray casting objects (with per fragment brdf calculation - or per vertex with perspective correct interpoaltion if too slow)
-        // this way there are definitely efficiencies to be made since only subsets of the screen will need rays to be generated.
-
-
-// Thursday's job:
-    // 1 - disney diffuse working with single light source
-    // 2 - some of the other brdfs done
-// Friday's job:
-    // 1 - disney bsdf done
-    // 2 - visitor interface working with multiple light sources
-
-
-// think i need gamma correction
-// also if colour values are in [0, 1] instead of [0, 255], then when multiplying them, they won't explode
-// also, i need to check if the fragment actually has a line of sight on the point light or not...
-
 namespace Mat {
     // * ------------------------------------------- [ MATERIALS ] ------------------------------------------- * //
+
+    struct DisneyBSDF {
+        double roughness;
+        double subsurface;
+        double sheen;
+        double sheenTint;
+        double anisotropic;
+        double metallic;
+        double specular;
+        double specularTransmission;
+        double specularTint;
+        double clearcoat;
+        double clearcoatGloss;
+        double eta;
+    } typedef DisneyBSDF;
 
     struct DisneyDiffuse {
         double roughness;
         double subsurface;
     
-        DisneyDiffuse(double roughness, double subsurface);
     } typedef DisneyDiffuse;
-
-    struct BlinnPhong {
-        
-    } typedef BlinnPhong;
     
     struct DisneyMetal {
         double roughness;
@@ -68,35 +49,23 @@ namespace Mat {
         double sheenTint;
     } typedef DisneySheen;
 
-    struct DisneyBSDF {
-        double roughness;
-        double subsurface;
-        double sheen;
-        double sheenTint;
-        double anisotropic;
-        double metallic;
-        double specular;
-        double specularTransmission;
-        double specularTint;
-        double clearcoat;
-        double clearcoatGloss;
-        double eta;
-    } typedef DisneyBSDF;
-
     // * -------------------------------------- [ POLYMORPHISM STUFF ] --------------------------------------- * //
     
-    typedef std::variant<DisneyDiffuse, DisneyMetal, DisneyBSDF> Material;
+    typedef std::variant<DisneyBSDF, DisneyDiffuse, DisneyMetal, DisneyClearcoat, DisneyGlass, DisneySheen> Material;
     
     struct evaluate {
         const Vector& in;
         const Vector& out;
         const Vector& normal;
-        const Colour& colour;
+        const Colour& baseColour;
     
-        Colour operator()(const DisneyDiffuse& material) const;
-        Colour operator()(const DisneyMetal& material) const;
-        Colour operator()(const DisneyBSDF& material) const;
+        float operator()(const DisneyBSDF& material) const;
+        float operator()(const DisneyDiffuse& material) const;
+        float operator()(const DisneyMetal& material) const;
+        float operator()(const DisneyClearcoat& material) const;
+        float operator()(const DisneyGlass& material) const;
+        float operator()(const DisneySheen& material) const;
     };
 
-    Colour eval(const Material& mat, Vector cameraDirection, Vector lightDirection, Vector normal, Colour colour);
+    Colour eval(const Material& mat, Vector in, Vector out, Vector normal, Colour colour);
 }

@@ -33,21 +33,16 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
             if (record.t != DOUBLE_MAX) {
                 double w = 1 - record.u - record.v;
                 
-                Colour baseColour = record.c0 * w + record.c1 * record.u + record.c2 * record.v;
-                Vector normal = record.n0 * w + record.n1 * record.u + record.n2 * record.v;
-                normal.normalise();
                 Vector position = record.v0 * w + record.v1 * record.u + record.v2 * record.v;
-                Colour finalColour = Mat::eval(record.mat, -ray.direction, (lights[0].position - position).normalise(), normal, baseColour); // should pass light direction, not position
-                bmap.setPixel(i+x, camera.screenHeight-(j+y), finalColour);
-
+                Vector normal   = record.n0 * w + record.n1 * record.u + record.n2 * record.v;
+                Colour colour   = record.c0 * w + record.c1 * record.u + record.c2 * record.v;
                 
+                Vector in = (lights[0].position - position).normalise();
+                Vector out = -ray.direction;
+                normal.normalise();
 
-                // if (i == -8 && j == -8) {
-                    // std::cout << record.c0 << record.c1 << record.c2 << record.n0 << record.n1 << record.n2 << record.t << ' ' << record.u << ' ' << record.v << '\n';
-                    // std::cout << "basecolour, normal, position: " << baseColour << ", " << normal << ", " << position << '\n';
-                    // std::cout << lights[0].position << '\n';
-                    // std::cout << "finalColour: " << finalColour << "\n\n";
-                // }
+                Colour finalColour = Mat::eval(record.mat, in, out, normal.normalise(), colour);
+                bmap.setPixel(i+x, camera.screenHeight-(j+y), finalColour);
             }
         }
     }
