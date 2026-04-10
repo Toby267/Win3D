@@ -59,12 +59,12 @@ namespace Mat {
         const Vector& normal;
         const Colour& baseColour;
     
-        float operator()(const DisneyBSDF& material) const;
-        float operator()(const DisneyDiffuse& material) const;
-        float operator()(const DisneyMetal& material) const;
-        float operator()(const DisneyClearcoat& material) const;
-        float operator()(const DisneyGlass& material) const;
-        float operator()(const DisneySheen& material) const;
+        Colour operator()(const DisneyBSDF& material) const;
+        Colour operator()(const DisneyDiffuse& material) const;
+        Colour operator()(const DisneyMetal& material) const;
+        Colour operator()(const DisneyClearcoat& material) const;
+        Colour operator()(const DisneyGlass& material) const;
+        Colour operator()(const DisneySheen& material) const;
     };
 
     Colour eval(const Material& mat, Vector in, Vector out, Vector normal, Colour colour);
