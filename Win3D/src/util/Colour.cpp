@@ -1,15 +1,16 @@
 #include "util/Util.hpp"
+#include <iostream>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Colour::Colour(int red, int green, int blue, int alpha)
+Colour::Colour(double red, double green, double blue, double alpha)
     : data(red, green, blue, alpha)
 {
 
 }
-Colour::Colour(int red, int green, int blue)
+Colour::Colour(double red, double green, double blue)
     : data(red, green, blue, 255)
 {
 
@@ -85,12 +86,19 @@ Colour Colour::operator*(const Colour& other) const {
     );
 }
 Colour Colour::operator/(const Colour& other) const {
-    return Colour(
+    // std::cout << "r, g, b, a: " << r() << ", " << g() << ", " << b() << ", " << a() << "\n";
+    // std::cout << "other.r, other.g, other.b, other.a: " << other.r() << ", " << other.g() << ", " << other.b() << ", " << other.a() << "\n";
+    // std::cout << "division: " << r() / other.r() << ", " << g() / other.g() << ", " << b() / other.b() << ", " << a() / other.a() << "\n";
+    
+    Colour c(
         r() / other.r(),
         g() / other.g(),
         b() / other.b(),
         a() / other.a()
     );
+
+    // std::cout << "c: " << c << '\n';
+    return c;
 }
 
 Colour Colour::operator+(double other) const {

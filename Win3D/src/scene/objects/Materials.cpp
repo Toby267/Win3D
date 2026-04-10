@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
+#include <iostream>
 #include <numbers>
 
 // * -------------------------------------- [ POLYMORPHISM STUFF ] --------------------------------------- * //
@@ -66,6 +67,38 @@ static Vector mon2lin(Colour x) {
 
 #define mix(a, b, w) (a * (1.0-w) + b * w)
 
+Colour Mat::evaluate::operator()(const DisneyBSDF& mat) const {
+    // Vector L = in, V = out, N = normal;
+    // Vector H = L+V;
+    // H.normalise();
+    // int n = 100;    
+
+    // double val = std::pow(std::max(0.0, Vector::dotProduct(N, H)), n);
+    // val /= Vector::dotProduct(N, L);
+
+    // std::cout << "colour : " << colour << '\n';
+    Colour normalisedC = colour / Colour(255, 255, 255);
+    // std::cout << "normalisedC : " << normalisedC << '\n';
+    Colour lambertC = normalisedC * -Vector::dotProduct(in, normal);
+    if (lambertC.r() < 0) lambertC.r() = 0;// -lambertC.r();
+    if (lambertC.g() < 0) lambertC.g() = 0;// -lambertC.g();
+    if (lambertC.b() < 0) lambertC.b() = 0;// -lambertC.b();
+    if (lambertC.a() < 0) lambertC.a() = 0;// -lambertC.a();
+
+
+    // std::cout << "lambertC : " << lambertC << '\n';
+    Colour renormalisedC = lambertC * Colour(255, 255, 255);
+    // std::cout << "renormalisedC : " << renormalisedC << '\n';
+    Colour retC = Colour(renormalisedC.r(), renormalisedC.g(), renormalisedC.b(), 255);
+    // std::cout << "retC : " << retC << '\n' << '\n';
+
+    
+    return retC;
+    
+    // return colour;
+}
+
+/*
 //NOT WORKING BECAUSE YOUR NOT TRANSLATING NORMALS WHEN MOVING OBJECTS TO WORLD SPACE AND CAMERA SPACE AND VIEW VOLUME SPACE
 static int i = 0;
 Colour Mat::evaluate::operator()(const DisneyBSDF& mat) const {
@@ -129,6 +162,7 @@ Colour Mat::evaluate::operator()(const DisneyBSDF& mat) const {
 
     return Colour(retval[0], retval[1], retval[2]);
 }
+*/
 
 Colour Mat::evaluate::operator()(const DisneyDiffuse& mat) const {
     // std::cout << "DisneyDiffuse\n";

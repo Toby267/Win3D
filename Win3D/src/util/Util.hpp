@@ -111,8 +111,8 @@ private:
 public:
     //constructors/destructor
     Colour();
-    Colour(int red, int green, int blue, int alpha);
-    Colour(int red, int green, int blue);
+    Colour(double red, double green, double blue, double alpha);
+    Colour(double red, double green, double blue);
 
     //getters/setters
     double& r();
