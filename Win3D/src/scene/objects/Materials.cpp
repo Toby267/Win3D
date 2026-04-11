@@ -6,28 +6,34 @@
 #include <iostream>
 #include <numbers>
 
+#define EXPOSURE 4
+
 // * -------------------------------------- [ POLYMORPHISM STUFF ] --------------------------------------- * //
 
 // evaluates the rendering equation, ignoring the Le term
-Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Colour colour) {
-    Colour normalisedColour = colour.normalise();
-    
+Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Colour normalisedMatColour, Colour normalisedlightColour) {
     // calculate the lambert factor in the rendering equation
     double lambert = std::max(0.0, Vector::dotProduct(in, normal));
     
     // calculate the bxdf of the rendering equation
-    Colour bxdf = std::visit(Mat::evaluateBxDF{in, out, normal, normalisedColour}, mat);
-
-    // incoming light has already been calculated
+    Colour bxdf = std::visit(Mat::evaluateBxDF{in, out, normal, normalisedMatColour}, mat);
 
     // calculate the reflected light in the rendering equaiton
-    Colour reflected = colour * bxdf * lambert * 3.5; // the 3.5 is just to scale it up so that you can see it better, think of it as light intensity
-    reflected.denormalise();
+    Colour reflected = normalisedlightColour * bxdf * lambert;
+    
+    // apply exposure
+    Colour colour = reflected * std::pow(2, EXPOSURE); 
+
+    // apply reinhard tone mapping
+    colour = colour / (colour + 1);
+
+    // denormalise
+    colour = Colour::denormalise(colour);
 
     // ignore alpha stuff
-    reflected.a() = 255;
+    colour.a() = 255;
 
-    return reflected;
+    return colour;
 }
 
 // * ---------------------------------------- [ MATERIALS ] ----------------------------------------- * //

@@ -126,8 +126,8 @@ public:
     const double& a() const;
 
     //public methods
-    Colour normalise();
-    Colour denormalise();
+    static Colour normalise(Colour c);
+    static Colour denormalise(Colour c);
 
     //operator overloads
     Colour operator+(const Colour& other) const;
@@ -143,5 +143,5 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Colour& colour);
 
     //static methods
-    static Colour red(), green(), blue(), cyan(), magenta(), yellow();
+    static Colour white(), red(), green(), blue(), cyan(), magenta(), yellow();
 };

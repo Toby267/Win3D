@@ -52,20 +52,20 @@ const double& Colour::a() const {
     return data.w();
 }
 
-Colour Colour::normalise() {
+Colour Colour::normalise(Colour c) {
     return Colour(
-        data.x() / 255,
-        data.y() / 255,
-        data.z() / 255,
-        data.w() / 255
+        c.data.x() / 255,
+        c.data.y() / 255,
+        c.data.z() / 255,
+        c.data.w() / 255
     );
 }
-Colour Colour::denormalise() {
+Colour Colour::denormalise(Colour c) {
     return Colour(
-        data.x() * 255,
-        data.y() * 255,
-        data.z() * 255,
-        data.w() * 255
+        c.data.x() * 255,
+        c.data.y() * 255,
+        c.data.z() * 255,
+        c.data.w() * 255
     );
 }
 
@@ -155,6 +155,7 @@ std::ostream& operator<<(std::ostream& os, const Colour& colour) {
 // * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+Colour Colour::white()   { return Colour(255, 255, 255); }
 Colour Colour::red()     { return Colour(255,   0,   0); }
 Colour Colour::green()   { return Colour(  0, 255,   0); }
 Colour Colour::blue()    { return Colour(  0,   0, 255); }

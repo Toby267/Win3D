@@ -35,13 +35,17 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
                 
                 Vector position = record.v0 * w + record.v1 * record.u + record.v2 * record.v;
                 Vector normal   = record.n0 * w + record.n1 * record.u + record.n2 * record.v;
-                Colour colour   = record.c0 * w + record.c1 * record.u + record.c2 * record.v;
+                Colour matColour   = record.c0 * w + record.c1 * record.u + record.c2 * record.v;
+                Colour lightColour = lights[0].colour;
+
+                matColour = Colour::normalise(matColour);
+                lightColour = Colour::normalise(lightColour);
                 
                 Vector in = (lights[0].position - position).normalise();
                 Vector out = -ray.direction;
                 normal.normalise();
 
-                Colour finalColour = Mat::eval(record.mat, in, out, normal.normalise(), colour);
+                Colour finalColour = Mat::eval(record.mat, in, out, normal.normalise(), matColour, lightColour);
                 bmap.setPixel(i+x, camera.screenHeight-(j+y), finalColour);
             }
         }
