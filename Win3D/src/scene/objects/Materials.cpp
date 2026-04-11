@@ -24,10 +24,10 @@ Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Colo
     // apply exposure
     Colour colour = reflected * std::pow(2, EXPOSURE); 
 
-    // apply reinhard tone mapping
+    // apply reinhard tone mapping, to normalise between values between [0, 1]
     colour = colour / (colour + 1);
 
-    // denormalise
+    // denormalise to get values between [0, 255]
     colour = Colour::denormalise(colour);
 
     // ignore alpha stuff
