@@ -57,6 +57,7 @@ namespace Mat {
         const Vector& in;
         const Vector& out;
         const Vector& normal;
+        /* need to find the rest of the values that are inputs to brdfs. they are in the brdfs from scratch file, and are: N, V, L, H, R, T, v, l, phi v, phi l */
         const Colour& baseColour;
     
         Colour operator()(const DisneyBSDF& material) const;

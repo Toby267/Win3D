@@ -140,6 +140,8 @@ public:
     Colour operator*(double other) const;
     Colour operator/(double other) const;
 
+    Colour operator-() const;
+
     friend std::ostream& operator<<(std::ostream& os, const Colour& colour);
 
     //static methods

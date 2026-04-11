@@ -43,8 +43,8 @@ Colour Mat::evaluateBxDF::operator()(const DisneyBSDF& mat) const {
 }
 
 Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
-    Vector half = in + out;
-    half.normalise();
+    Vector half = in + out; half.normalise();
+
     double cosIn =  std::abs(Vector::dotProduct(normal, in));
     double cosOut = std::abs(Vector::dotProduct(normal, out));
     double hout   = std::abs(Vector::dotProduct(half, out));
@@ -79,7 +79,25 @@ Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
     return result;
 }
 
-Colour Mat::evaluateBxDF::operator()(const DisneyMetal& material) const {
+//
+Colour Mat::evaluateBxDF::operator()(const DisneyMetal& mat) const {
+    Vector half = in + out; half.normalise();
+    
+    double hout   = std::abs(Vector::dotProduct(half, out));
+    double aspect = std::sqrt(1.0 - 0.9 * mat.anisotropic);
+    double ax = std::max(0.0001, (mat.roughness * mat.roughness) / aspect );
+    double ay = std::max(0.0001, (mat.roughness * mat.roughness) * aspect );
+    
+    Colour Fm = baseColour + (-baseColour + 1.0) * std::pow(1 - hout, 5);
+
+    // Colour Dm = ...;
+
+
+    
+
+
+    
+    
     return Colour(1, 1, 1);
 }
 

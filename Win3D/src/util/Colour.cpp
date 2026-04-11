@@ -146,6 +146,15 @@ Colour Colour::operator/(double other) const {
     );
 }
 
+Colour Colour::operator-() const {
+    return Colour(
+        -r(),
+        -g(),
+        -b(),
+        -a()
+    );
+}
+
 std::ostream& operator<<(std::ostream& os, const Colour& colour) {
     os << "RGBA: (" << colour.r() << ", " << colour.g() << ", " << colour.b() << ", " << colour.a() << ")";
     return os;
