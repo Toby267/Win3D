@@ -29,9 +29,22 @@ private:
 
     Matrix affineTransform = translation * scale * rotation;
 
-    Mat::Material material = Mat::DisneyDiffuse{0.5, 0.5};
+    // Mat::Material material = Mat::DisneyDiffuse{0.5, 0.5};
     // Mat::Material material = Mat::DisneyMetal{0.5, 0.5};
-    // Mat::Material material = Mat::DisneyBSDF{0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5};
+    Mat::Material material = Mat::DisneyBSDF{
+        0.4,    // roughness
+        0.0,    // subsurface
+        0.2,    // sheen
+        0.9,    // sheenTint
+        0.6,    // anisotropic
+        0.7,    // metallic
+        1.0,    // specular
+        0.5,    // specularTransmission
+        0.2,    // specularTint
+        1,    // clearcoat
+        1,    // clearcoatGloss
+        1     // eta
+    };
 
 public:
     //constructors/destructor

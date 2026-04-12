@@ -74,6 +74,9 @@ HitRecord BvhTree::intersect(const Ray& ray) const {
             record.v0 = tri.v1.position;
             record.v1 = tri.v2.position;
             record.v2 = tri.v3.position;
+            record.uv0[0] = tri.v1.u; record.uv0[1] = tri.v1.v;
+            record.uv1[0] = tri.v2.u; record.uv1[1] = tri.v2.v;
+            record.uv2[0] = tri.v3.u; record.uv2[1] = tri.v3.v;
         }
     }
 

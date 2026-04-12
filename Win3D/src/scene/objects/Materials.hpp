@@ -72,5 +72,5 @@ namespace Mat {
         Colour operator()(const DisneySheen& material) const;
     };
 
-    Colour eval(const Material& mat, Vector in, Vector out, Vector normal, Colour normalisedMatColour, Colour normalisedlightColour);
+    Colour eval(const Material& mat, Vector in, Vector out, Vector normal, Vector X, Vector Y, Colour normalisedMatColour, Colour normalisedlightColour);
 }
