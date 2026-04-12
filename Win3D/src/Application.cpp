@@ -35,7 +35,7 @@ Application::Application() {
 
     /* ----------------------------------------- objects ----------------------------------------- */
 
-    Mesh* cube1 = scene.addObject(Wavefront::loadWavefront("cube.obj"));
+    Mesh* cube1 = scene.addObject(Wavefront::loadWavefront("bunny_1440.obj"));
     cube1->setTranslation(Matrix::translate(0, 0, 1100));
 
     /* ----------------------------------------- lights ----------------------------------------- */
@@ -64,6 +64,8 @@ Application::Application() {
         cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
         
         e.drawCall();
+
+        // std::cin.get();
     }
 
     std::chrono::duration<double> duration = std::chrono::high_resolution_clock::now() - start;
