@@ -23,42 +23,9 @@ Mesh::Mesh(IndexBuffer ib, VertexBuffer vb)
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// #define PRINT
-
 std::vector<Triangle> Mesh::getTriangles() const {
     std::vector<Triangle> triangles;
     triangles.reserve(indexBuffer.size());
-
-    #ifdef PRINT
-
-    for (const Vertex& v : vertexBuffer)
-        std::cout << "v " << v.position << '\n';
-    for (const Vertex& v : vertexBuffer)
-        std::cout << "vn " << v.normal << '\n';
-    for (const Vertex& v : vertexBuffer) {
-        std::cout << "vt " << v.u << ' ';
-        std::cout << v.v << '\n';
-    }
-
-    int ii = 0;
-    for (const Index& i : indexBuffer) {
-        std::cout << i.position+1 << '/';
-        std::cout << i.uv+1 << '/';
-        std::cout << i.normal+1 << ' ';
-
-        ii++;
-        if (ii == 3) {
-            std::cout << '\n';
-            ii = 0;
-        }
-    }
-
-    for (const Vertex& v : vertexBuffer)
-        std::cout << v.colour << '\n';
-
-    std::cin.get();
-
-    #endif
 
     for (int i = 2; i < indexBuffer.size(); i += 3) {
         Index i1 = indexBuffer[i-2];
@@ -177,93 +144,31 @@ HitRecord Mesh::intersect(const Ray& ray) const {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 std::ostream& operator<<(std::ostream& os, const Mesh& obj) {
-    os << "printing out object vertices:\n";
-    for (const Vertex& vertex : obj.vertexBuffer) {
-        os << "vertex: " << vertex.position << '\n';
+    for (const Vertex& v : obj.vertexBuffer)
+        os << "v " << v.position << '\n';
+    for (const Vertex& v : obj.vertexBuffer)
+        os << "vn " << v.normal << '\n';
+    for (const Vertex& v : obj.vertexBuffer) {
+        os << "vt " << v.u << ' ';
+        os << v.v << '\n';
     }
+
+    int ii = 0;
+    for (const Index& i : obj.indexBuffer) {
+        os << "f ";
+        os << i.position+1 << '/';
+        os << i.uv+1 << '/';
+        os << i.normal+1 << ' ';
+
+        ii++;
+        if (ii == 3) {
+            os << '\n';
+            ii = 0;
+        }
+    }
+
+    for (const Vertex& v : obj.vertexBuffer)
+        os << v.colour << '\n';
+
     return os;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Mesh* Mesh::cube() {
-    std::vector<Vector> vertices;
-    std::vector<Colour> colours;
-    std::vector<Vector> normals;
-    std::vector<double> us, vs;
-
-    VertexBuffer vertexBuffer;
-    IndexBuffer indexBuffer;
-
-    vertices.emplace_back( 1.000000, 1.000000, -1.000000, 1 );
-    vertices.emplace_back( 1.000000, -1.000000, -1.000000, 1 );
-    vertices.emplace_back( 1.000000, 1.000000, 1.000000, 1 );
-    vertices.emplace_back( 1.000000, -1.000000, 1.000000, 1 );
-    vertices.emplace_back( -1.000000, 1.000000, -1.000000, 1 );
-    vertices.emplace_back( -1.000000, -1.000000, -1.000000, 1 );
-    vertices.emplace_back( -1.000000, 1.000000, 1.000000, 1 );
-    vertices.emplace_back( -1.000000, -1.000000, 1.000000, 1 );
-
-    colours.emplace_back(Colour::white());
-    colours.emplace_back(Colour::white());
-    colours.emplace_back(Colour::white());
-    colours.emplace_back(Colour::white());
-    colours.emplace_back(Colour::white());
-    colours.emplace_back(Colour::white());
-    colours.emplace_back(Colour::white());
-    colours.emplace_back(Colour::white());
-    
-    normals.emplace_back( 0.5774, 0.5773, -0.5773 );
-    normals.emplace_back( 0.5773, -0.5774, -0.5774 );
-    normals.emplace_back( 0.5773, 0.5774, 0.5774 );
-    normals.emplace_back( 0.5774, -0.5773, 0.5773 );
-    normals.emplace_back( -0.5773, 0.5774, -0.5774 );
-    normals.emplace_back( -0.5774, -0.5773, -0.5773 );
-    normals.emplace_back( -0.5774, 0.5773, 0.5773 );
-    normals.emplace_back( -0.5773, -0.5774, 0.5774 );
-
-    us.emplace_back(0.875000); vs.emplace_back(0.500000);
-    us.emplace_back(0.625000); vs.emplace_back(0.750000);
-    us.emplace_back(0.625000); vs.emplace_back(0.500000);
-    us.emplace_back(0.375000); vs.emplace_back(1.000000);
-    us.emplace_back(0.375000); vs.emplace_back(0.750000);
-    us.emplace_back(0.625000); vs.emplace_back(0.000000);
-    us.emplace_back(0.375000); vs.emplace_back(0.250000);
-    us.emplace_back(0.375000); vs.emplace_back(0.000000);
-    us.emplace_back(0.375000); vs.emplace_back(0.500000);
-    us.emplace_back(0.125000); vs.emplace_back(0.750000);
-    us.emplace_back(0.125000); vs.emplace_back(0.500000);
-    us.emplace_back(0.625000); vs.emplace_back(0.250000);
-    us.emplace_back(0.875000); vs.emplace_back(0.750000);
-    us.emplace_back(0.625000); vs.emplace_back(1.000000);
-
-
-    indexBuffer.emplace_back(Index{5, 1, 1,  5}); indexBuffer.emplace_back(Index{3, 1, 2, 3}); indexBuffer.emplace_back(Index{1, 1, 3, 1});
-    indexBuffer.emplace_back(Index{3, 1, 2,  3}); indexBuffer.emplace_back(Index{8, 1, 4, 8}); indexBuffer.emplace_back(Index{4, 1, 5, 4});
-    indexBuffer.emplace_back(Index{7, 1, 6,  7}); indexBuffer.emplace_back(Index{6, 1, 7, 6}); indexBuffer.emplace_back(Index{8, 1, 8, 8});
-    indexBuffer.emplace_back(Index{2, 1, 9,  2}); indexBuffer.emplace_back(Index{8, 1, 10, 8}); indexBuffer.emplace_back(Index{6, 1, 11, 6});
-    indexBuffer.emplace_back(Index{1, 1, 3,  1}); indexBuffer.emplace_back(Index{4, 1, 5, 4}); indexBuffer.emplace_back(Index{2, 1, 9, 2});
-    indexBuffer.emplace_back(Index{5, 1, 12, 5}); indexBuffer.emplace_back(Index{2, 1, 9, 2}); indexBuffer.emplace_back(Index{6, 1, 7, 6});
-    indexBuffer.emplace_back(Index{5, 1, 1,  5}); indexBuffer.emplace_back(Index{7, 1, 13, 7}); indexBuffer.emplace_back(Index{3, 1, 2, 3});
-    indexBuffer.emplace_back(Index{3, 1, 2,  3}); indexBuffer.emplace_back(Index{7, 1, 14, 7}); indexBuffer.emplace_back(Index{8, 1, 4, 8});
-    indexBuffer.emplace_back(Index{7, 1, 6,  7}); indexBuffer.emplace_back(Index{5, 1, 12, 5}); indexBuffer.emplace_back(Index{6, 1, 7, 6});
-    indexBuffer.emplace_back(Index{2, 1, 9,  2}); indexBuffer.emplace_back(Index{4, 1, 5, 4}); indexBuffer.emplace_back(Index{8, 1, 10, 8});
-    indexBuffer.emplace_back(Index{1, 1, 3,  1}); indexBuffer.emplace_back(Index{3, 1, 2, 3}); indexBuffer.emplace_back(Index{4, 1, 5, 4});
-    indexBuffer.emplace_back(Index{5, 1, 12, 5}); indexBuffer.emplace_back(Index{1, 1, 3, 1}); indexBuffer.emplace_back(Index{2, 1, 9, 2});    
-
-    for (int i = 0; i < normals.size(); i++)
-        vertexBuffer.emplace_back(vertices[i], colours[i], normals[i], us[i], vs[i]);
-    for (int i = normals.size(); i < us.size(); i++)
-        vertexBuffer.emplace_back(Vector{-1, -1, -1, -1}, Colour{-1, -1, -1, -1}, Vector{-1, -1, -1}, us[i], vs[i]);
-
-    for (Index& i : indexBuffer) {
-        i.colour--;
-        i.normal--;
-        i.position--;
-        i.uv--;
-    }
-    
-    return new Mesh(indexBuffer, vertexBuffer);
 }

@@ -35,9 +35,7 @@ Application::Application() {
 
     /* ----------------------------------------- objects ----------------------------------------- */
 
-    // Mesh* cube1 = scene.addObject(Wavefront::loadWavefront("cube.obj"));
-    Mesh* cube1 = scene.addObject(Mesh::cube());
-    cube1->getTriangles();
+    Mesh* cube1 = scene.addObject(Wavefront::loadWavefront("cube.obj"));
     cube1->setTranslation(Matrix::translate(0, 0, 1100));
 
     /* ----------------------------------------- lights ----------------------------------------- */

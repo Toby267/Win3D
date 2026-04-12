@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "util/Util.hpp"
 #include "scene/core/SceneUtil.hpp"
 #include "renderer/Ray.hpp"
