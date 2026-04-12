@@ -57,8 +57,9 @@ Application::Application() {
     // triangle->setTranslation(Matrix::translate(0, 0, 2800));
     // triangle->setScale(Matrix::scale(500, 500, 1));
 
-    // Mesh* cube1 = scene.addObject(Wavefront::loadWavefront("Cube.obj"));
+    // Mesh* cube1 = scene.addObject(Wavefront::loadWavefront("cube.obj"));
     Mesh* cube1 = scene.addObject(Mesh::cube());
+    cube1->getTriangles();
     // cube1->setScale(Matrix::scale(10, 10, 10));
     cube1->setTranslation(Matrix::translate(0, 0, 1100));
 

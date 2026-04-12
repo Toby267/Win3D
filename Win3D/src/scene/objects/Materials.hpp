@@ -57,8 +57,8 @@ namespace Mat {
         const Vector& in;       // or light or L
         const Vector& out;      // or camera or V
         const Vector& normal;   // or N
-        const Vector X;         // orthoganol basis vectors
-        const Vector Y;         // orthoganol basis vectors
+        const Vector& X;        // orthoganol basis vectors
+        const Vector& Y;        // orthoganol basis vectors
         /* need to find the rest of the values that are inputs to brdfs. they are in the brdfs from scratch file, and are: N, V, L, H, R, T, v, l, phi v, phi l */
         /* actually in the implementation on github, only L, V, N, X, Y is used */
         /* so all i have to do is find X and Y */

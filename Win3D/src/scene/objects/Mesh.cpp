@@ -28,13 +28,83 @@ std::vector<Triangle> Mesh::getTriangles() const {
     std::vector<Triangle> triangles;
     triangles.reserve(indexBuffer.size());
 
+    // for (const Vertex& v : vertexBuffer) {
+        // std::cout << v.position << '\n';
+        // std::cout << v.normal << '\n';
+        // std::cout << v.u << ' ';
+        // std::cout << v.v << '\n';
+        // std::cout << v.colour << '\n';
+    // }
+    // int ii = 0;
+    // for (const Index& i : indexBuffer) {
+    //     std::cout << i.position+1 << '/';
+    //     std::cout << i.normal+1 << '/';
+    //     std::cout << i.uv+1 << ' ';
+
+    //     ii++;
+    //     if (ii == 3) {
+    //         std::cout << '\n';
+    //         ii = 0;
+    //     }
+    // }
+
     for (int i = 2; i < indexBuffer.size(); i += 3) {
-        triangles.emplace_back(
-            vertexBuffer[indexBuffer[i-2]],
-            vertexBuffer[indexBuffer[i-1]],
-            vertexBuffer[indexBuffer[i]]
-        );
+        Index i1 = indexBuffer[i-2];
+        Index i2 = indexBuffer[i-1];
+        Index i3 = indexBuffer[i];
+
+        Vertex v1, v2, v3;
+        
+        v1.position = vertexBuffer[i1.position].position,
+        v1.colour   = vertexBuffer[i1.colour].colour,
+        v1.normal   = vertexBuffer[i1.normal].normal,
+        v1.u        = vertexBuffer[i1.uv].u,
+        v1.v        = vertexBuffer[i1.uv].v,
+
+        v2.position = vertexBuffer[i2.position].position,
+        v2.colour   = vertexBuffer[i2.colour].colour,
+        v2.normal   = vertexBuffer[i2.normal].normal,
+        v2.u        = vertexBuffer[i2.uv].u,
+        v2.v        = vertexBuffer[i2.uv].v,
+
+        v3.position = vertexBuffer[i3.position].position,
+        v3.colour   = vertexBuffer[i3.colour].colour,
+        v3.normal   = vertexBuffer[i3.normal].normal,
+        v3.u        = vertexBuffer[i3.uv].u,
+        v3.v        = vertexBuffer[i3.uv].v,
+        
+        triangles.emplace_back(v1, v2, v3);
     }
+
+    // std::cin.get();
+
+    // for (const Vertex& v : vertexBuffer) {
+    //     std::cout << v.position << '\n';
+    //     std::cout << v.normal << '\n';
+    //     std::cout << v.u << '\n';
+    //     std::cout << v.v << '\n';
+    //     std::cout << v.colour << '\n';
+    // }
+    // for (const Index& i : indexBuffer) {
+    //     std::cout << i.position << '\n';
+    //     std::cout << i.normal << '\n';
+    //     std::cout << i.uv << '\n';
+    // }
+
+    // for (Triangle& t : triangles) {
+    //     std::cout << t.v1.position << "\n" << t.v2.position << "\n" << t.v3.position << '\n';
+    // }
+    // for (Triangle& t : triangles) {
+    //     std::cout << t.v1.normal << "\n" << t.v2.normal << "\n" << t.v3.normal << '\n';
+    // }
+    // for (Triangle& t : triangles) {
+    //     std::cout << t.v1.u << ", " << t.v1.v << "\n" << t.v2.u << ", " << t.v2.v << "\n" << t.v3.u << ", " << t.v3.v << '\n';
+    // }
+    // for (Triangle& t : triangles) {
+    //     std::cout << t.v1.colour << "\n" << t.v2.colour << "\n" << t.v3.colour << '\n';
+    // }
+
+    // std::cin.get();
 
     return triangles;
 }
@@ -136,43 +206,48 @@ std::ostream& operator<<(std::ostream& os, const Mesh& obj) {
 // * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Mesh* Mesh::triangle() {
-    std::vector<Vector> vertices;
-    std::vector<Colour> colours;
-    std::vector<Vector> normals;
+// Mesh* Mesh::triangle() {
+//     std::vector<Vector> vertices;
+//     std::vector<Colour> colours;
+//     std::vector<Vector> normals;
     
-    VertexBuffer vertexBuffer;
-    IndexBuffer indexBuffer;
+//     VertexBuffer vertexBuffer;
+//     IndexBuffer indexBuffer;
 
-    vertices.emplace_back(-1, -1, -1, 1);
-    vertices.emplace_back(0,  1, 1, 1);
-    vertices.emplace_back( 1, -1, -1, 1);
+//     vertices.emplace_back(-1, -1, -1, 1);
+//     vertices.emplace_back(0,  1, 1, 1);
+//     vertices.emplace_back( 1, -1, -1, 1);
 
-    normals.emplace_back( 0.0, 0.0, -1 );
-    normals.emplace_back( 0.0, 0.0, -1 );
-    normals.emplace_back( 0.0, 0.0, -1 );
+//     normals.emplace_back( 0.0, 0.0, -1 );
+//     normals.emplace_back( 0.0, 0.0, -1 );
+//     normals.emplace_back( 0.0, 0.0, -1 );
 
-    colours.emplace_back(Colour::blue());
-    colours.emplace_back(Colour::blue());
-    colours.emplace_back(Colour::blue());
+//     colours.emplace_back(Colour::blue());
+//     colours.emplace_back(Colour::blue());
+//     colours.emplace_back(Colour::blue());
     
-    indexBuffer.emplace_back(1);
-    indexBuffer.emplace_back(2);
-    indexBuffer.emplace_back(3);
+//     indexBuffer.emplace_back(1);
+//     indexBuffer.emplace_back(2);
+//     indexBuffer.emplace_back(3);
 
-    for (int i = 0; i < normals.size(); i++)
-        vertexBuffer.emplace_back(vertices[i], colours[i], normals[i]);
+//     for (int i = 0; i < normals.size(); i++)
+//         vertexBuffer.emplace_back(vertices[i], colours[i], normals[i]);
 
-    for (size_t& i : indexBuffer)
-        i--;
+//     for (Index& i : indexBuffer) {
+//         i.colour--;
+//         i.normal--;
+//         i.position--;
+//         i.uv--;
+//     }
 
-    return new Mesh(indexBuffer, vertexBuffer);
-}
+//     return new Mesh(indexBuffer, vertexBuffer);
+// }
 
 Mesh* Mesh::cube() {
     std::vector<Vector> vertices;
     std::vector<Colour> colours;
     std::vector<Vector> normals;
+    std::vector<double> us, vs;
 
     VertexBuffer vertexBuffer;
     IndexBuffer indexBuffer;
@@ -204,24 +279,46 @@ Mesh* Mesh::cube() {
     normals.emplace_back( -0.5774, 0.5773, 0.5773 );
     normals.emplace_back( -0.5773, -0.5774, 0.5774 );
 
-    indexBuffer.emplace_back(5); indexBuffer.emplace_back(3); indexBuffer.emplace_back(1);
-    indexBuffer.emplace_back(3); indexBuffer.emplace_back(8); indexBuffer.emplace_back(4);
-    indexBuffer.emplace_back(7); indexBuffer.emplace_back(6); indexBuffer.emplace_back(8);
-    indexBuffer.emplace_back(2); indexBuffer.emplace_back(8); indexBuffer.emplace_back(6);
-    indexBuffer.emplace_back(1); indexBuffer.emplace_back(4); indexBuffer.emplace_back(2);
-    indexBuffer.emplace_back(5); indexBuffer.emplace_back(2); indexBuffer.emplace_back(6);
-    indexBuffer.emplace_back(5); indexBuffer.emplace_back(7); indexBuffer.emplace_back(3);
-    indexBuffer.emplace_back(3); indexBuffer.emplace_back(7); indexBuffer.emplace_back(8);
-    indexBuffer.emplace_back(7); indexBuffer.emplace_back(5); indexBuffer.emplace_back(6);
-    indexBuffer.emplace_back(2); indexBuffer.emplace_back(4); indexBuffer.emplace_back(8);
-    indexBuffer.emplace_back(1); indexBuffer.emplace_back(3); indexBuffer.emplace_back(4);
-    indexBuffer.emplace_back(5); indexBuffer.emplace_back(1); indexBuffer.emplace_back(2);
+    us.emplace_back(0.875000); vs.emplace_back(0.500000);
+    us.emplace_back(0.625000); vs.emplace_back(0.750000);
+    us.emplace_back(0.625000); vs.emplace_back(0.500000);
+    us.emplace_back(0.375000); vs.emplace_back(1.000000);
+    us.emplace_back(0.375000); vs.emplace_back(0.750000);
+    us.emplace_back(0.625000); vs.emplace_back(0.000000);
+    us.emplace_back(0.375000); vs.emplace_back(0.250000);
+    us.emplace_back(0.375000); vs.emplace_back(0.000000);
+    us.emplace_back(0.375000); vs.emplace_back(0.500000);
+    us.emplace_back(0.125000); vs.emplace_back(0.750000);
+    us.emplace_back(0.125000); vs.emplace_back(0.500000);
+    us.emplace_back(0.625000); vs.emplace_back(0.250000);
+    us.emplace_back(0.875000); vs.emplace_back(0.750000);
+    us.emplace_back(0.625000); vs.emplace_back(1.000000);
+
+
+    indexBuffer.emplace_back(Index{5, 1, 1,  5}); indexBuffer.emplace_back(Index{3, 1, 2, 3}); indexBuffer.emplace_back(Index{1, 1, 3, 1});
+    indexBuffer.emplace_back(Index{3, 1, 2,  3}); indexBuffer.emplace_back(Index{8, 1, 4, 8}); indexBuffer.emplace_back(Index{4, 1, 5, 4});
+    indexBuffer.emplace_back(Index{7, 1, 6,  7}); indexBuffer.emplace_back(Index{6, 1, 7, 6}); indexBuffer.emplace_back(Index{8, 1, 8, 8});
+    indexBuffer.emplace_back(Index{2, 1, 9,  2}); indexBuffer.emplace_back(Index{8, 1, 10, 8}); indexBuffer.emplace_back(Index{6, 1, 11, 6});
+    indexBuffer.emplace_back(Index{1, 1, 3,  1}); indexBuffer.emplace_back(Index{4, 1, 5, 4}); indexBuffer.emplace_back(Index{2, 1, 9, 2});
+    indexBuffer.emplace_back(Index{5, 1, 12, 5}); indexBuffer.emplace_back(Index{2, 1, 9, 2}); indexBuffer.emplace_back(Index{6, 1, 7, 6});
+    indexBuffer.emplace_back(Index{5, 1, 1,  5}); indexBuffer.emplace_back(Index{7, 1, 13, 7}); indexBuffer.emplace_back(Index{3, 1, 2, 3});
+    indexBuffer.emplace_back(Index{3, 1, 2,  3}); indexBuffer.emplace_back(Index{7, 1, 14, 7}); indexBuffer.emplace_back(Index{8, 1, 4, 8});
+    indexBuffer.emplace_back(Index{7, 1, 6,  7}); indexBuffer.emplace_back(Index{5, 1, 12, 5}); indexBuffer.emplace_back(Index{6, 1, 7, 6});
+    indexBuffer.emplace_back(Index{2, 1, 9,  2}); indexBuffer.emplace_back(Index{4, 1, 5, 4}); indexBuffer.emplace_back(Index{8, 1, 10, 8});
+    indexBuffer.emplace_back(Index{1, 1, 3,  1}); indexBuffer.emplace_back(Index{3, 1, 2, 3}); indexBuffer.emplace_back(Index{4, 1, 5, 4});
+    indexBuffer.emplace_back(Index{5, 1, 12, 5}); indexBuffer.emplace_back(Index{1, 1, 3, 1}); indexBuffer.emplace_back(Index{2, 1, 9, 2});    
 
     for (int i = 0; i < normals.size(); i++)
-        vertexBuffer.emplace_back(vertices[i], colours[i], normals[i]);
+        vertexBuffer.emplace_back(vertices[i], colours[i], normals[i], us[i], vs[i]);
+    for (int i = normals.size(); i < us.size(); i++)
+        vertexBuffer.emplace_back(vertices[0], colours[0], normals[0], us[i], vs[i]);
 
-    for (size_t& i : indexBuffer)
-        i--;
+    for (Index& i : indexBuffer) {
+        i.colour--;
+        i.normal--;
+        i.position--;
+        i.uv--;
+    }
     
     return new Mesh(indexBuffer, vertexBuffer);
 }

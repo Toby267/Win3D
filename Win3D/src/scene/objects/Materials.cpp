@@ -12,11 +12,13 @@
 
 // evaluates the rendering equation, ignoring the Le term
 Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Colour normalisedMatColour, Colour normalisedlightColour) {
+    Vector X{0, 0, 0}, Y{0, 0, 0};
+    
     // calculate the lambert factor in the rendering equation
     double lambert = std::max(0.0, Vector::dotProduct(in, normal));
     
     // calculate the bxdf of the rendering equation
-    Colour bxdf = std::visit(Mat::evaluateBxDF{in, out, normal, normalisedMatColour}, mat);
+    Colour bxdf = std::visit(Mat::evaluateBxDF{in, out, normal, X, Y, normalisedMatColour}, mat);
 
     // calculate the reflected light in the rendering equaiton
     Colour reflected = normalisedlightColour * bxdf * lambert;

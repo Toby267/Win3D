@@ -66,8 +66,12 @@ Mesh* Wavefront::loadWavefront(std::string path) {
     for (int i = 0; i < normals.size(); i++)
         vertexBuffer.emplace_back(positions[i], Colour::blue(), normals[i]);
 
-    for (size_t& i : indexBuffer)
-        i--;
+    for (Index& i : indexBuffer) {
+        i.colour--;
+        i.normal--;
+        i.position--;
+        i.uv--;
+    }
 
     // for (auto& p : positions)
     //     std::cout << p << '\n';
