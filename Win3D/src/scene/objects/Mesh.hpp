@@ -30,7 +30,7 @@ private:
     Matrix affineTransform = translation * scale * rotation;
 
     // Mat::Material material = Mat::DisneyDiffuse{0.5, 0.5};
-    // Mat::Material material = Mat::DisneyMetal{0.5, 0.5};
+    // Mat::Material material = Mat::DisneyMetal{0.7, 0.5};
     Mat::Material material = Mat::DisneyBSDF{
         0.4,    // roughness
         0.0,    // subsurface

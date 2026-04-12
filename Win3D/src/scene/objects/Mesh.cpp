@@ -244,14 +244,14 @@ Mesh* Mesh::cube() {
     vertices.emplace_back( -1.000000, 1.000000, 1.000000, 1 );
     vertices.emplace_back( -1.000000, -1.000000, 1.000000, 1 );
 
-    colours.emplace_back(Colour::blue());
-    colours.emplace_back(Colour::blue());
-    colours.emplace_back(Colour::blue());
-    colours.emplace_back(Colour::blue());
-    colours.emplace_back(Colour::blue());
-    colours.emplace_back(Colour::blue());
-    colours.emplace_back(Colour::blue());
-    colours.emplace_back(Colour::blue());
+    colours.emplace_back(Colour::white());
+    colours.emplace_back(Colour::white());
+    colours.emplace_back(Colour::white());
+    colours.emplace_back(Colour::white());
+    colours.emplace_back(Colour::white());
+    colours.emplace_back(Colour::white());
+    colours.emplace_back(Colour::white());
+    colours.emplace_back(Colour::white());
     
     normals.emplace_back( 0.5774, 0.5773, -0.5773 );
     normals.emplace_back( 0.5773, -0.5774, -0.5774 );

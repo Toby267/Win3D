@@ -1,4 +1,5 @@
 #include "scene/objects/Materials.hpp"
+#include "scene/objects/PointLight.hpp"
 #include "util/Util.hpp"
 #include <algorithm>
 #include <cmath>
@@ -10,19 +11,20 @@
 
 // * -------------------------------------- [ POLYMORPHISM STUFF ] --------------------------------------- * //
 
-// evaluates the rendering equation, ignoring the Le term
-Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Vector X, Vector Y, Colour normalisedMatColour, Colour normalisedlightColour) {
-    // calculate the lambert factor in the rendering equation
-    double lambert = std::max(0.0, Vector::dotProduct(in, normal));
+Colour Mat::evaluateLights(const Material& mat, Vector out, Vector normal, Vector X, Vector Y, Colour normalisedMatColour, Vector position, std::vector<PointLight> lights) {
+    Colour colourSum = Colour{0, 0, 0, 0};
     
-    // calculate the bxdf of the rendering equation
-    Colour bxdf = std::visit(Mat::evaluateBxDF{in, out, normal, X, Y, normalisedMatColour}, mat);
+    for (const PointLight& L : lights) {
+        Colour lightColour = Colour::normalise(L.colour);
+        Vector in = (L.position - position).normalise();
 
-    // calculate the reflected light in the rendering equaiton
-    Colour reflected = normalisedlightColour * bxdf * lambert;
-    
+        colourSum = colourSum + Mat::eval(mat, in, out, normal, X, Y, normalisedMatColour, lightColour);
+    }
+
+    colourSum = colourSum / lights.size();
+
     // apply exposure
-    Colour colour = reflected * std::pow(2, EXPOSURE); 
+    Colour colour = colourSum * std::pow(2, EXPOSURE); 
 
     // apply reinhard tone mapping, to normalise between values between [0, 1]
     colour = colour / (colour + 1);
@@ -36,11 +38,32 @@ Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Vect
     return colour;
 }
 
+// evaluates the rendering equation, ignoring the Le term
+Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Vector X, Vector Y, Colour normalisedMatColour, Colour normalisedlightColour) {
+    // calculate the lambert factor in the rendering equation
+    double lambert = std::max(0.0, Vector::dotProduct(in, normal));
+    
+    // calculate the bxdf of the rendering equation
+    Colour bxdf = std::visit(Mat::evaluateBxDF{in, out, normal, X, Y, normalisedMatColour}, mat);
+
+    // calculate the reflected light in the rendering equaiton
+    Colour reflected = normalisedlightColour * bxdf * lambert;
+
+    return reflected;
+}
+
 // * ---------------------------------------- [ MATERIALS ] ----------------------------------------- * //
 
-// Colour Mat::evaluateBxDF::operator()(const DisneyBSDF& mat) const {
-//     return Colour(1, 1, 1);
-// }
+
+static double SchlickFresnel(double u);
+static double GTR1(double NdotH, double a);
+static double GTR2(double NdotH, double a);
+static double GTR2_aniso(double NdotH, double HdotX, double HdotY, double ax, double ay);
+static double smithG_GGX(double NdotV, double alphaG);
+static double smithG_GGX_aniso(double NdotV, double vDotX, double VdotY, double ax, double ay);
+static Vector mon2lin(Colour x);
+
+#define mix(a, b, w) (a * (1.0-w) + b * w)
 
 Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
     Vector half = in + out; half.normalise();
@@ -81,91 +104,38 @@ Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
 
 //
 Colour Mat::evaluateBxDF::operator()(const DisneyMetal& mat) const {
-    Vector half = in + out; half.normalise();
+    Vector L = in, V = out, N = normal;
+    Vector H = in + out; H.normalise();
+
+    double hin   = std::abs(Vector::dotProduct(H, in));
+
+    double hlx = Vector::dotProduct(H, X), hly = Vector::dotProduct(H, Y), hlz = Vector::dotProduct(H, N);
+    double Lx = Vector::dotProduct(L, X), Ly = Vector::dotProduct(L, Y), Lz = Vector::dotProduct(L, N);
+    double Vx = Vector::dotProduct(L, X), Vy = Vector::dotProduct(L, Y), Vz = Vector::dotProduct(L, N);
     
-    double hout   = std::abs(Vector::dotProduct(half, out));
+    double hout   = std::abs(Vector::dotProduct(H, out));
     double aspect = std::sqrt(1.0 - 0.9 * mat.anisotropic);
     double ax = std::max(0.0001, (mat.roughness * mat.roughness) / aspect );
     double ay = std::max(0.0001, (mat.roughness * mat.roughness) * aspect );
     
     Colour Fm = baseColour + (-baseColour + 1.0) * std::pow(1 - hout, 5);
 
-    // Colour Dm = ...;
-
-
+    double Dm = std::numbers::inv_pi * ax * ay * std::pow( ((hlx * hlx) / (ax * ax)) + ((hly * hly) / (ay * ay)) + (hlz * hlz) , 2);
     
+    double Ain = ( std::pow(Vector::dotProduct(L, X) * ax, 2) + std::pow(Vector::dotProduct(L, Y) * ay, 2) ) / std::pow(std::max(0.0, Vector::dotProduct(L, N)), 2);
+    Ain = (std::sqrt(1.0 + Ain) - 1) / 2;
+    double Gain = 1 / (1 + Ain);
 
+    double Aout = ( std::pow(Vector::dotProduct(V, X) * ax, 2) + std::pow(Vector::dotProduct(V, Y) * ay, 2) ) / std::pow(std::max(0.0, Vector::dotProduct(V, N)), 2);
+    Aout = (std::sqrt(1.0 + Aout) - 1) / 2;
+    double Gout = 1 / (1 + Aout);
 
-    
-    
-    return Colour(1, 1, 1);
+    double Gm = Gain * Gout;
+
+    Colour fMetal = (Fm * Dm * Gm) / 4 * hin;
+
+    return fMetal;
 }
-
-Colour Mat::evaluateBxDF::operator()(const DisneyClearcoat& material) const {
-    return Colour(1, 1, 1);
-}
-
-Colour Mat::evaluateBxDF::operator()(const DisneyGlass& material) const {
-    return Colour(1, 1, 1);
-}
-
-Colour Mat::evaluateBxDF::operator()(const DisneySheen& material) const {
-    return Colour(1, 1, 1);
-}
-
-
-
-
-
-
-static double SchlickFresnel(double u) {
-    float m = std::clamp(1.0-u, 0.0, 1.0);
-    return std::pow(m, 5);
-}
-
-static double GTR1(double NdotH, double a) {
-    if (a >= 1) return std::numbers::inv_pi;
-    double a2 = a*a;
-    double t = 1 + (a2-1)*NdotH*NdotH;
-    return (a2-1) / (std::numbers::pi*std::log(a2)*t);
-}
-
-// static double GTR2(double NdotH, double a) {
-//     double a2 = a*a;
-//     double t = 1 + (a2-1)*NdotH*NdotH;
-//     return (a2-1) / (std::numbers::pi*t*t);
-// }
-
-static double GTR2_aniso(double NdotH, double HdotX, double HdotY, double ax, double ay) {
-    double x = HdotX/ax, x2 = x*x;
-    double y = HdotY/ay, y2 = y*y;
-
-    double factor = x2 + y2 + NdotH*NdotH;
-    
-    return 1 / (std::numbers::pi * ax*ay * factor * factor);
-}
-
-static double smithG_GGX(double NdotV, double alphaG) {
-    double a = alphaG*alphaG;
-    double b = NdotV*NdotV;
-    return 1 / (NdotV + std::sqrt(a + b - a*b));
-}
-
-static double smithG_GGX_aniso(double NdotV, double vDotX, double VdotY, double ax, double ay) {
-    double x = vDotX*ax, x2 = x*x;
-    double y = VdotY*ay, y2 = y*y;
-    double n2 = NdotV*NdotV;
-    
-    return 1 / (NdotV + std::sqrt( x2 + y2 + n2 ));
-}
-
-static Vector mon2lin(Colour x) {
-    return Vector(std::pow(x.r(), 2.2), std::pow(x.g(), 2.2), std::pow(x.b(), 2.2));
-}
-
-#define mix(a, b, w) (a * (1.0-w) + b * w)
-
-
 
 Colour Mat::evaluateBxDF::operator()(const DisneyBSDF& mat) const {
     Vector L = in, V = out, N = normal;
@@ -212,9 +182,51 @@ Colour Mat::evaluateBxDF::operator()(const DisneyBSDF& mat) const {
     Vector retval = (Cdlin * std::numbers::inv_pi * mix(Fd, ss, mat.subsurface) + Fsheen)
                     * (1-mat.metallic)
                     + Fs*Gs*Ds + 0.25*mat.clearcoat*Gr*Fr*Dr;
-    // Vector retvai = (Cdlin * std::numbers::inv_pi * mix(Fd, ss, mat.subsurface) + Fsheen)
-    //                 * (1-mat.metallic)
-    //                 + Fs + 0.25*mat.clearcoat*Gr*Fr*Dr;
 
     return Colour(retval[0], retval[1], retval[2]);
+}
+
+double SchlickFresnel(double u) {
+    float m = std::clamp(1.0-u, 0.0, 1.0);
+    return std::pow(m, 5);
+}
+
+double GTR1(double NdotH, double a) {
+    if (a >= 1) return std::numbers::inv_pi;
+    double a2 = a*a;
+    double t = 1 + (a2-1)*NdotH*NdotH;
+    return (a2-1) / (std::numbers::pi*std::log(a2)*t);
+}
+
+double GTR2(double NdotH, double a) {
+    double a2 = a*a;
+    double t = 1 + (a2-1)*NdotH*NdotH;
+    return (a2-1) / (std::numbers::pi*t*t);
+}
+
+double GTR2_aniso(double NdotH, double HdotX, double HdotY, double ax, double ay) {
+    double x = HdotX/ax, x2 = x*x;
+    double y = HdotY/ay, y2 = y*y;
+
+    double factor = x2 + y2 + NdotH*NdotH;
+    
+    return 1 / (std::numbers::pi * ax*ay * factor * factor);
+}
+
+double smithG_GGX(double NdotV, double alphaG) {
+    double a = alphaG*alphaG;
+    double b = NdotV*NdotV;
+    return 1 / (NdotV + std::sqrt(a + b - a*b));
+}
+
+double smithG_GGX_aniso(double NdotV, double vDotX, double VdotY, double ax, double ay) {
+    double x = vDotX*ax, x2 = x*x;
+    double y = VdotY*ay, y2 = y*y;
+    double n2 = NdotV*NdotV;
+    
+    return 1 / (NdotV + std::sqrt( x2 + y2 + n2 ));
+}
+
+Vector mon2lin(Colour x) {
+    return Vector(std::pow(x.r(), 2.2), std::pow(x.g(), 2.2), std::pow(x.b(), 2.2));
 }
