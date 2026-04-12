@@ -24,7 +24,7 @@ Mesh::Mesh(IndexBuffer ib, VertexBuffer vb)
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// #define PRINT 1
+// #define PRINT
 
 std::vector<Triangle> Mesh::getTriangles() const {
     std::vector<Triangle> triangles;
