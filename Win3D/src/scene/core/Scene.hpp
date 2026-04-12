@@ -25,6 +25,7 @@ public:
     
     //public methods
     Mesh* addObject(Mesh* mesh);
+    void addLight(PointLight light);
 
     void toCameraSpace();
     void toViewportSpace();

@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
-#include <iostream>
 #include <numbers>
 
 #define EXPOSURE 4
@@ -54,7 +53,6 @@ Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Vect
 
 // * ---------------------------------------- [ MATERIALS ] ----------------------------------------- * //
 
-
 static double SchlickFresnel(double u);
 static double GTR1(double NdotH, double a);
 static double GTR2(double NdotH, double a);
@@ -100,41 +98,6 @@ Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
     Colour result = fBaseDiffuse * (1 - mat.subsurface) + fSubsurface * mat.subsurface;
 
     return result;
-}
-
-//
-Colour Mat::evaluateBxDF::operator()(const DisneyMetal& mat) const {
-    Vector L = in, V = out, N = normal;
-    Vector H = in + out; H.normalise();
-
-    double hin   = std::abs(Vector::dotProduct(H, in));
-
-    double hlx = Vector::dotProduct(H, X), hly = Vector::dotProduct(H, Y), hlz = Vector::dotProduct(H, N);
-    double Lx = Vector::dotProduct(L, X), Ly = Vector::dotProduct(L, Y), Lz = Vector::dotProduct(L, N);
-    double Vx = Vector::dotProduct(L, X), Vy = Vector::dotProduct(L, Y), Vz = Vector::dotProduct(L, N);
-    
-    double hout   = std::abs(Vector::dotProduct(H, out));
-    double aspect = std::sqrt(1.0 - 0.9 * mat.anisotropic);
-    double ax = std::max(0.0001, (mat.roughness * mat.roughness) / aspect );
-    double ay = std::max(0.0001, (mat.roughness * mat.roughness) * aspect );
-    
-    Colour Fm = baseColour + (-baseColour + 1.0) * std::pow(1 - hout, 5);
-
-    double Dm = std::numbers::inv_pi * ax * ay * std::pow( ((hlx * hlx) / (ax * ax)) + ((hly * hly) / (ay * ay)) + (hlz * hlz) , 2);
-    
-    double Ain = ( std::pow(Vector::dotProduct(L, X) * ax, 2) + std::pow(Vector::dotProduct(L, Y) * ay, 2) ) / std::pow(std::max(0.0, Vector::dotProduct(L, N)), 2);
-    Ain = (std::sqrt(1.0 + Ain) - 1) / 2;
-    double Gain = 1 / (1 + Ain);
-
-    double Aout = ( std::pow(Vector::dotProduct(V, X) * ax, 2) + std::pow(Vector::dotProduct(V, Y) * ay, 2) ) / std::pow(std::max(0.0, Vector::dotProduct(V, N)), 2);
-    Aout = (std::sqrt(1.0 + Aout) - 1) / 2;
-    double Gout = 1 / (1 + Aout);
-
-    double Gm = Gain * Gout;
-
-    Colour fMetal = (Fm * Dm * Gm) / 4 * hin;
-
-    return fMetal;
 }
 
 Colour Mat::evaluateBxDF::operator()(const DisneyBSDF& mat) const {
