@@ -24,29 +24,42 @@ Mesh::Mesh(IndexBuffer ib, VertexBuffer vb)
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// #define PRINT 1
+
 std::vector<Triangle> Mesh::getTriangles() const {
     std::vector<Triangle> triangles;
     triangles.reserve(indexBuffer.size());
 
-    // for (const Vertex& v : vertexBuffer) {
-        // std::cout << v.position << '\n';
-        // std::cout << v.normal << '\n';
-        // std::cout << v.u << ' ';
-        // std::cout << v.v << '\n';
-        // std::cout << v.colour << '\n';
-    // }
-    // int ii = 0;
-    // for (const Index& i : indexBuffer) {
-    //     std::cout << i.position+1 << '/';
-    //     std::cout << i.normal+1 << '/';
-    //     std::cout << i.uv+1 << ' ';
+    #ifdef PRINT
 
-    //     ii++;
-    //     if (ii == 3) {
-    //         std::cout << '\n';
-    //         ii = 0;
-    //     }
-    // }
+    for (const Vertex& v : vertexBuffer)
+        std::cout << "v " << v.position << '\n';
+    for (const Vertex& v : vertexBuffer)
+        std::cout << "vn " << v.normal << '\n';
+    for (const Vertex& v : vertexBuffer) {
+        std::cout << "vt " << v.u << ' ';
+        std::cout << v.v << '\n';
+    }
+
+    int ii = 0;
+    for (const Index& i : indexBuffer) {
+        std::cout << i.position+1 << '/';
+        std::cout << i.uv+1 << '/';
+        std::cout << i.normal+1 << ' ';
+
+        ii++;
+        if (ii == 3) {
+            std::cout << '\n';
+            ii = 0;
+        }
+    }
+
+    for (const Vertex& v : vertexBuffer)
+        std::cout << v.colour << '\n';
+
+    std::cin.get();
+
+    #endif
 
     for (int i = 2; i < indexBuffer.size(); i += 3) {
         Index i1 = indexBuffer[i-2];
@@ -75,36 +88,6 @@ std::vector<Triangle> Mesh::getTriangles() const {
         
         triangles.emplace_back(v1, v2, v3);
     }
-
-    // std::cin.get();
-
-    // for (const Vertex& v : vertexBuffer) {
-    //     std::cout << v.position << '\n';
-    //     std::cout << v.normal << '\n';
-    //     std::cout << v.u << '\n';
-    //     std::cout << v.v << '\n';
-    //     std::cout << v.colour << '\n';
-    // }
-    // for (const Index& i : indexBuffer) {
-    //     std::cout << i.position << '\n';
-    //     std::cout << i.normal << '\n';
-    //     std::cout << i.uv << '\n';
-    // }
-
-    // for (Triangle& t : triangles) {
-    //     std::cout << t.v1.position << "\n" << t.v2.position << "\n" << t.v3.position << '\n';
-    // }
-    // for (Triangle& t : triangles) {
-    //     std::cout << t.v1.normal << "\n" << t.v2.normal << "\n" << t.v3.normal << '\n';
-    // }
-    // for (Triangle& t : triangles) {
-    //     std::cout << t.v1.u << ", " << t.v1.v << "\n" << t.v2.u << ", " << t.v2.v << "\n" << t.v3.u << ", " << t.v3.v << '\n';
-    // }
-    // for (Triangle& t : triangles) {
-    //     std::cout << t.v1.colour << "\n" << t.v2.colour << "\n" << t.v3.colour << '\n';
-    // }
-
-    // std::cin.get();
 
     return triangles;
 }
@@ -311,7 +294,7 @@ Mesh* Mesh::cube() {
     for (int i = 0; i < normals.size(); i++)
         vertexBuffer.emplace_back(vertices[i], colours[i], normals[i], us[i], vs[i]);
     for (int i = normals.size(); i < us.size(); i++)
-        vertexBuffer.emplace_back(vertices[0], colours[0], normals[0], us[i], vs[i]);
+        vertexBuffer.emplace_back(Vector{-1, -1, -1, -1}, Colour{-1, -1, -1, -1}, Vector{-1, -1, -1}, us[i], vs[i]);
 
     for (Index& i : indexBuffer) {
         i.colour--;

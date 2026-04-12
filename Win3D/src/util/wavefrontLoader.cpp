@@ -3,6 +3,7 @@
 #include "scene/objects/Mesh.hpp"
 #include "util/Util.hpp"
 #include <cassert>
+#include <cstddef>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -48,17 +49,26 @@ Mesh* Wavefront::loadWavefront(std::string path) {
         }
         else if (word == "f") {
             // parsing a triangle
-            line >> word;
-            word = word.substr(0, 1);
-            indexBuffer.emplace_back(std::stoi(word));
+            for (int i = 0; i < 3; i++) {
+                line >> word;
 
-            line >> word;
-            word = word.substr(0, 1);
-            indexBuffer.emplace_back(std::stoi(word));
+                size_t index = word.find('/');
+                std::string v = (index == std::string::npos) ? word : word.substr(0, index);
+                indexBuffer.emplace_back(std::stoi(v) - 1);
+            }
 
-            line >> word;
-            word = word.substr(0, 1);
-            indexBuffer.emplace_back(std::stoi(word));
+
+            // line >> word;
+            // word = word.substr(0, 1);
+            // indexBuffer.emplace_back(std::stoi(word));
+
+            // line >> word;
+            // word = word.substr(0, 1);
+            // indexBuffer.emplace_back(std::stoi(word));
+
+            // line >> word;
+            // word = word.substr(0, 1);
+            // indexBuffer.emplace_back(std::stoi(word));
         }
     }
 
@@ -66,12 +76,12 @@ Mesh* Wavefront::loadWavefront(std::string path) {
     for (int i = 0; i < normals.size(); i++)
         vertexBuffer.emplace_back(positions[i], Colour::blue(), normals[i]);
 
-    for (Index& i : indexBuffer) {
-        i.colour--;
-        i.normal--;
-        i.position--;
-        i.uv--;
-    }
+    // for (Index& i : indexBuffer) {
+    //     i.colour--;
+    //     i.normal--;
+    //     i.position--;
+    //     i.uv--;
+    // }
 
     // for (auto& p : positions)
     //     std::cout << p << '\n';
