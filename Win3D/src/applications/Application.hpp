@@ -6,5 +6,10 @@
 class Application {
 public:
     //constructors/destructor
-    Application(Engine& e);
+    virtual void runApp(Engine e) = 0;
+};
+
+class bunny1440_400 : public Application {
+public:
+    void runApp(Engine e) override;
 };

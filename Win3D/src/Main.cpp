@@ -1,4 +1,4 @@
-#include "Application.hpp"
+#include "applications/Application.hpp"
 #include "engine/Engine.hpp"
 #include <cassert>
 #include <iostream>
@@ -14,8 +14,8 @@ int main(int argc, char *argv[]) {
     
     // default scene
     if (argc == 1) {
-        Engine e = Engine(400, 400);
-        Application app = Application(e);
+        bunny1440_400 app{};
+        app.runApp(Engine(400, 400));
 
         return 0;
     }
@@ -23,8 +23,8 @@ int main(int argc, char *argv[]) {
     // other scenes
     std::string scene = argv[1];
     if (scene == "bunny1440_400") {
-        Engine e = Engine(400, 400);
-        Application app = Application(e);
+        bunny1440_400 app{};
+        app.runApp(Engine(400, 400));
     }
     else {
         std::cerr << "Invalid scene ID" << '\n';
