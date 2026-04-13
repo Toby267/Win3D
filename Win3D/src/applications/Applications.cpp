@@ -52,7 +52,7 @@ void bunny1440_400::runApp(Engine e) {
         
         e.drawCall();
 
-        std::cin.get();
+        // std::cin.get();
     }
 
     // calcs statistics

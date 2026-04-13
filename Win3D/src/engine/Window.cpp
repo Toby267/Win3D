@@ -55,6 +55,7 @@ void Window::run(unsigned char* bmap, int width, int height) {
     img.height = height;
     img.mipmaps = 1;
 
+    SetTraceLogLevel(TraceLogLevel::LOG_NONE);
     InitWindow(width, height, "Toby Hothersall - Win3D");
     SetTargetFPS(60);
 
