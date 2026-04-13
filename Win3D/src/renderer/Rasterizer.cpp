@@ -14,7 +14,6 @@ static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour
 
 /**
  * Performs rasterization on a vector of objects, assuming they are already in screen space, and renders them on a bitmap/framebuffer
- * TODO: should move fragment shading out of here, and could implement barycentric interpolation instead of what i currently have
  * 
  * @param objects   the objects to rasterize
  * @param bmap      the bitmap to render onto
@@ -33,7 +32,6 @@ void Renderer::rasterize(Bitmap3D& bmap, const Scene& scene) {
 
 /**
  * Draws a triangle onto a given bitmap, defined by their veritces, and their colours
- * TODO: could use a scanline filling algorithm instead
  * 
  * @param v1, v2, v3    the vertices of the triangle
  * @param c1, c2, c3    the colours of the vertices

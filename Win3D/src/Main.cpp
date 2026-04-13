@@ -8,6 +8,19 @@ scenes:
 - bunny1440_400_trace
 */
 
+/*
+features:
+- dynamic scenes
+- raster renderer /w triangle colour interpolation
+- ray casting renderer /w shading from the rendering equation
+- bvh optimisation
+- bxdf material system
+- reinhard tone mapping
+- exposure scaling
+- mutliple light source functionality
+- disney bsdf
+*/
+
 //Driver code
 int main(int argc, char *argv[]) {
     assert(argc == 1 || argc == 2);

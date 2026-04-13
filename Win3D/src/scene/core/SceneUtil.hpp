@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <vector>
 
+// represents a single vertex
 struct Vertex {
     Vector position;
     Colour colour;
@@ -13,6 +14,7 @@ struct Vertex {
     double v;
 } typedef Vertex;
 
+// represents the indeces into the vertex array for a triangle
 struct Index {
     size_t position;
     size_t colour;

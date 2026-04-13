@@ -2,6 +2,11 @@
 
 #include "util/Util.hpp"
 
+/**
+ * Contains all data related to a vritual camera.
+ *
+ * The camera can be in any position facing any direction, with any field of view, depth of field, and screen dimensions
+ */
 struct Camera {
     //position/orientation
     Vector position;

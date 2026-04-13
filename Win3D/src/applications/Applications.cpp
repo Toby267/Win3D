@@ -9,19 +9,6 @@
 #include <iostream>
 #include <numbers>
 
-// features:
-// got:
-// dynamic scenes
-// raster renderer /w triangle colour interpolation
-// ray casting renderer /w triangle colour interpolation
-// getting:
-// bxdf material system
-// bvh optimisation
-// reinhard stuff
-// exposure stuff
-// mutli light averageing
-// disney bsdf
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ bunny1440_400 ] ----------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,6 +45,7 @@ void bunny1440_400::runApp(Engine e) {
     
     auto start = std::chrono::high_resolution_clock::now();
 
+    // render loop
     for (int i = 0; i < frames; i++) {
         alpha -= std::numbers::pi/16;
         cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
@@ -67,6 +55,7 @@ void bunny1440_400::runApp(Engine e) {
         std::cin.get();
     }
 
+    // calcs statistics
     std::chrono::duration<double> duration = std::chrono::high_resolution_clock::now() - start;
     double fps = frames / duration.count();
     std::cout << "fps: " << fps << '\n';

@@ -4,6 +4,11 @@
 
 #include <vector>
 
+/**
+ * Class representing a bitmap
+ *
+ * includes a frame buffer and z buffer, and is used for visibility determination in the raster pipeline
+ */
 class Bitmap3D {
 private:
     int width, height;

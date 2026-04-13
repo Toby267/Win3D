@@ -98,10 +98,6 @@ Colour Colour::operator*(const Colour& other) const {
     );
 }
 Colour Colour::operator/(const Colour& other) const {
-    // std::cout << "r, g, b, a: " << r() << ", " << g() << ", " << b() << ", " << a() << "\n";
-    // std::cout << "other.r, other.g, other.b, other.a: " << other.r() << ", " << other.g() << ", " << other.b() << ", " << other.a() << "\n";
-    // std::cout << "division: " << r() / other.r() << ", " << g() / other.g() << ", " << b() / other.b() << ", " << a() / other.a() << "\n";
-    
     Colour c(
         r() / other.r(),
         g() / other.g(),
@@ -109,7 +105,6 @@ Colour Colour::operator/(const Colour& other) const {
         a() / other.a()
     );
 
-    // std::cout << "c: " << c << '\n';
     return c;
 }
 

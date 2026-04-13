@@ -4,6 +4,7 @@
 #include "scene/core/SceneUtil.hpp"
 #include "renderer/Ray.hpp"
 
+// represents an axis alligned bounding box
 struct Aabb {
     Vector min = Vector::max();
     Vector max = Vector::min();
@@ -17,9 +18,11 @@ struct Aabb {
     double surfaceArea() const;
     Vector centroid() const;
 
+    // operator overloads
     friend std::ostream& operator<<(std::ostream& os, const Aabb& b);
 };
 
+// represents a triangle that is stored within a bvh node
 struct Triangle {
     Vertex v1, v2, v3;
     Aabb boundingBox;

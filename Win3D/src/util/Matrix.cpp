@@ -177,12 +177,9 @@ Matrix Matrix::orthographic(double n, double f, double t, double r) {
 
 /**
  * retuns the perspective transform matrix that maps to the canonical view volume defined in the geometry processor.
- * fov assumed to be in radians
- * assumes l = -r and b = -t      those assumptions allowed me to simplify to this:
+ * assumes l = -r and b = -t
  */
 Matrix Matrix::perspective(double n, double f, double aspect, double fov) {
-    // double aspect = r/t;
-
     double _00 = 1 / ( aspect * std::tan(fov / 2) );
     double _11 = 1 / ( std::tan(fov / 2) );
 

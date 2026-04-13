@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-// assumes path to start from ./resources
+// reads a .obj file including its positions, normals and uv coordinates. assumes path to start from ./resources
 Mesh* Wavefront::loadWavefront(std::string path, Colour colour) {
     IndexBuffer indexBuffer{};
     VertexBuffer vertexBuffer;
@@ -24,6 +24,7 @@ Mesh* Wavefront::loadWavefront(std::string path, Colour colour) {
 
     std::string s;
     
+    // for each line in the .obj file
     while (std::getline(obj, s)) {
         std::stringstream line{s};
         std::string word;
@@ -63,7 +64,7 @@ Mesh* Wavefront::loadWavefront(std::string path, Colour colour) {
             }
         }
         else if (word == "vt") {
-            // parsing uvs
+            // parsing UVs
             us.emplace_back(0);
             line >> us.back();
 

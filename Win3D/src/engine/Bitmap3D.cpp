@@ -53,6 +53,7 @@ void Bitmap3D::drawPixel(int x, int y, int z, Colour c) {
     frameBuffer[i + 3] = c.a();
 }
 
+// set the value of a pixel ignoring the z buffer
 void Bitmap3D::setPixel(int x, int y, Colour c) {
     if (x >= width || x < 0 || y >= height || y < 0) return;
     int i = 4 * (y * width + x);
