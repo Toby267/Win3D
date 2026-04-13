@@ -35,7 +35,7 @@ Application::Application() {
 
     /* ----------------------------------------- objects ----------------------------------------- */
 
-    Mesh* cube1 = scene.addObject(Wavefront::loadWavefront("bunny_1440.obj"));
+    Mesh* cube1 = scene.addObject(Wavefront::loadWavefront("bunny_1440.obj", Colour::white() * 0.6));
     cube1->setTranslation(Matrix::translate(0, 0, 1100));
 
     /* ----------------------------------------- lights ----------------------------------------- */

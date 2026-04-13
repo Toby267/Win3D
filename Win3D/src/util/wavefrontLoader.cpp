@@ -11,7 +11,7 @@
 #include <vector>
 
 // assumes path to start from ./resources
-Mesh* Wavefront::loadWavefront(std::string path) {
+Mesh* Wavefront::loadWavefront(std::string path, Colour colour) {
     IndexBuffer indexBuffer{};
     VertexBuffer vertexBuffer;
 
@@ -46,6 +46,7 @@ Mesh* Wavefront::loadWavefront(std::string path) {
             line >> normals.back().z();
         }
         else if (word == "f") {
+            // parsing indeces
             for (int i = 0; i < 3; i++) {
                 std::string term;
                 line >> term;
@@ -57,30 +58,26 @@ Mesh* Wavefront::loadWavefront(std::string path) {
                 std::string vt = term.substr(index1+1, index2-index1-1);
                 std::string vn = term.substr(index2+1);
 
-                indexBuffer.emplace_back(Index{(size_t)std::stoi(v), 1, (size_t)std::stoi(vt), (size_t)std::stoi(vn)});
+                indexBuffer.emplace_back(Index{(size_t)std::stoi(v) - 1, 0, (size_t)std::stoi(vt) - 1, (size_t)std::stoi(vn) - 1});
                 
             }
         }
         else if (word == "vt") {
             // parsing uvs
-            us.emplace_back(0); vs.emplace_back(0);
-            line >> us.back();  line >> vs.back();
+            us.emplace_back(0);
+            line >> us.back();
+
+            vs.emplace_back(0);
+            line >> vs.back();
         }
     }
 
     vertexBuffer.reserve(us.size());
 
     for (int i = 0; i < normals.size(); i++)
-        vertexBuffer.emplace_back(positions[i], Colour::white(), normals[i], us[i], vs[i]);
+        vertexBuffer.emplace_back(positions[i], colour, normals[i], us[i], vs[i]);
     for (int i = normals.size(); i < us.size(); i++)
         vertexBuffer.emplace_back(Vector{-1, -1, -1, -1}, Colour{-1, -1, -1, -1}, Vector{-1, -1, -1}, us[i], vs[i]);
-
-    for (Index& i : indexBuffer) {
-        i.colour--;
-        i.normal--;
-        i.position--;
-        i.uv--;
-    }
 
     obj.close();
 
