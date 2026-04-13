@@ -40,15 +40,15 @@ Application::Application() {
 
     /* ----------------------------------------- lights ----------------------------------------- */
 
-    // scene.addLight(PointLight(Vector(0, 1000, 1100), Colour{55, 55, 55}));
+    // scene.addLight(PointLight(Vector(0, 1000, 1100), Colour::white()));
     // scene.addLight(PointLight(Vector(1100, 0, 0), Colour{255, 55, 55}));
     // scene.addLight(PointLight(Vector(-1100, 0, 0), Colour{55, 255, 55}));
 
-    scene.addLight(PointLight(Vector(0, 1000, 1100), Colour{255, 0, 0}));
-    scene.addLight(PointLight(Vector(0, 0, 0), Colour{55, 155, 55}));
+    // scene.addLight(PointLight(Vector(0, 1000, 1100), Colour{255, 0, 0}));
+    // scene.addLight(PointLight(Vector(0, 0, 0), Colour{55, 155, 55}));
 
-    // scene.addLight(PointLight(Vector(1100, 0, 0), Colour{255, 55, 55}));
-    // scene.addLight(PointLight(Vector(-1100, 0, 0), Colour{55, 255, 55}));
+    scene.addLight(PointLight(Vector(1100, 0, 0), Colour{255, 55, 55}));
+    scene.addLight(PointLight(Vector(-1100, 0, 0), Colour{55, 255, 55}));
 
     // scene.addLight(PointLight(Vector(0, 0, 0), Colour::white()));
 
