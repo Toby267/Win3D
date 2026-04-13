@@ -2,6 +2,7 @@
 #include "engine/Engine.hpp"
 #include <cassert>
 #include <iostream>
+#include <string>
 
 /*
 scenes:
@@ -21,26 +22,29 @@ features:
 - disney bsdf
 */
 
-//Driver code
+//Driver code; inputs are of the form <./bin/Win3D meshPath resolution renderType> or <./bin/Win3D scene> or <./bin/Win3D>
 int main(int argc, char *argv[]) {
-    assert(argc == 1 || argc == 2);
-    
-    // default scene
     if (argc == 1) {
-        bunny1440_400 app{};
-        app.runApp(Engine(400, 400, RASTERIZER));
+        // default scene
+        speedTestApp app{};
+        app.runApp(400, 400, RAY_TRACER, "bunny_1440");
 
         return 0;
     }
-
-    // other scenes
-    std::string scene = argv[1];
-    if (scene == "bunny1440_400_trace") {
-        bunny1440_400 app{};
-        app.runApp(Engine(400, 400, RAY_TRACER));
+    else if (argc == 2) {
+        // one of the hardcoded scenes
+    }
+    else if (argc == 4) {
+        // specific custome scene
+        std::string mesh = argv[1];
+        int resolution = std::stoi(argv[2]);
+        RenderType type = ((std::string)argv[3] == "tracer") ? RenderType::RAY_TRACER : RenderType::RASTERIZER;
+        
+        speedTestApp app{};
+        app.runApp(resolution, resolution, type, mesh);
     }
     else {
-        std::cerr << "Invalid scene ID" << '\n';
+        std::cerr << "Invalid number of arguments" << '\n';
     }
 
     return 0;

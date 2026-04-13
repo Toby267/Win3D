@@ -16,12 +16,13 @@
 /**
  * Runs the application
  */
-void bunny1440_400::runApp(Engine e) {    
+void speedTestApp::runApp(int width, int height, RenderType type, std::string meshPath) {    
+    Engine e{width, height, type};
     Scene& scene = e.getScene();
 
     /* ----------------------------------------- objects ----------------------------------------- */
 
-    Mesh* cube1 = scene.addObject(Wavefront::loadWavefront("bunny_1440.obj", Colour::white() * 0.6));
+    Mesh* cube1 = scene.addObject(Wavefront::loadWavefront(meshPath + ".obj", Colour::white() * 0.6));
     cube1->setTranslation(Matrix::translate(0, 0, 1100));
 
     /* ----------------------------------------- lights ----------------------------------------- */
@@ -41,7 +42,7 @@ void bunny1440_400::runApp(Engine e) {
     /* ----------------------------------------- rendering and testing ----------------------------------------- */
 
     double alpha = 0.0;
-    const int frames = 25;
+    const int frames = 10;
     
     auto start = std::chrono::high_resolution_clock::now();
 

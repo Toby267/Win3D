@@ -8,11 +8,11 @@
 class Application {
 public:
     //constructors/destructor
-    virtual void runApp(Engine e) = 0;
+    virtual void runApp(int width, int height, RenderType type, std::string meshPath) = 0;
 };
 
 // bunny scene with 1440 triangles, at 400x400 resolution
-class bunny1440_400 : public Application {
+class speedTestApp : public Application {
 public:
-    void runApp(Engine e) override;
+    void runApp(int width, int height, RenderType type, std::string meshPath) override;
 };
