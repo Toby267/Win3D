@@ -19,8 +19,6 @@ Engine::Engine(int w, int h)
 void Engine::drawCall() {
     bitmap.clear();
 
-    // TODO: backface culling
-
     scene.toCameraSpace();
     Renderer::rayTrace(bitmap, scene);
 

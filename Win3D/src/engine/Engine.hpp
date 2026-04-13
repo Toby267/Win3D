@@ -4,6 +4,11 @@
 #include "engine/Window.hpp"
 #include "scene/core/Scene.hpp"
 
+/**
+ * Class representing the engine, that is used for rendering.
+ *
+ * Each engine has its own window and scene.
+ */
 class Engine {
 private:
     Scene scene;

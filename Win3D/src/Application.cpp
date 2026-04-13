@@ -29,8 +29,7 @@
 /**
  * Runs the application
  */
-Application::Application() {    
-    Engine e = Engine(400, 400);
+Application::Application(Engine& e) {    
     Scene& scene = e.getScene();
 
     /* ----------------------------------------- objects ----------------------------------------- */
