@@ -17,8 +17,6 @@ public:
 
     //getters/setters
     const std::vector<unsigned char>& getFrameBuffer() const { return frameBuffer; };
-    // int getWidth() const { return height; };
-    // int getHeight() const { return width; };
 
     //public methods
     void clear();

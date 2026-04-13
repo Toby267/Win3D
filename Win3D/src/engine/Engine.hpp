@@ -4,6 +4,11 @@
 #include "engine/Window.hpp"
 #include "scene/core/Scene.hpp"
 
+enum RenderType {
+    RASTERIZER,
+    RAY_TRACER
+};
+
 /**
  * Class representing the engine, that is used for rendering.
  *
@@ -15,9 +20,11 @@ private:
     Window window;
     Bitmap3D bitmap;
 
+    RenderType renderType;   
+
 public:
     //constructors/destructor
-    Engine(int width, int height);
+    Engine(int width, int height, RenderType renderType);
 
     //getters/setters
     Scene& getScene() { return scene; };

@@ -64,7 +64,7 @@ void bunny1440_400::runApp(Engine e) {
         
         e.drawCall();
 
-        // std::cin.get();
+        std::cin.get();
     }
 
     std::chrono::duration<double> duration = std::chrono::high_resolution_clock::now() - start;

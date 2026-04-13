@@ -5,8 +5,8 @@
 #include "renderer/Renderer.hpp"
 #include "scene/core/Scene.hpp"
 
-Engine::Engine(int w, int h)
-    : scene(w, h), window(w, h), bitmap(w, h)
+Engine::Engine(int w, int h, RenderType r)
+    : scene(w, h), window(w, h), bitmap(w, h), renderType(r)
 {
 
 }
@@ -19,11 +19,17 @@ Engine::Engine(int w, int h)
 void Engine::drawCall() {
     bitmap.clear();
 
-    scene.toCameraSpace();
-    Renderer::rayTrace(bitmap, scene);
+    if (renderType == RenderType::RASTERIZER) {
+        scene.toCameraSpace();
+        scene.toViewportSpace();
 
-    scene.toViewportSpace();
-    // Renderer::rasterize(bitmap, scene);
+        Renderer::rasterize(bitmap, scene);
+    }
+    else {
+        scene.toCameraSpace();
+    
+        Renderer::rayTrace(bitmap, scene);
+    }
 
     scene.cleanup();
 

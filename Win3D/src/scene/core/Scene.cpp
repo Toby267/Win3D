@@ -4,6 +4,7 @@
 #include "scene/objects/Mesh.hpp"
 #include "util/Util.hpp"
 
+#include <cmath>
 #include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -20,13 +21,13 @@ Scene::Scene(int screenWidth, int screenHeight) {
     camera.apperatureHeight = screenHeight;
     camera.apperatureWidth = screenWidth;
 
-    camera.fieldOfView = 60.0/360.0 * 2.0*std::numbers::pi;
-
     camera.nearFocalDistance = 1000;
     camera.farFocalDistance = 3000;
 
     camera.screenHeight = screenHeight;
     camera.screenWidth = screenWidth;
+
+    camera.fieldOfView = std::atan(camera.apperatureHeight / camera.nearFocalDistance);
 }
 
 Scene::~Scene() {
