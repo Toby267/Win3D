@@ -34,14 +34,15 @@ int main(int argc, char *argv[]) {
     else if (argc == 2) {
         // one of the hardcoded scenes
     }
-    else if (argc == 4) {
+    else if (argc == 5) {
         // specific custome scene
         std::string mesh = argv[1];
-        int resolution = std::stoi(argv[2]);
-        RenderType type = ((std::string)argv[3] == "tracer") ? RenderType::RAY_TRACER : RenderType::RASTERIZER;
+        int width = std::stoi(argv[2]);
+        int height = std::stoi(argv[3]);
+        RenderType type = ((std::string)argv[4] == "tracer") ? RenderType::RAY_TRACER : RenderType::RASTERIZER;
         
         speedTestApp app{};
-        app.runApp(resolution, resolution, type, mesh);
+        app.runApp(width, height, type, mesh);
     }
     else {
         std::cerr << "Invalid number of arguments" << '\n';

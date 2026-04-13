@@ -59,5 +59,6 @@ void speedTestApp::runApp(int width, int height, RenderType type, std::string me
     // calcs statistics
     std::chrono::duration<double> duration = std::chrono::high_resolution_clock::now() - start;
     double fps = frames / duration.count();
-    std::cout << "fps: " << fps << '\n';
+    double timePeriod = duration.count() / frames;
+    std::cout << "fps: " << fps << "\tT = " << timePeriod << '\n';
 }
