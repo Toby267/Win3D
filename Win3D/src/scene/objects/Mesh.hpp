@@ -39,11 +39,9 @@ private:
         0.6,    // anisotropic
         0.7,    // metallic
         1.0,    // specular
-        0.5,    // specularTransmission
         0.2,    // specularTint
         1,    // clearcoat
         1,    // clearcoatGloss
-        1     // eta
     };
 
 public:

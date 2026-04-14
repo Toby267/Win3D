@@ -16,11 +16,9 @@ namespace Mat {
         double anisotropic;
         double metallic;
         double specular;
-        double specularTransmission;
         double specularTint;
         double clearcoat;
         double clearcoatGloss;
-        double eta;
     } typedef DisneyBSDF;
 
     struct DisneyDiffuse {
