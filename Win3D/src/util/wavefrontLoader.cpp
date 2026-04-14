@@ -60,7 +60,6 @@ Mesh* Wavefront::loadWavefront(std::string path, Colour colour) {
                 std::string vn = term.substr(index2+1);
 
                 indexBuffer.emplace_back(Index{(size_t)std::stoi(v) - 1, 0, (size_t)std::stoi(vt) - 1, (size_t)std::stoi(vn) - 1});
-                
             }
         }
         else if (word == "vt") {

@@ -41,6 +41,9 @@ int main(int argc, char *argv[]) {
         else if (scene == "triangle") {
             Apps::triangleApp(type);
         }
+        else if (scene == "objects") {
+            Apps::objectsApp(type);
+        }
     }
     else if (argc == 5) {
         // specific custome scene
