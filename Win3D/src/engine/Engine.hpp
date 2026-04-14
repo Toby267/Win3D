@@ -22,6 +22,8 @@ private:
 
     RenderType renderType;   
 
+    int framesRendered = 0;
+
 public:
     //constructors/destructor
     Engine(int width, int height, RenderType renderType);

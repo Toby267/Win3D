@@ -4,6 +4,9 @@
 #include "engine/Window.hpp"
 #include "renderer/Renderer.hpp"
 #include "scene/core/Scene.hpp"
+#include <string>
+
+#define SAVE_IMAGE
 
 Engine::Engine(int w, int h, RenderType r)
     : scene(w, h), window(w, h), bitmap(w, h), renderType(r)
@@ -17,6 +20,8 @@ Engine::Engine(int w, int h, RenderType r)
 
 //performs a dracall, drawing a frame into the bitmap
 void Engine::drawCall() {
+    framesRendered++;
+    
     bitmap.clear();
 
     if (renderType == RenderType::RASTERIZER) {
@@ -34,4 +39,8 @@ void Engine::drawCall() {
     scene.cleanup();
 
     window.update(bitmap.getFrameBuffer());
+
+    #ifdef SAVE_IMAGE
+    bitmap.saveAsPPM("frame" + std::to_string(framesRendered) + ".ppm");
+    #endif
 }
