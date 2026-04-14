@@ -24,16 +24,16 @@ void Engine::drawCall() {
     
     bitmap.clear();
 
-    if (renderType == RenderType::RASTERIZER) {
+    if (renderType == RenderType::RAY_TRACER) {
+        scene.toCameraSpace();
+    
+        Renderer::rayTrace(bitmap, scene);
+    }
+    else {
         scene.toCameraSpace();
         scene.toViewportSpace();
 
         Renderer::rasterize(bitmap, scene);
-    }
-    else {
-        scene.toCameraSpace();
-    
-        Renderer::rayTrace(bitmap, scene);
     }
 
     scene.cleanup();

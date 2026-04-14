@@ -66,6 +66,7 @@ Engine -> Bitmap :clear()
 Engine -> Scene :toCameraSpace()
 Scene -> Scene :toWorldSpace()
 Scene -> Scene :applyAffineTransform(cameraTransform)
+Scene -> Scene :transformNormals()
 Scene -> Scene :createAccelDataStructure()
 
 Engine -> RenderPass :rayTracePass()
@@ -91,7 +92,7 @@ Engine -> Window :update(frameBuffer)
 
 @enduml
 
-'========================================== MAIN ==========================================
+'========================================== ENGINE ==========================================
 
 @startuml main
 
@@ -106,8 +107,6 @@ class Window {
     -int width
     -int height
     -unsigned char* frameBuffer
-    -std::atomic<bool> hasUpdated
-    -std::atomic<bool> alive
     -std::thread thread
     +void update(const std::vector<unsigned char>& renderBuffer)
     +bool isAlive() const
@@ -122,6 +121,8 @@ class Bitmap3D {
     +void clear()
     +void drawPixel(int x, int y, int z, Colour colour)
     +void setPixel(int x, int y, Colour colour)
+    +std::vector<unsigned char>& getFrameBuffer()
+    +void saveAsPPM(std::string path)
 }
 
 Engine *-- Window
@@ -147,6 +148,7 @@ struct HitRecord {
     +Colour c0, c1, c2
     +Vector n0, n1, n2
     +Vector v0, v1, v2
+    +double uv0[2], uv1[2], uv2[2];
 
     +Material mat
     +double u, v, t
@@ -159,6 +161,14 @@ struct Vertex {
     +Vector position
     +Colour colour
     +Vector normal
+    +double u
+    +double v
+}
+struct Index {
+    +size_t position
+    +size_t colour
+    +size_t normal
+    +size_t uv
 }
 
 class BvhNode {
@@ -188,6 +198,7 @@ Renderer <-- Ray
 Renderer <-- HitRecord
 Renderer <-- Triangle
 Renderer <-- Vertex
+Renderer <-- Index
 
 @enduml
 
@@ -202,7 +213,6 @@ class Scene {
     +void toCameraSpace()
     +void toViewportSpace()
     +void intersect(const Ray& ray, HitRecord* record) const
-    +void cleanup()
 }
 class Mesh {
     -IndexBuffer indexBuffer
@@ -215,36 +225,38 @@ class Mesh {
     +void toWorldSpace()
     +void applyAffineTransform(Matrix matrix)
     +void applyTransform(Matrix matrix)
+    +void transformNormals(Matrix matrix)
 
-    +void reset()
-    +void createBvhTree()
-
+    +void createBvhTree(
     +HitRecord intersect(const Ray& ray) const
 
     +void clip()
 }
 struct Camera {
-    +Vector position;
-    +Vector direction;
-    +Vector up;
+    +Vector position
+    +Vector direction
+    +Vector up
 
-    +double apperatureWidth;
-    +double apperatureHeight;
+    +double apperatureWidth
+    +double apperatureHeight
 
-    +double fieldOfView;
+    +double fieldOfView
 
-    +double nearFocalDistance;
-    +double farFocalDistance;
+    +double nearFocalDistance
+    +double farFocalDistance
 
-    +int screenWidth;
-    +int screenHeight;
+    +int screenWidth
+    +int screenHeight
 
-    +Matrix tranformationMatrix() const;
-    +Matrix projectionMatrix() const;
-    +Matrix viewportMatrix() const;
+    +Matrix tranformationMatrix() const
+    +Matrix projectionMatrix() const
+    +Matrix viewportMatrix() const
 }
 abstract class Material {
-    Colour visit(Material mat, Vector in, Vector out, Vector normal, Vector colour)
+    Colour eval(const Material& mat, Vector in, Vector out, Vector normal, Vector X,
+    Vector Y, Colour matColour, Colour lightColour);
+    Colour evaluateLights(const Material& mat, Vector out, Vector normal, Vector X,
+    Vector Y, Colour matColour, Vector position, std::vector<PointLight> lights);
 }
 class DisneyBSDF {
     +double roughness
@@ -310,8 +322,11 @@ namespace util {
     class Colour {    
         Colour operator+-*/(const Colour& other) const;
         Colour operator+-*/(double other) const;
+
+        static Colour normalise(Colour c)
+        static Colour denormalise(Colour c)
     
-        static Colour red(), green(), blue(), cyan(), magenta(), yellow();
+        static Colour white(), red(), green(), blue(), cyan(), magenta(), yellow();
     }
 }
 
