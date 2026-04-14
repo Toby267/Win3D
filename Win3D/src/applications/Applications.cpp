@@ -105,15 +105,15 @@ void Apps::objectsApp(RenderType type) {
     /* ----------------------------------------- scene ----------------------------------------- */
 
     Mesh* head = scene.addObject(Wavefront::loadWavefront("head_17684.obj", Colour::white() * 0.6));
-    head->setTranslation(Matrix::translate(-225, -60, 800));
+    head->setTranslation(Matrix::translate(-225, -60, 700));
     head->setRotation(Matrix::rotation(0, -std::numbers::pi/8, std::numbers::pi));
 
     Mesh* teapot = scene.addObject(Wavefront::loadWavefront("teapot_15404.obj", Colour::white() * 0.6));
-    teapot->setTranslation(Matrix::translate(25, -50, 1000));
+    teapot->setTranslation(Matrix::translate(25, -50, 900));
     teapot->setRotation(Matrix::rotation(0, -std::numbers::pi/8, std::numbers::pi));
 
     Mesh* bunny = scene.addObject(Wavefront::loadWavefront("bunny_21606.obj", Colour::white() * 0.6));
-    bunny->setTranslation(Matrix::translate(275, -50, 1000));
+    bunny->setTranslation(Matrix::translate(275, -50, 900));
     bunny->setRotation(Matrix::rotation(0, -std::numbers::pi/8, std::numbers::pi));
 
     scene.addLight(PointLight(Vector(1100, -100, 0), Colour{255, 55, 55}));
