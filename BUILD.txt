@@ -8,6 +8,24 @@ To build:
 cd Win3D
 cmake --build build
 
+To setup:
+go to settings.hpp to change the configuration
+
 To run:
+
 cd Win3D
 ./bin/ChessEngine
+
+or
+cd Win3D
+./bin/Win3D <meshPath> <width> <height> <renderType>
+
+or
+cd Win3D
+./bin/Win3D <scene> <renderType>
+
+where:
+<scene> is the ID of a hardcoded scene form the following: bunny, triangle, 
+<meshPath> is the filepath of the mesh to be rendered in the resources folder ignoring ".obj"
+<width> and <height> are the width and height of the screen
+<renderType> is the pipeline to be rendered out of: "-t" for ray tracing and "-r" for rasterization

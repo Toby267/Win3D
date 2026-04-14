@@ -6,7 +6,8 @@
 
 /*
 scenes:
-- bunny1440_400_trace
+- bunny
+- triangle
 */
 
 /*
@@ -33,7 +34,7 @@ int main(int argc, char *argv[]) {
     else if (argc == 3) {
         // one of the hardcoded scenes
         std::string scene = argv[1];
-        RenderType type = ((std::string)argv[2] == "tracer") ? RenderType::RAY_TRACER : RenderType::RASTERIZER;
+        RenderType type = ((std::string)argv[2] == "-t") ? RenderType::RAY_TRACER : RenderType::RASTERIZER;
         if (scene == "bunny") {
             Apps::bunnyApp(type);
         }
@@ -46,7 +47,7 @@ int main(int argc, char *argv[]) {
         std::string mesh = argv[1];
         int width = std::stoi(argv[2]);
         int height = std::stoi(argv[3]);
-        RenderType type = ((std::string)argv[4] == "tracer") ? RenderType::RAY_TRACER : RenderType::RASTERIZER;
+        RenderType type = ((std::string)argv[4] == "-t") ? RenderType::RAY_TRACER : RenderType::RASTERIZER;
         
         Apps::speedTestApp(width, height, type, mesh);
     }

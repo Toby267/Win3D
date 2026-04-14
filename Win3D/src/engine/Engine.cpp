@@ -4,9 +4,7 @@
 #include "engine/Window.hpp"
 #include "renderer/Renderer.hpp"
 #include "scene/core/Scene.hpp"
-#include <string>
-
-#define SAVE_IMAGE
+#include "settings.hpp"
 
 Engine::Engine(int w, int h, RenderType r)
     : scene(w, h), window(w, h), bitmap(w, h), renderType(r)
@@ -41,6 +39,7 @@ void Engine::drawCall() {
     window.update(bitmap.getFrameBuffer());
 
     #ifdef SAVE_IMAGE
+    #include <string>
     bitmap.saveAsPPM("frame" + std::to_string(framesRendered) + ".ppm");
     #endif
 }
