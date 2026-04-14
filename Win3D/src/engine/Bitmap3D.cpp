@@ -2,7 +2,6 @@
 
 #include <cassert>
 #include <cfloat>
-#include <cstdio>
 #include <fstream>
 #include <ios>
 #include <vector>

@@ -22,17 +22,23 @@ features:
 - disney bsdf
 */
 
-//Driver code; inputs are of the form <./bin/Win3D meshPath resolution renderType> or <./bin/Win3D scene> or <./bin/Win3D>
+//Driver code; inputs are of the form <./bin/Win3D meshPath width height renderType> or <./bin/Win3D scene renderType> or <./bin/Win3D>
 int main(int argc, char *argv[]) {
     if (argc == 1) {
         // default scene
-        speedTestApp app{};
-        app.runApp(400, 400, RAY_TRACER, "bunny_1440");
+        bunnySceneApp app{};
+        app.runApp(RAY_TRACER);
 
         return 0;
     }
-    else if (argc == 2) {
+    else if (argc == 3) {
         // one of the hardcoded scenes
+        std::string scene = argv[1];
+        RenderType type = ((std::string)argv[2] == "tracer") ? RenderType::RAY_TRACER : RenderType::RASTERIZER;
+        if (scene == "bunny") {
+            bunnySceneApp app{};
+            app.runApp(RAY_TRACER);
+        }
     }
     else if (argc == 5) {
         // specific custome scene
