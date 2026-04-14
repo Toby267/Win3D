@@ -1,11 +1,11 @@
 To setup for the first time:
-cd Win3D
+cd engine
 mkdir build
 cd build
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
 
 To build:
-cd Win3D
+cd engine
 cmake --build build
 
 To setup:
@@ -13,15 +13,15 @@ go to settings.hpp to change the configuration
 
 To run:
 
-cd Win3D
+cd engine
 ./bin/ChessEngine
 
 or
-cd Win3D
+cd engine
 ./bin/Win3D <meshPath> <width> <height> <renderType>
 
 or
-cd Win3D
+cd engine
 ./bin/Win3D <scene> <renderType>
 
 where:
