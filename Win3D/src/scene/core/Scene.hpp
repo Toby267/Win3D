@@ -6,6 +6,7 @@
 #include "scene/objects/PointLight.hpp"
 #include <vector>
 
+// represents a whole scene including a camera, lights, and meshes, as well as functions for manipulating the scene
 class Scene {
 private:
     std::vector<Mesh*> objects{};

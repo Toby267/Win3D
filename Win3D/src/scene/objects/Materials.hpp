@@ -39,6 +39,7 @@ namespace Mat {
     
     typedef std::variant<DisneyBSDF, DisneyDiffuse> Material;
     
+    // visitor struct for the evaluation functions
     struct evaluateBxDF {
         const Vector& in;       // or light or L
         const Vector& out;      // or camera or V
@@ -51,7 +52,9 @@ namespace Mat {
         Colour operator()(const DisneyDiffuse& material) const;
     };
 
-    Colour eval(const Material& mat, Vector in, Vector out, Vector normal, Vector X, Vector Y, Colour normalisedMatColour, Colour normalisedlightColour);
-
+    // evaluates the rendering equation at a point for a given out direction and light sources
     Colour evaluateLights(const Material& mat, Vector out, Vector normal, Vector X, Vector Y, Colour normalisedMatColour, Vector position, std::vector<PointLight> lights);
+
+    // evaluates the rendering equation at a point for a given out direction and light
+    Colour eval(const Material& mat, Vector in, Vector out, Vector normal, Vector X, Vector Y, Colour normalisedMatColour, Colour normalisedlightColour);
 }

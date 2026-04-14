@@ -23,6 +23,7 @@ Mesh::Mesh(IndexBuffer ib, VertexBuffer vb)
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// returns all the data of the mesh in a std::vector<Triangle> form
 std::vector<Triangle> Mesh::getTriangles() const {
     std::vector<Triangle> triangles;
     triangles.reserve(indexBuffer.size());
@@ -58,6 +59,7 @@ std::vector<Triangle> Mesh::getTriangles() const {
     return triangles;
 }
 
+// transformation setters
 void Mesh::setScale(Matrix s) {
     scale = s;
     affineTransform = translation * rotation * scale;
@@ -78,6 +80,7 @@ void Mesh::setMaterial(Mat::Material m) {
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// transformation functions
 void Mesh::toWorldSpace() {
     for (Vertex& vertex : vertexBuffer) {
         vertex.position = affineTransform * vertex.position;
@@ -103,6 +106,7 @@ void Mesh::transformNormals(Matrix m) {
     }
 }
 
+// reset all data to how it was at creation time
 void Mesh::reset() {
     vertexBuffer = VERTEX_BUFFER;
     indexBuffer = INDEX_BUFFER;
@@ -110,6 +114,7 @@ void Mesh::reset() {
     tree = nullptr;
 }
 
+// perform canonical view volume clipping
 void Mesh::clip() {
     double xMax = vertexBuffer[0].position.x(), yMax = vertexBuffer[0].position.y(), zMax = vertexBuffer[0].position.z();
     double xMin = vertexBuffer[0].position.x(), yMin = vertexBuffer[0].position.y(), zMin = vertexBuffer[0].position.z();
@@ -128,11 +133,11 @@ void Mesh::clip() {
     if (xMax < -1 || yMax < -1 || zMax < -1) indexBuffer.clear();
 }
 
+// ray tracing functions
 void Mesh::createAccelDataStrucutre() {
     std::vector<Triangle> triangles = getTriangles();
     tree = new BvhTree(triangles);
 }
-
 HitRecord Mesh::intersect(const Ray& ray) const {
     HitRecord rec = tree->intersect(ray);
     rec.mat = material;

@@ -2,6 +2,7 @@
 #include "renderer/Camera.hpp"
 #include "renderer/Ray.hpp"
 #include "scene/objects/Mesh.hpp"
+#include "scene/objects/PointLight.hpp"
 #include "util/Util.hpp"
 
 #include <cmath>
@@ -47,6 +48,7 @@ void Scene::addLight(PointLight light) {
     lights.emplace_back(light);
 }
 
+// transforms all meshes to camera space
 void Scene::toCameraSpace() {
     for (Mesh* mesh : objects) {
         mesh->toWorldSpace();
@@ -54,8 +56,12 @@ void Scene::toCameraSpace() {
         mesh->transformNormals(camera.rotationMatrix());
         mesh->createAccelDataStrucutre();
     }
+    for (PointLight light : lights) {
+        light.applyAffineTransform(camera.tranformationMatrix());
+    }
 }
 
+// transforms all meshes to viewport space
 void Scene::toViewportSpace() {
     for (Mesh* mesh : objects) {
         mesh->applyTransform(camera.projectionMatrix());
@@ -64,6 +70,7 @@ void Scene::toViewportSpace() {
     }
 }
 
+// ray scene intersection
 void Scene::intersect(const Ray& ray, HitRecord& record) const {
     for (const Mesh* mesh : objects) {
         HitRecord rec = mesh->intersect(ray);
@@ -77,5 +84,8 @@ void Scene::intersect(const Ray& ray, HitRecord& record) const {
 void Scene::cleanup() {
     for (Mesh* mesh : objects) {
         mesh->reset();
+    }
+    for (PointLight light : lights) {
+        light.reset();
     }
 }

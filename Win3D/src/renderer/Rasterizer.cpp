@@ -38,6 +38,7 @@ void Renderer::rasterize(Bitmap3D& bmap, const Scene& scene) {
  * @param bmap          the bmap to render onto
  */
 static void drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
+    // order vertices
     if (v1.x() > v2.x()) {
         Vector vTemp = v1;
         v1 = v2;
@@ -66,6 +67,7 @@ static void drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour
         c2 = cTemp;
     }
     
+    // calculate gradients and differences
     const double error = 0.01;
     Vector v1ToV2 = v2-v1, v1ToV3 = v3-v1, v2ToV3 = v3-v2;
     Vector dBydx12 = v1ToV2 / (v1ToV2.x() + error);
@@ -89,6 +91,7 @@ static void drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour
     double daBydx23 = c2ToC3.a() / (v2ToV3.x() + error);
 
 
+    // draw the first sub triangle
     for (double x = 0; x < v1ToV2.x(); x++) {
         Vector vertex1 = v1 + Vector(x, dBydx12.y() * x, dBydx12.z() * x, 0);
         Vector vertex2 = v1 + Vector(x, dBydx13.y() * x, dBydx13.z() * x, 0);
@@ -96,6 +99,7 @@ static void drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour
         Colour colour2 = c1 + Colour(drBydx13 * x, dgBydx13 * x, dbBydx13 * x, daBydx13 * x);
         drawLine(bmap, vertex1, vertex2, colour1, colour2);
     }
+    // and the second
     for (double x = 0; x < v2ToV3.x(); x++) {
         double x2 = v1ToV2.x() + x;
         Vector vertex1 = v2 + Vector(x, dBydx23.y() * x, dBydx23.z() * x, 0);
@@ -116,6 +120,7 @@ static void drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour
  * @param c1, c2    the colours of the start and end of the line
  */
 static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour c2) {
+    // calculate differences
     int x1 = start.x(), y1 = start.y(), z1 = start.z();
     int x2 = end.x(), y2 = end.y(), z2 = end.z();
 
@@ -126,6 +131,7 @@ static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour
     if (std::abs(dx) > std::abs(dy)) {
         if (dx == 0) return;
 
+        // calculate gradients
         double ySlope = dy / dx;
         double zSlope = dz / dx;
         double rSlope = dr / dx;
@@ -133,6 +139,7 @@ static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour
         double bSlope = db / dx;
         double aSlope = da / dx;
 
+        // calculate intercepts
         int yError = (y1   - ySlope * x1);
         int zError = (z1   - zSlope * x1);
         int rError = (c1.r() - rSlope * x1);
@@ -142,6 +149,7 @@ static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour
 
         int xStep = dx < 0 ? -1 : 1;
 
+        // draw the line
         while (x1 != x2) {
             x1 += xStep;
             y1   = (ySlope * x1) + yError;
@@ -156,6 +164,7 @@ static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour
     else {
         if (dy == 0) return;
 
+        // calculate gradients
         double xSlope = dx / dy;
         double zSlope = dz / dy;
         double rSlope = dr / dy;
@@ -163,6 +172,7 @@ static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour
         double bSlope = db / dy;
         double aSlope = da / dy;
 
+        // calculate intercepts
         int xError = (x1   - xSlope * y1);
         int zError = (z1   - zSlope * y1);
         int rError = (c1.r() - rSlope * y1);
@@ -172,6 +182,7 @@ static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour
 
         int yStep = dy < 0 ? -1 : 1;
 
+        // draw the line
         while (y1 != y2) {
             y1 += yStep;
             x1   = (xSlope * y1) + xError;

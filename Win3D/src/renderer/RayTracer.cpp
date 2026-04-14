@@ -19,6 +19,7 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
     const Camera& camera = scene.getCam();
     const std::vector<PointLight> lights = scene.getLights();
     const int x = camera.screenWidth/2, y = camera.screenHeight/2;
+
     const int total = camera.screenWidth * camera.screenHeight;
     int progress = 0;
 
@@ -30,6 +31,7 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
                 Vector(i, j, camera.nearFocalDistance).normalise()
             );
 
+            // ray scene intersection
             HitRecord record;
             record.t = DOUBLE_MAX;
             scene.intersect(ray, record);
@@ -37,24 +39,28 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
             if (record.t != DOUBLE_MAX) {
                 double w = 1 - record.u - record.v;
                 
+                // interpolate barycentric coordinates
                 Vector position    = record.v0     * w + record.v1     * record.u + record.v2     * record.v;
                 Vector normal      = record.n0     * w + record.n1     * record.u + record.n2     * record.v;
                 Colour matColour   = record.c0     * w + record.c1     * record.u + record.c2     * record.v;
                 
+                // calculate other vectors
                 matColour = Colour::normalise(matColour);
                 normal.normalise();
-
                 Vector out = -ray.direction;
 
+                // calculate the orthoganol basis vectors
                 Vector arbitraryLine = normal.x() < 0.9 ? Vector{1, 0, 0} : Vector{0, 1, 0};
                 Vector X = Vector::crossProduct(arbitraryLine, normal).normalise();
                 Vector Y = Vector::crossProduct(normal, X).normalise();
 
+                // shading
                 Colour finalColour = Mat::evaluateLights(record.mat, out, normal, X, Y, matColour, position, lights);
 
                 bmap.setPixel(i+x, camera.screenHeight-(j+y), finalColour);
             }
 
+            // progress bar
             progress++;
             if (progress % 10000 == 0) {
                 double percentage = ((double)progress * 100) / (double)total;

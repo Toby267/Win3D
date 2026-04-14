@@ -9,9 +9,9 @@
 #include "scene/core/SceneUtil.hpp"
 
 /**
- * stores the data of an object. the vertices is just a list of vectors, one per vertex. colours[i] is the colour of vertices[i].
- * triangles[i] stores the first tirangle, where triangle[i][0] is v1, triangle[i][1] is v2, and triangle[i][2] is v3.
- * we'll get to uv maps later
+ * Stores the data of an object, including the vertex buffer, index buffer, bounding volume hierarchy, transformation data, and material
+ * 
+ * has funcitonality for transformations, intersection, and clipping
  */
 class Mesh {
 private:

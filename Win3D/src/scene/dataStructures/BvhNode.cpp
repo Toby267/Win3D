@@ -12,9 +12,6 @@
 #include <sys/types.h>
 #include <vector>
 
-static int sweepSurfaceAreaHeuristic(std::vector<Triangle>& tris, size_t start, size_t end);
-
-#define MAX_DEPTH (10) // unused
 #define MIN_TRIANGLES (2)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,9 +58,6 @@ HitRecord BvhTree::intersect(const Ray& ray) const {
             record.u = u;
             record.v = v;
             record.t = t;
-            // record.v1 = tri.v1;
-            // record.v2 = tri.v2;
-            // record.v3 = tri.v3;
 
             record.c0 = tri.v1.colour;
             record.c1 = tri.v2.colour;
@@ -208,35 +202,4 @@ int BvhNode::getTriangleCount() const {
     if (right) val += right->getTriangleCount();
 
     return val;
-}
-
-int sweepSurfaceAreaHeuristic(std::vector<Triangle>& tris, size_t start, size_t end) {
-    constexpr double MAX = std::numeric_limits<double>::max();
-    
-    float sahMin = MAX;
-    int sahIndex = -1;
-
-    // for each possible split index
-    for (int i = start; i <= end; i++) {
-        float lsa = 0, rsa = 0;
-    
-        for (int i = 0; i < sahIndex; i++) {
-            lsa += tris[i].boundingBox.surfaceArea();
-        }
-        for (int i = sahIndex; i < tris.size(); i++) {
-            rsa += tris[i].boundingBox.surfaceArea();
-        }
-
-        // calculate the surface area heuristic
-        float sah = lsa * sahIndex + rsa * (tris.size()-sahIndex);
-
-        // if better than previous
-        if (sah < sahMin) {
-            sahMin = sah;
-            sahIndex = i;
-        }
-    }
-
-    // return split index
-    return sahIndex;
 }

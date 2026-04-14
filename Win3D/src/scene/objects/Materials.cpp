@@ -10,6 +10,7 @@
 
 // * -------------------------------------- [ POLYMORPHISM STUFF ] --------------------------------------- * //
 
+// evaluates the rendering equation at a point for a given out direction and light sources
 Colour Mat::evaluateLights(const Material& mat, Vector out, Vector normal, Vector X, Vector Y, Colour normalisedMatColour, Vector position, std::vector<PointLight> lights) {
     Colour colourSum = Colour{0, 0, 0, 0};
     
@@ -37,7 +38,7 @@ Colour Mat::evaluateLights(const Material& mat, Vector out, Vector normal, Vecto
     return colour;
 }
 
-// evaluates the rendering equation, ignoring the Le term
+// evaluates the rendering equation at a point for a given out direction and light
 Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Vector X, Vector Y, Colour normalisedMatColour, Colour normalisedlightColour) {
     // calculate the lambert factor in the rendering equation
     double lambert = std::max(0.0, Vector::dotProduct(in, normal));
@@ -99,6 +100,8 @@ Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
 
     return result;
 }
+
+// the following is taken from: https://github.com/wdas/brdf/blob/main/src/brdfs/disney.brdf
 
 Colour Mat::evaluateBxDF::operator()(const DisneyBSDF& mat) const {
     Vector L = in, V = out, N = normal;
