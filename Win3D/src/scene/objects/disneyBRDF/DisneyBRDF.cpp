@@ -4,7 +4,23 @@
 #include <cmath>
 #include <numbers>
 
-// the following is taken from: https://github.com/wdas/brdf/blob/main/src/brdfs/disney.brdf
+// the following is licensed from: https://github.com/wdas/brdf/blob/main/src/brdfs/disney.brdf
+// various modifications have been made to make it congruent with the rest of the codebase
+
+// Copyright Disney Enterprises, Inc.  All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License
+// and the following modification to it: Section 6 Trademarks.
+// deleted and replaced with:
+//
+// 6. Trademarks. This License does not grant permission to use the
+// trade names, trademarks, service marks, or product names of the
+// Licensor and its affiliates, except as required for reproducing
+// the content of the NOTICE file.
+//
+// You may obtain a copy of the License at
+// http://www.apache.org/licenses/LICENSE-2.0
 
 #define mix(a, b, w) (a * (1.0-w) + b * w)
 
