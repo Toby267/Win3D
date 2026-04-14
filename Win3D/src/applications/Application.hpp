@@ -2,12 +2,8 @@
 
 #include "engine/Engine.hpp"
 
-class speedTestApp {
-public:
-    void runApp(int width, int height, RenderType type, std::string meshPath);
-};
-
-class bunnySceneApp {
-public:
-    void runApp(RenderType type);
-};
+namespace Apps {
+    void speedTestApp(int width, int height, RenderType type, std::string meshPath);
+    void bunnyApp(RenderType type);
+    void triangleApp(RenderType type);
+}

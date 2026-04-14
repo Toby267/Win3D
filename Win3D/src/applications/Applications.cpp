@@ -16,7 +16,7 @@
 /**
  * Runs the application
  */
-void speedTestApp::runApp(int width, int height, RenderType type, std::string meshPath) {    
+void Apps::speedTestApp(int width, int height, RenderType type, std::string meshPath) {    
     Engine e{width, height, type};
     Scene& scene = e.getScene();
 
@@ -50,7 +50,7 @@ void speedTestApp::runApp(int width, int height, RenderType type, std::string me
     std::cout << "fps: " << fps << "\tT = " << timePeriod << '\n';
 }
 
-void bunnySceneApp::runApp(RenderType type) {
+void Apps::bunnyApp(RenderType type) {
     Engine e{800, 600, type};
     Scene& scene = e.getScene();
 
@@ -60,6 +60,24 @@ void bunnySceneApp::runApp(RenderType type) {
     cube1->setScale(Matrix::scale(200, 200, 200));
     cube1->setTranslation(Matrix::translate(-50, -100, 1000));
     cube1->setRotation(Matrix::rotation(0, -std::numbers::pi/8, -std::numbers::pi));
+
+    scene.addLight(PointLight(Vector(1100, 0, 0), Colour{255, 55, 55}));
+    scene.addLight(PointLight(Vector(-1100, 0, 0), Colour{55, 255, 55}));
+
+    /* ----------------------------------------- rendering ----------------------------------------- */
+
+    e.drawCall();
+}
+
+void Apps::triangleApp(RenderType type) {
+    Engine e{800, 600, type};
+    Scene& scene = e.getScene();
+
+    /* ----------------------------------------- scene ----------------------------------------- */
+
+    Mesh* cube1 = scene.addObject(Mesh::triangle());
+    cube1->setScale(Matrix::scale(250, 500, 200));
+    cube1->setTranslation(Matrix::translate(0, -250, 1000));
 
     scene.addLight(PointLight(Vector(1100, 0, 0), Colour{255, 55, 55}));
     scene.addLight(PointLight(Vector(-1100, 0, 0), Colour{55, 255, 55}));

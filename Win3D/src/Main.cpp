@@ -26,8 +26,7 @@ features:
 int main(int argc, char *argv[]) {
     if (argc == 1) {
         // default scene
-        bunnySceneApp app{};
-        app.runApp(RAY_TRACER);
+        Apps::bunnyApp(RAY_TRACER);
 
         return 0;
     }
@@ -36,8 +35,10 @@ int main(int argc, char *argv[]) {
         std::string scene = argv[1];
         RenderType type = ((std::string)argv[2] == "tracer") ? RenderType::RAY_TRACER : RenderType::RASTERIZER;
         if (scene == "bunny") {
-            bunnySceneApp app{};
-            app.runApp(RAY_TRACER);
+            Apps::bunnyApp(type);
+        }
+        else if (scene == "triangle") {
+            Apps::triangleApp(type);
         }
     }
     else if (argc == 5) {
@@ -47,8 +48,7 @@ int main(int argc, char *argv[]) {
         int height = std::stoi(argv[3]);
         RenderType type = ((std::string)argv[4] == "tracer") ? RenderType::RAY_TRACER : RenderType::RASTERIZER;
         
-        speedTestApp app{};
-        app.runApp(width, height, type, mesh);
+        Apps::speedTestApp(width, height, type, mesh);
     }
     else {
         std::cerr << "Invalid number of arguments" << '\n';

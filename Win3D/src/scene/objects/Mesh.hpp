@@ -74,4 +74,7 @@ public:
 
     //operator overloads
     friend std::ostream& operator<<(std::ostream& os, const Mesh& matrix);
+
+    // static methods
+    static Mesh* triangle();
 };

@@ -172,3 +172,40 @@ std::ostream& operator<<(std::ostream& os, const Mesh& obj) {
 
     return os;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Mesh* Mesh::triangle() {
+    std::vector<Vector> vertices;
+    std::vector<Colour> colours;
+    std::vector<Vector> normals;
+    std::vector<double> us, vs;
+
+    VertexBuffer vertexBuffer;
+    IndexBuffer indexBuffer;
+
+    vertices.emplace_back( -1.000000, 0.000000, 1.000000, 1 );
+    vertices.emplace_back( 0.000000, 1.000000, 1.000000, 1 );
+    vertices.emplace_back( 1.000000, 0.000000, 1.000000, 1 );
+
+    colours.emplace_back(Colour::red());
+    colours.emplace_back(Colour::green());
+    colours.emplace_back(Colour::blue());
+    
+    normals.emplace_back( 0.0, 0.0, -0.1 );
+    normals.emplace_back( 0.0, 0.0, -0.1 );
+    normals.emplace_back( 0.0, 0.0, -0.1 );
+
+    us.emplace_back(0.0); vs.emplace_back(0.0);
+    us.emplace_back(0.0); vs.emplace_back(0.0);
+    us.emplace_back(0.0); vs.emplace_back(0.0);
+
+    indexBuffer.emplace_back(Index{0, 0, 0, 0}); indexBuffer.emplace_back(Index{1, 1, 1, 1}); indexBuffer.emplace_back(Index{2, 2, 2, 2});//done
+
+    for (int i = 0; i < normals.size(); i++)
+        vertexBuffer.emplace_back(vertices[i], colours[i], normals[i], us[i], vs[i]);
+    
+    return new Mesh(indexBuffer, vertexBuffer);
+}
