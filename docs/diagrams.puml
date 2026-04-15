@@ -102,16 +102,16 @@ class Engine {
     -Bitmap3D bitmap
     +Scene& getScene()
     +void drawCall()
+    +void closeWindow()
 }
 class Window {
     -int width
     -int height
     -unsigned char* frameBuffer
-    -std::thread thread
     +void update(const std::vector<unsigned char>& renderBuffer)
     +bool isAlive() const
     +void close()
-    -void run(unsigned char* bmap, int width, int height)
+    -bool run(unsigned char* bmap, int width, int height)
 }
 class Bitmap3D {
     -int width
