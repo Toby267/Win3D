@@ -5,6 +5,7 @@
 #include "scene/objects/PointLight.hpp"
 #include "scene/core/Scene.hpp"
 #include "util/Util.hpp"
+#include "settings.hpp"
 #include <iostream>
 #include <limits>
 #include <vector>
@@ -20,8 +21,10 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
     const std::vector<PointLight> lights = scene.getLights();
     const int x = camera.screenWidth/2, y = camera.screenHeight/2;
 
+    #ifdef PROGRESS_BAR
     const int total = camera.screenWidth * camera.screenHeight;
     int progress = 0;
+    #endif
 
     //loop through each pixel of the window
     for (int i = -x; i < x; i++) {
@@ -60,12 +63,14 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
                 bmap.setPixel(i+x, camera.screenHeight-(j+y), finalColour);
             }
 
+            #ifdef PROGRESS_BAR
             // progress bar
             progress++;
             if (progress % 10000 == 0) {
                 double percentage = ((double)progress * 100) / (double)total;
                 std::cout << percentage << "%" << " done" << '\n';
             }
+            #endif
         }
     }
 }
