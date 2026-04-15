@@ -1,5 +1,6 @@
 #pragma once
 
+#include <future>
 #include <thread>
 #include <vector>
 
@@ -15,7 +16,7 @@ private:
 
     std::atomic<bool> hasUpdated;
     std::atomic<bool> alive;
-    std::thread thread;
+    std::future<bool> isDeadFlag;
 
 public:
     //constructors/destructor
@@ -28,5 +29,5 @@ public:
 
 private:
     //private methods
-    void run(unsigned char* bmap, int width, int height);
+    bool run(unsigned char* bmap, int width, int height);
 };

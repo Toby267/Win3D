@@ -2,7 +2,7 @@
 
 #include "raylib.h"
 #include <algorithm>
-#include <thread>
+#include <future>
 #include <unistd.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -16,8 +16,10 @@ Window::Window(int w, int h) {
     hasUpdated.store(false);
     alive.store(true);
     frameBuffer = new unsigned char[width*height*4];
-    
-    thread = std::thread(&Window::run, this, &frameBuffer[0], width, height);
+
+    isDeadFlag = std::async(std::launch::async, [this](){
+        return run(&frameBuffer[0], width, height);
+    });
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,7 +40,8 @@ bool Window::isAlive() const {
 
 //closes the window
 void Window::close() {
-    thread.join();
+    // thread.join();
+    alive.store(false);
     delete[] frameBuffer;
 }
 
@@ -47,7 +50,7 @@ void Window::close() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //used to constantly render a bitmap pointer onto the screen via raylib
-void Window::run(unsigned char* bmap, int width, int height) {
+bool Window::run(unsigned char* bmap, int width, int height) {
     Image img = {0};
     img.data = bmap;
     img.format = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
@@ -74,5 +77,5 @@ void Window::run(unsigned char* bmap, int width, int height) {
     }
     
     CloseWindow();
-    alive.store(false);
+    return true;
 }

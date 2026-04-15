@@ -45,6 +45,10 @@ void Apps::speedTestApp(int width, int height, RenderType type, std::string mesh
     double fps = frames / duration.count();
     double timePeriod = duration.count() / frames;
     std::cout << "fps: " << fps << "\tT = " << timePeriod << '\n';
+
+    std::cout << "Press any key to close: ";
+    std::cin.get();
+    e.closeWindow();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,7 +72,9 @@ void Apps::bunnyApp(RenderType type) {
     /* --------------------------------------- rendering --------------------------------------- */
 
     e.drawCall();
+    std::cout << "Press any key to close: ";
     std::cin.get();
+    e.closeWindow();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +97,9 @@ void Apps::triangleApp(RenderType type) {
     /* --------------------------------------- rendering --------------------------------------- */
 
     e.drawCall();
+    std::cout << "Press any key to close: ";
     std::cin.get();
+    e.closeWindow();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,5 +136,7 @@ void Apps::objectsApp(RenderType type) {
     /* --------------------------------- rendering and testing --------------------------------- */
 
     e.drawCall();
+    std::cout << "Press any key to close: ";
     std::cin.get();
+    e.closeWindow();
 }

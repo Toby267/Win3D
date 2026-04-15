@@ -43,3 +43,7 @@ void Engine::drawCall() {
     bitmap.saveAsPPM("frame" + std::to_string(framesRendered) + ".ppm");
     #endif
 }
+
+void Engine::closeWindow() {
+    window.close();
+}

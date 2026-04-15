@@ -33,4 +33,5 @@ public:
 
     //public methods
     void drawCall();
+    void closeWindow();
 };
