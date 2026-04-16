@@ -14,7 +14,7 @@
 
 // default constructor taking in the screen width and height
 Scene::Scene(int screenWidth, int screenHeight) {
-    //set up camera
+    // set up camera
     camera.position = Vector(0, 0, 0, 1);
     camera.direction = Vector(0, 0, 1, 0);
     camera.up = Vector(0, 1, 0, 0);

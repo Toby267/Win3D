@@ -18,6 +18,8 @@
 // * -------------------------------------------- [ BVH_TREE ] ------------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
+
 // default construction
 BvhTree::BvhTree(std::vector<Triangle>& tris) {
     // can't assume that the bounding boxes have been calculated initially
@@ -37,6 +39,8 @@ BvhTree::~BvhTree() {
     delete root;
     root = nullptr;
 }
+
+// * ---------------------------------------- [ PUBLIC METHODS ] ----------------------------------------- * //
 
 // returns the closest triangle intersection
 HitRecord BvhTree::intersect(const Ray& ray) const {
@@ -79,8 +83,12 @@ HitRecord BvhTree::intersect(const Ray& ray) const {
     return record;
 }
 
-// determines whether a ray intersection a triangle, and at what u, v, & t values it occurs
-// expects the vectors to be vec3
+// * ---------------------------------------- [ PRIVATE METHODS ] ---------------------------------------- * //
+
+/*
+ * Determines whether a ray intersection a triangle, and at what u, v, & t values it occurs
+ * Expects the vectors to be vec3
+ */
 double BvhTree::mollerTrumboreIntersection(const Ray& ray, const Vector& v0, const Vector& v1, const Vector& v2, double& u, double& v) {
     constexpr double epsilon = std::numeric_limits<double>::epsilon();
 
@@ -118,6 +126,8 @@ double BvhTree::mollerTrumboreIntersection(const Ray& ray, const Vector& v0, con
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * -------------------------------------------- [ BVH_NODE ] ------------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 
 // recursively sets up the bvh hierarchy
 BvhNode::BvhNode(std::vector<Triangle>& tris, size_t start, size_t end) {
@@ -163,6 +173,8 @@ BvhNode::~BvhNode() {
     left = nullptr;
     right = nullptr;
 }
+
+// * ---------------------------------------- [ PUBLIC METHODS ] ----------------------------------------- * //
 
 // conducts the recursive intersection algorithm
 void BvhNode::intersect(const Ray& ray, std::vector<Triangle>& tris) const {

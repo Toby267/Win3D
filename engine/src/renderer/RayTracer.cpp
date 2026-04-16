@@ -27,7 +27,7 @@ void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
     int progress = 0;
     #endif
 
-    //loop through each pixel of the window
+    // loop through each pixel of the window
     for (int i = -x; i < x; i++) {
         for (int j = -y; j < y; j++) {
             Ray ray = Ray(

@@ -31,26 +31,26 @@ void Aabb::grow(Vector v) {
 
 // returns whether the ray intersects the bounding box
 bool Aabb::intersect(const Ray& ray) const {
-    //calculate the t intervals
+    // calculate the t intervals
     Vector t0 = (min - ray.origin) / ray.direction;
     Vector t1 = (max - ray.origin) / ray.direction;
 
-    //order the t intervals
+    // order the t intervals
     if (t0.x() > t1.x()) std::swap(t0.x(), t1.x());
     if (t0.y() > t1.y()) std::swap(t0.y(), t1.y());
     if (t0.z() > t1.z()) std::swap(t0.z(), t1.z());
 
-    //if the intervals of x and y don't match, return false
+    // if the intervals of x and y don't match, return false
     t0.x() = t0.x() > t0.y() ? t0.x() : t0.y();
     t1.x() = t1.x() < t1.y() ? t1.x() : t1.y();
     if (t1.x() <= t0.x()) return false;
 
-    //if the intervals of x, y, and z don't match, return false
+    // if the intervals of x, y, and z don't match, return false
     t0.x() = t0.x() > t0.z() ? t0.x() : t0.z();
     t1.x() = t1.x() < t1.z() ? t1.x() : t1.z();
     if (t1.x() <= t0.x()) return false;
 
-    //it is a hit
+    // it is a hit
     return true;
 }
 

@@ -12,12 +12,7 @@ static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Performs rasterization on a vector of objects, assuming they are already in screen space, and renders them on a bitmap/framebuffer
- * 
- * @param objects   the objects to rasterize
- * @param bmap      the bitmap to render onto
- */
+// performs rasterization on a vector of objects, assuming they are already in screen space, and renders them on a bitmap/framebuffer
 void Renderer::rasterize(Bitmap3D& bmap, const Scene& scene) {
     for (Mesh* obj : scene.getObjects()) {
         for (Triangle t : obj->getTriangles()) {
@@ -30,13 +25,7 @@ void Renderer::rasterize(Bitmap3D& bmap, const Scene& scene) {
 // * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Draws a triangle onto a given bitmap, defined by their veritces, and their colours
- * 
- * @param v1, v2, v3    the vertices of the triangle
- * @param c1, c2, c3    the colours of the vertices
- * @param bmap          the bmap to render onto
- */
+// draws a triangle onto a given bitmap, defined by their veritces, and their colours - using the scanline algorithm
 static void drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour c1, Colour c2, Colour c3) {
     // order vertices
     if (v1.x() > v2.x()) {
@@ -110,14 +99,8 @@ static void drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour
     }
 }
 
-/**
- * Draws a line onto a given bitmap, defined by the start and end colours and vectors
- * Implemented the DDA (differential analyser) algorithm
- * 
- * @param start     the coordinate of the start of the line
- * @param end       the coodinate of the end of the line
- * @param c1, c2    the colours of the start and end of the line
- */
+
+// draws a line onto a given bitmap, defined by the start and end colours and vectors - using the DDA algorithm
 static void drawLine(Bitmap3D& bmap, Vector start, Vector end, Colour c1, Colour c2) {
     // calculate differences
     int x1 = start.x(), y1 = start.y(), z1 = start.z();

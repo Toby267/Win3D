@@ -7,7 +7,7 @@
 #include <string>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// * ------------------------------- [ CONSTRUCTORS/DESCTUCTOR/RULE OF 5 ] ------------------------------- * //
+// * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Vector::Vector(int length) : length(length) {}
@@ -199,7 +199,7 @@ Vector Vector::max() {
     return Vector(MAX, MAX, MAX);
 }
 
-//aka vector product
+// returns the corss product/vector product between two vectors
 Vector Vector::crossProduct(const Vector& lhs, const Vector& rhs) {
     //
     //  | a |   | d |   |  (bf - ce) |    | (bf - ce) |
@@ -212,6 +212,8 @@ Vector Vector::crossProduct(const Vector& lhs, const Vector& rhs) {
     vector[2] = lhs[0] * rhs[1] - lhs[1] * rhs[0];
     return vector;
 }
+
+// returns the dot product between two vectors
 double Vector::dotProduct(const Vector& lhs, const Vector& rhs) {
     double retVal = 0;
     
@@ -221,11 +223,16 @@ double Vector::dotProduct(const Vector& lhs, const Vector& rhs) {
     return retVal;
 }
 
-//assumes the vectors origin is the world origin
+/*
+ * Returns the normalised cross product between two vectors
+ * Assumes the vectors origin is the world origin
+ */
 Vector Vector::unitNormal(const Vector& lhs, const Vector& rhs) {
     Vector retVal = crossProduct(lhs, rhs);
     return retVal / retVal.magnitude();
 }
+
+// returns the cos of the angle between two vectors
 double Vector::cosAngle(const Vector& lhs, const Vector& rhs) {
     return dotProduct(lhs, rhs) / (lhs.magnitude() * rhs.magnitude());
 }

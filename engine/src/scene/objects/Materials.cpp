@@ -8,7 +8,9 @@
 
 #define EXPOSURE 4
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * -------------------------------------- [ POLYMORPHISM STUFF ] --------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // evaluates the rendering equation at a point for a given out direction and light sources
 Colour Mat::evaluateLights(const Material& mat, Vector out, Vector normal, Vector X, Vector Y, Colour normalisedMatColour, Vector position, std::vector<PointLight> lights) {
@@ -53,7 +55,9 @@ Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Vect
     return reflected;
 }
 
-// * ---------------------------------------- [ MATERIALS ] ----------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ------------------------------------------- [ MATERIALS ] ------------------------------------------- * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // disney diffuse brdf implementation
 Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
@@ -63,7 +67,7 @@ Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
     double cosOut = std::abs(Vector::dotProduct(normal, out));
     double hout   = std::abs(Vector::dotProduct(half, out));
 
-    //calculate fBaseDiffuse
+    // calculate fBaseDiffuse
     double fd90 = 0.5 + 2 * mat.roughness * hout * hout;
 
     double fdIn = std::pow((1 - cosIn), 5);
@@ -74,7 +78,7 @@ Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
 
     Colour fBaseDiffuse = baseColour * std::numbers::inv_pi * fdIn * fdOut * cosOut;
     
-    //calculate fSubsurface
+    // calculate fSubsurface
     double fss90 = mat.roughness * hout * hout;
 
     double fssIn = std::pow((1 - cosIn), 5);
@@ -87,7 +91,7 @@ Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
     double term = (1 / (cosIn + cosOut)) - 0.5;
     fSubsurface = fSubsurface * (fssIn * fssOut * term + 0.5) * cosOut;
     
-    //calculate result
+    // calculate result
     Colour result = fBaseDiffuse * (1 - mat.subsurface) + fSubsurface * mat.subsurface;
 
     return result;

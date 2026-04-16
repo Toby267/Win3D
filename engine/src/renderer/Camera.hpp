@@ -27,7 +27,7 @@ struct Camera {
     int screenWidth;
     int screenHeight;
 
-    // methods
+    // public methods
     Matrix tranformationMatrix() const;
     Matrix rotationMatrix() const;
     Matrix projectionMatrix() const;

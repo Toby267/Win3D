@@ -6,6 +6,10 @@
 #include "scene/core/Scene.hpp"
 #include "settings.hpp"
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // default constructor taking in the widht, height and render pipeline type
 Engine::Engine(int w, int h, RenderType r)
     : scene(w, h), window(w, h), bitmap(w, h), renderType(r)

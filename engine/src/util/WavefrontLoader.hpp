@@ -3,7 +3,6 @@
 #include "scene/objects/Mesh.hpp"
 #include "util/Util.hpp"
 
-// namespace for handling .obj files
 /**
  * Namespace for all wavefront/.obj file handling functions
  */

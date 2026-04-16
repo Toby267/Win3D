@@ -6,7 +6,6 @@
 #include <cstddef>
 #include <vector>
 
-// represents a single bounding volume hierarchy node
 /**
  * Class representing a single bounding volume hierarchy node
  *
