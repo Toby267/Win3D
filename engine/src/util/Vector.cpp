@@ -188,7 +188,9 @@ std::ostream& operator<<(std::ostream& os, const Vector& vector) {
 // * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// static methods for the minimum and maximum possible vectors
 Vector Vector::min() {
+    // uses lowest() instead of min() so that -min() works
     constexpr double MIN = std::numeric_limits<double>::lowest();
     return Vector(MIN, MIN, MIN);
 }

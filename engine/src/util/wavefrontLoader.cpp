@@ -72,6 +72,7 @@ Mesh* Wavefront::loadWavefront(std::string path, Colour colour) {
         }
     }
 
+    // convert data to index and vertex buffers
     vertexBuffer.reserve(us.size());
 
     for (int i = 0; i < normals.size(); i++)
@@ -79,7 +80,9 @@ Mesh* Wavefront::loadWavefront(std::string path, Colour colour) {
     for (int i = normals.size(); i < us.size(); i++)
         vertexBuffer.emplace_back(Vector{-1, -1, -1, -1}, Colour{-1, -1, -1, -1}, Vector{-1, -1, -1}, us[i], vs[i]);
 
+    // close file
     obj.close();
 
+    // return
     return new Mesh(indexBuffer, vertexBuffer);
 }

@@ -8,19 +8,7 @@
 scenes:
 - bunny
 - triangle
-*/
-
-/*
-features:
-- dynamic scenes
-- raster renderer /w triangle colour interpolation
-- ray casting renderer /w shading from the rendering equation
-- bvh optimisation
-- bxdf material system
-- reinhard tone mapping
-- exposure scaling
-- mutliple light source functionality
-- disney bsdf
+- objects
 */
 
 //Driver code; inputs are of the form <./bin/Win3D meshPath width height renderType> or <./bin/Win3D scene renderType> or <./bin/Win3D>
@@ -28,8 +16,6 @@ int main(int argc, char *argv[]) {
     if (argc == 1) {
         // default scene
         Apps::bunnyApp(RAY_TRACER);
-
-        return 0;
     }
     else if (argc == 3) {
         // one of the hardcoded scenes

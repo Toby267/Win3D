@@ -12,12 +12,7 @@
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Default constructor
- *
- * @param width     the width of the bitmap
- * @param height    the height of the bitmap
- */
+// Default constructor taking in the width and height
 Bitmap3D::Bitmap3D(int w, int h)
     : width(w), height(h)
 {
@@ -29,7 +24,7 @@ Bitmap3D::Bitmap3D(int w, int h)
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//clears the bitmap
+// clears the bitmap
 void Bitmap3D::clear() {
     for (int i = 0; i < width*height; i++) {
         zBuffer[i] = DBL_MAX;
@@ -41,7 +36,7 @@ void Bitmap3D::clear() {
     }
 }
 
-//draws a pixel onto the frame buffer
+// draws a pixel onto the frame buffer
 void Bitmap3D::drawPixel(int x, int y, int z, Colour c) {
     if (x >= width || x < 0 || y >= height || y < 0) return;
     z += 20000;

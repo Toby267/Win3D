@@ -12,10 +12,14 @@
 // * ------------------------------- [ CONSTRUCTORS/DESCTUCTOR/RULE OF 5 ] ------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Matrix::Matrix(int r, int c) : rows(r), columns(c) {}
+Matrix::Matrix(int r, int c)
+    : rows(r), columns(c)
+{}
 
-//const reference so that im not copying each vector in the array
-Matrix::Matrix(int r, const Vector (&a)[]) : rows(r), columns(a[0].getLength()) {
+// const reference so that im not copying each vector in the array
+Matrix::Matrix(int r, const Vector (&a)[])
+    : rows(r), columns(a[0].getLength())
+{
     for (int i = 0; i < r; i++)
         data[i] = a[i];
 }
@@ -31,6 +35,7 @@ int Matrix::getRows() const {
     return rows;
 }
 
+// returns a new 3x3 matrix from the upper left 3x3 part of the 4x4 matrix
 Matrix Matrix::asMat3(Matrix& m) {
     return Matrix(3, (Vector[]) {
         Vector{m.data[0][0], m.data[0][1], m.data[0][2]},
@@ -97,6 +102,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
 // * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// standard affine transformations
 Matrix Matrix::translate(double x, double y, double z) {
     return Matrix(4, (Vector[]){
         Vector{1, 0, 0, x},
@@ -194,7 +200,7 @@ Matrix Matrix::perspective(double n, double f, double aspect, double fov) {
     });
 }
 
-//returns a matrix that transforms objects to a view assuming the cameria is at position position, looking down direction, and its up is up
+// returns a matrix that transforms objects to a view assuming the cameria is at position position, looking down direction, and its up is up
 Matrix Matrix::changeOfBasis(const Vector& position, const Vector& direction, const Vector& up) {    
     Vector rightBasis = -Vector::unitNormal(direction, up);
     Vector upBasis    = Vector::unitNormal(direction, rightBasis);

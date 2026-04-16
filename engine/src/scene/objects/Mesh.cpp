@@ -13,11 +13,10 @@
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// default constructor taking in the index buffer and vertex buffer
 Mesh::Mesh(IndexBuffer ib, VertexBuffer vb)
     : INDEX_BUFFER(ib), VERTEX_BUFFER(vb), indexBuffer(ib), vertexBuffer(vb)
-{
-
-}
+{}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
@@ -182,6 +181,7 @@ std::ostream& operator<<(std::ostream& os, const Mesh& obj) {
 // * ----------------------------------------- [ STATIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// returns a mesh consisting of a single triangle
 Mesh* Mesh::triangle() {
     std::vector<Vector> vertices;
     std::vector<Colour> colours;

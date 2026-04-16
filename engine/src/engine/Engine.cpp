@@ -6,17 +6,16 @@
 #include "scene/core/Scene.hpp"
 #include "settings.hpp"
 
+// default constructor taking in the widht, height and render pipeline type
 Engine::Engine(int w, int h, RenderType r)
     : scene(w, h), window(w, h), bitmap(w, h), renderType(r)
-{
-
-}
+{}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//performs a dracall, drawing a frame into the bitmap
+// performs a dracall, drawing a frame into the bitmap
 void Engine::drawCall() {
     framesRendered++;
     
@@ -44,6 +43,7 @@ void Engine::drawCall() {
     #endif
 }
 
+// closes the window
 void Engine::closeWindow() {
     window.close();
 }

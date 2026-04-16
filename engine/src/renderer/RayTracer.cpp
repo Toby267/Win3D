@@ -14,6 +14,7 @@
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// renders a frame to the bitmap from the scene using the ray tracing pipeline
 void Renderer::rayTrace(Bitmap3D& bmap, const Scene& scene) {
     constexpr double DOUBLE_MAX = std::numeric_limits<double>::max();
     

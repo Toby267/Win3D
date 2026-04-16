@@ -7,11 +7,11 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdlib>
-#include <iostream>
 #include <limits>
 #include <sys/types.h>
 #include <vector>
 
+// defines the minimum number of triangles per leaf node
 #define MIN_TRIANGLES (2)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,9 +28,11 @@ BvhTree::BvhTree(std::vector<Triangle>& tris) {
         t.boundingBox.grow(t.v3.position);
     }
 
+    // start the recursive construction algorithm
     root = new BvhNode(tris, 0, tris.size()-1);
 }
 
+// destructor
 BvhTree::~BvhTree() {
     delete root;
     root = nullptr;
@@ -54,11 +56,11 @@ HitRecord BvhTree::intersect(const Ray& ray) const {
         double u, v, t;
         t = mollerTrumboreIntersection(ray, Vector::asVec3(tri.v1.position), Vector::asVec3(tri.v2.position), Vector::asVec3(tri.v3.position), u, v);
 
+        // if is intersection, and is closer
         if (t != -1 && t < record.t) {
             record.u = u;
             record.v = v;
             record.t = t;
-
             record.c0 = tri.v1.colour;
             record.c1 = tri.v2.colour;
             record.c2 = tri.v3.colour;
@@ -154,6 +156,7 @@ BvhNode::BvhNode(std::vector<Triangle>& tris, size_t start, size_t end) {
     right = new BvhNode(tris, start+splitIndex+1, end);
 }
 
+// destructor
 BvhNode::~BvhNode() {
     if (left) delete left;
     if (right) delete right;
@@ -161,6 +164,7 @@ BvhNode::~BvhNode() {
     right = nullptr;
 }
 
+// conducts the recursive intersection algorithm
 void BvhNode::intersect(const Ray& ray, std::vector<Triangle>& tris) const {
     if (!boundingBox.intersect(ray))
         return;

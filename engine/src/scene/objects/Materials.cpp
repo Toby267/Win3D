@@ -14,6 +14,7 @@
 Colour Mat::evaluateLights(const Material& mat, Vector out, Vector normal, Vector X, Vector Y, Colour normalisedMatColour, Vector position, std::vector<PointLight> lights) {
     Colour colourSum = Colour{0, 0, 0, 0};
     
+    // evaluate the rendeirng equation integral for each light source
     for (const PointLight& L : lights) {
         Colour lightColour = Colour::normalise(L.colour);
         Vector in = (L.position - position).normalise();
@@ -54,6 +55,7 @@ Colour Mat::eval(const Material& mat, Vector in, Vector out, Vector normal, Vect
 
 // * ---------------------------------------- [ MATERIALS ] ----------------------------------------- * //
 
+// disney diffuse brdf implementation
 Colour Mat::evaluateBxDF::operator()(const DisneyDiffuse& mat) const {
     Vector half = in + out; half.normalise();
 

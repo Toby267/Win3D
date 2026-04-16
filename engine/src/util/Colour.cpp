@@ -7,24 +7,17 @@
 
 Colour::Colour(double red, double green, double blue, double alpha)
     : data(red, green, blue, alpha)
-{
-
-}
+{}
 Colour::Colour(double red, double green, double blue)
     : data(red, green, blue, 255)
-{
-
-}
+{}
 Colour::Colour()
     : data(255, 255, 255, 255)
-{
-
-}
+{}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ---------------------------------------- [ GETTERS/SETTERS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 double& Colour::r() {
     return data.x();
@@ -52,6 +45,7 @@ const double& Colour::a() const {
     return data.w();
 }
 
+// converts the range of rgba values from [0, 255] to [0, 1]
 Colour Colour::normalise(Colour c) {
     return Colour(
         c.data.x() / 255,
@@ -60,6 +54,7 @@ Colour Colour::normalise(Colour c) {
         c.data.w() / 255
     );
 }
+// converts the range of rgba values from [0, 1] to [0, 255]
 Colour Colour::denormalise(Colour c) {
     return Colour(
         c.data.x() * 255,

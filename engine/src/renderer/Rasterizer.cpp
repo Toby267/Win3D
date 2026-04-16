@@ -113,7 +113,6 @@ static void drawTriangle(Bitmap3D& bmap, Vector v1, Vector v2, Vector v3, Colour
 /**
  * Draws a line onto a given bitmap, defined by the start and end colours and vectors
  * Implemented the DDA (differential analyser) algorithm
- * TODO: could implement bresenhams algorithm instead
  * 
  * @param start     the coordinate of the start of the line
  * @param end       the coodinate of the end of the line

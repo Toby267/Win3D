@@ -12,6 +12,7 @@
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// default constructor taking in the screen width and height
 Scene::Scene(int screenWidth, int screenHeight) {
     //set up camera
     camera.position = Vector(0, 0, 0, 1);
@@ -30,6 +31,7 @@ Scene::Scene(int screenWidth, int screenHeight) {
     camera.fieldOfView = std::atan(camera.apperatureHeight / camera.nearFocalDistance);
 }
 
+// destructor
 Scene::~Scene() {
     for (Mesh* mesh : objects) {
         delete mesh;
@@ -40,10 +42,10 @@ Scene::~Scene() {
 // * ----------------------------------------- [ PUBLIC METHODS ] ---------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// methods for registering objects and lights
 Mesh* Scene::addObject(Mesh* mesh) {
     return objects.emplace_back(mesh);
 }
-
 void Scene::addLight(PointLight light) {
     lights.emplace_back(light);
 }
@@ -81,6 +83,7 @@ void Scene::intersect(const Ray& ray, HitRecord& record) const {
     }
 }
 
+// resets all meshes and lights
 void Scene::cleanup() {
     for (Mesh* mesh : objects) {
         mesh->reset();

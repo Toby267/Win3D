@@ -13,6 +13,7 @@
 // * ------------------------------------------ [ speedTestApp ] ----------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// runs a given scene for 10 frames calculating the frame rate and time period
 void Apps::speedTestApp(int width, int height, RenderType type, std::string meshPath) {    
     Engine e{width, height, type};
     Scene& scene = e.getScene();
@@ -55,6 +56,7 @@ void Apps::speedTestApp(int width, int height, RenderType type, std::string mesh
 // * -------------------------------------------- [ bunnyApp ] ------------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// displays the bunny mesh with 86426 triangles, at 800x600 resolution, with two point lights
 void Apps::bunnyApp(RenderType type) {
     Engine e{800, 600, type};
     Scene& scene = e.getScene();
@@ -81,6 +83,7 @@ void Apps::bunnyApp(RenderType type) {
 // * ------------------------------------------ [ triangleApp ] ------------------------------------------ * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// displays the triangle mesh, at 800x600 resolution, where each vertex is a red, green, and blue, and the colours are interpolated on the raster engine
 void Apps::triangleApp(RenderType type) {
     Engine e{800, 600, type};
     Scene& scene = e.getScene();
@@ -106,6 +109,7 @@ void Apps::triangleApp(RenderType type) {
 // * ------------------------------------------ [ objectsApp ] ------------------------------------------- * //
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// dispalys the head, teapot, and bunny meshes with a total of 54694 triangles, at 1000x500 resolution, with six point lights
 void Apps::objectsApp(RenderType type) {
     Engine e{1000, 500, type};
     Scene& scene = e.getScene();
@@ -133,7 +137,7 @@ void Apps::objectsApp(RenderType type) {
     scene.addLight(PointLight(Vector(1100, 200, 900), Colour{255, 55, 55}));
     scene.addLight(PointLight(Vector(-1100, 200, 900), Colour{55, 255, 55}));
 
-    /* --------------------------------- rendering and testing --------------------------------- */
+    /* --------------------------------------- rendering --------------------------------------- */
 
     e.drawCall();
     std::cout << "Press any key to close: ";
