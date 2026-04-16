@@ -77,14 +77,6 @@ HitRecord BvhTree::intersect(const Ray& ray) const {
     return record;
 }
 
-void BvhTree::print() const {
-    root->print();
-}
-
-void BvhTree::printTriangleCount() const {
-    std::cout << "triangle count: " << root->getTriangleCount() << '\n';
-}
-
 // determines whether a ray intersection a triangle, and at what u, v, & t values it occurs
 // expects the vectors to be vec3
 double BvhTree::mollerTrumboreIntersection(const Ray& ray, const Vector& v0, const Vector& v1, const Vector& v2, double& u, double& v) {
@@ -182,24 +174,4 @@ void BvhNode::intersect(const Ray& ray, std::vector<Triangle>& tris) const {
     // if non-leaf node
     if (left) left->intersect(ray, tris);
     if (right) right->intersect(ray, tris);
-}
-
-void BvhNode::print() const {
-    std::cout << "aabb: " << boundingBox.min << ", " << boundingBox.max << '\n';
-    
-    for (const Triangle& t : triangles)
-        std::cout << "triangle\t";
-    std::cout << '\n';
-    
-    if (left) left->print();
-    if (right) right->print();
-}
-
-int BvhNode::getTriangleCount() const {
-    int val = triangles.size();
-
-    if (left) val += left->getTriangleCount();
-    if (right) val += right->getTriangleCount();
-
-    return val;
 }

@@ -17,13 +17,13 @@ private:
     std::vector<double> zBuffer;
 
 public:
-    //constructors/destructor
+    // constructors/destructor
     Bitmap3D(int width, int height);
 
-    //getters/setters
+    // getters/setters
     const std::vector<unsigned char>& getFrameBuffer() const { return frameBuffer; };
 
-    //public methods
+    // public methods
     void clear();
     void drawPixel(int x, int y, int z, Colour colour);
     void setPixel(int x, int y, Colour colour);

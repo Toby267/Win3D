@@ -15,22 +15,25 @@
  */
 class Mesh {
 private:
+    // original copies of buffers
     const VertexBuffer VERTEX_BUFFER;
     const IndexBuffer INDEX_BUFFER;
 
+    // buffers that are modified during rendering
     IndexBuffer indexBuffer;
     VertexBuffer vertexBuffer;
 
+    // acceleration data structures
     BvhTree* tree = nullptr;
 
+    // transformations
     Matrix scale       = Matrix::scale(100, 100, 100);
     Matrix translation = Matrix::translate(0, 0, 0);
     Matrix rotation    = Matrix::rotation(0, 0, 0);
 
     Matrix affineTransform = translation * scale * rotation;
 
-    // Mat::Material material = Mat::DisneyDiffuse{0.5, 0.5};
-    // Mat::Material material = Mat::DisneyMetal{0.7, 0.5};
+    // material
     Mat::Material material = Mat::DisneyBSDF{
         0.4,    // roughness
         0.0,    // subsurface
@@ -40,15 +43,15 @@ private:
         0.7,    // metallic
         1.0,    // specular
         0.2,    // specularTint
-        1,    // clearcoat
-        1,    // clearcoatGloss
+        1.0,    // clearcoat
+        1.0,    // clearcoatGloss
     };
 
 public:
-    //constructors/destructor
+    // constructors/destructor
     Mesh(IndexBuffer indexBuffer, VertexBuffer vertexBuffer);
 
-    //getters/setters
+    // getters/setters
     std::vector<Triangle> getTriangles() const;
 
     void setScale(Matrix scale);
@@ -56,21 +59,21 @@ public:
     void setRotation(Matrix rotation);
     void setMaterial(Mat::Material material);
 
-    //general public methods
+    // general public methods
     void toWorldSpace();
     void applyAffineTransform(Matrix matrix);
     void applyTransform(Matrix matrix);
     void transformNormals(Matrix matrix);
     void reset();
 
-    //ray tracing stuff
+    // ray tracing methods
     void createAccelDataStrucutre();
     HitRecord intersect(const Ray& ray) const;
 
-    //raster stuff
+    // raster methods
     void clip();
 
-    //operator overloads
+    // operator overloads
     friend std::ostream& operator<<(std::ostream& os, const Mesh& matrix);
 
     // static methods

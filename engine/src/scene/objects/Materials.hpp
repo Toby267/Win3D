@@ -5,6 +5,9 @@
 #include <variant>
 #include <vector>
 
+/**
+ * Namespace for all bxdf materials and material evaluation functions
+ */
 namespace Mat {
     // * ------------------------------------------- [ MATERIALS ] ------------------------------------------- * //
 
@@ -35,16 +38,17 @@ namespace Mat {
 
     // * -------------------------------------- [ POLYMORPHISM STUFF ] --------------------------------------- * //
     
+    // variant defining all materials
     typedef std::variant<DisneyBSDF, DisneyDiffuse> Material;
     
     // visitor struct for the evaluation functions
     struct evaluateBxDF {
-        const Vector& in;       // or light or L
-        const Vector& out;      // or camera or V
-        const Vector& normal;   // or N
-        const Vector& X;        // orthoganol basis vectors
-        const Vector& Y;        // orthoganol basis vectors
-        const Colour& baseColour;
+        const Vector& in;           // or light or L
+        const Vector& out;          // or camera or V
+        const Vector& normal;       // or N
+        const Vector& X;            // orthoganol basis vectors
+        const Vector& Y;            // orthoganol basis vectors
+        const Colour& baseColour;   // colour of the material
     
         Colour operator()(const DisneyBSDF& material) const;
         Colour operator()(const DisneyDiffuse& material) const;

@@ -7,6 +7,12 @@
 #include <vector>
 
 // represents a single bounding volume hierarchy node
+/**
+ * Class representing a single bounding volume hierarchy node
+ *
+ * Stores its containing aabb, and either pointers to its child nodes or triangles stored
+ * Has funcitonality for intersection
+ */
 class BvhNode {
 private:
     Aabb boundingBox = Aabb();
@@ -17,12 +23,12 @@ private:
     std::vector<Triangle> triangles;
 
 public:
+    // constructors/destructor
     BvhNode(std::vector<Triangle>& tris, size_t start, size_t end);
     ~BvhNode();
 
+    // public methods
     void intersect(const Ray& ray, std::vector<Triangle>& triangles) const;
-    void print() const;
-    int getTriangleCount() const;
 };
 
 // represents a whole bounding volume hierarchy tree
@@ -33,10 +39,10 @@ private:
     BvhNode* root = nullptr;
 
 public:
+    // constructors/destructor
     BvhTree(std::vector<Triangle>& triangles);
     ~BvhTree();
 
+    // public methods
     HitRecord intersect(const Ray& ray) const;
-    void print() const;
-    void printTriangleCount() const;
 };

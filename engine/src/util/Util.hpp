@@ -2,19 +2,22 @@
 
 #include <ostream>
 
+/**
+ * Class representing a vector of variable length between 1 and 4, and related methods
+ */
 class Vector {
 private:
     double data[4]{};
     int length{4};
 public:
-    //constructors/destructor/rule of 5
+    // constructors/destructor
     Vector() = default;
     Vector(int length);
     Vector(double x, double y);
     Vector(double x, double y, double z);
     Vector(double x, double y, double z, double w);
 
-    //getters/setters
+    // getters/setters
     double& x();
     double& y();
     double& z();
@@ -28,11 +31,11 @@ public:
     int getLength() const;
     double magnitude() const;
 
-    //public methods
+    // public methods
     Vector normalise();
     static Vector asVec3(Vector& v);
 
-    //operator overloads
+    // operator overloads
     double& operator[](int i);
     const double& operator[](int i) const;
 
@@ -51,7 +54,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Vector& vector);
 
-    //static methods
+    // static methods
     static Vector min();
     static Vector max();
 
@@ -62,6 +65,9 @@ public:
     static double cosAngle(const Vector& lhs, const Vector& rhs);
 };
 
+/**
+ * Class representing a matrix of variable length between 1x1 and 4x4, and related methods
+ */
 class Matrix {
 private:
     Vector data[4]{};
@@ -69,18 +75,18 @@ private:
     int columns = 4;
 
 public:
-    //constructors/destructor/rule of 5
+    // constructors/destructor
     Matrix() = default;
     Matrix(int rows, int columns);
     Matrix(int rows, const Vector (&a)[]);
 
-    //getters/setters
+    // getters/setters
     int getColumns() const;
     int getRows() const;
 
     static Matrix asMat3(Matrix& m);
 
-    //operator overloads
+    // operator overloads
     Vector& operator[](int i);
     const Vector& operator[](int i) const;
 
@@ -89,7 +95,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
 
-    //static methods
+    // static methods
     static Matrix translate(double x, double y, double z);
     static Matrix scale(double x, double y, double z);
     static Matrix identity(int size);
@@ -105,16 +111,19 @@ public:
     static Matrix changeOfBasis(const Vector& position, const Vector& direction, const Vector& up);
 };
 
+/**
+ * Class representing an rgba colour, and related methods
+ */
 class Colour {
 private:
     Vector data;
 public:
-    //constructors/destructor
+    // constructors/destructor
     Colour();
     Colour(double red, double green, double blue, double alpha);
     Colour(double red, double green, double blue);
 
-    //getters/setters
+    // getters/setters
     double& r();
     double& g();
     double& b();
@@ -125,11 +134,11 @@ public:
     const double& b() const;
     const double& a() const;
 
-    //public methods
+    // public methods
     static Colour normalise(Colour c);
     static Colour denormalise(Colour c);
 
-    //operator overloads
+    // operator overloads
     Colour operator+(const Colour& other) const;
     Colour operator-(const Colour& other) const;
     Colour operator*(const Colour& other) const;
@@ -144,6 +153,6 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Colour& colour);
 
-    //static methods
+    // static methods
     static Colour white(), red(), green(), blue(), cyan(), magenta(), yellow();
 };

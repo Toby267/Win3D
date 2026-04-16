@@ -4,9 +4,9 @@
 #include <vector>
 
 /**
- * Class representing a raylib window, its byte array, and related data. 
+ * Class representing a raylib window, its byte array, and related data
  *
- * The window has its own thread for drawing to the windows based on the byte array.
+ * The window creates its own thread for drawing to the windows based on the byte array
  */
 class Window {
 private:
@@ -18,15 +18,15 @@ private:
     std::future<bool> isDeadFlag;
 
 public:
-    //constructors/destructor
+    // constructors/destructor
     Window(int width, int height);
 
-    //public methods
+    // public methods
     void update(const std::vector<unsigned char>& renderBuffer);
     bool isAlive() const;
     void close();
 
 private:
-    //private methods
+    // private methods
     bool run(unsigned char* bmap, int width, int height);
 };

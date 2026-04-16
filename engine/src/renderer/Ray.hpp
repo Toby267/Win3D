@@ -3,7 +3,7 @@
 #include "scene/objects//Materials.hpp"
 #include "util/Util.hpp"
 
-// defines a ray as in R(t) = O +tD
+// defines a ray as in: R(t) = O +tD
 struct Ray {
     Vector origin;
     Vector direction;

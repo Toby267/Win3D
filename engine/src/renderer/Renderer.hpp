@@ -21,7 +21,9 @@ viewport space:
     directions:+x=right, +y=down, +z=into the screen
 */
 
-// namespace for all rendering pipelines
+/**
+ * Namespace for all rendering pipelines
+ */
 namespace Renderer {
     void rasterize(Bitmap3D& bmap, const Scene& scene);
     void rayTrace(Bitmap3D& bmap, const Scene& scene);

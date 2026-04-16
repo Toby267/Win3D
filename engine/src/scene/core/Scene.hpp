@@ -6,7 +6,11 @@
 #include "scene/objects/PointLight.hpp"
 #include <vector>
 
-// represents a whole scene including a camera, lights, and meshes, as well as functions for manipulating the scene
+/**
+ * Class representing a whole scene including a camera, lights, and meshes, as well as functions for manipulating the scene
+ *
+ * Once objects are registered with the scene, their ownership is transfered ove to the scene
+ */
 class Scene {
 private:
     std::vector<Mesh*> objects{};
@@ -14,17 +18,17 @@ private:
     Camera camera{};
 
 public:
-    //constructors/destructor
+    // constructors/destructor
     Scene(int screenWidth, int screenHeight);
     Scene() = default;
     ~Scene();
 
-    //getters/setters
+    // getters/setters
     const Camera& getCam() const { return camera; }
     const std::vector<PointLight>& getLights() const { return lights; }
     const std::vector<Mesh*>& getObjects() const { return objects; }
     
-    //public methods
+    // public methods
     Mesh* addObject(Mesh* mesh);
     void addLight(PointLight light);
 

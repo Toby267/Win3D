@@ -4,12 +4,13 @@
 #include "scene/core/SceneUtil.hpp"
 #include "renderer/Ray.hpp"
 
-// represents an axis alligned bounding box
+
+// representing an axis alligned bounding box, and related functions
 struct Aabb {
     Vector min = Vector::max();
     Vector max = Vector::min();
 
-    //public methods
+    // public methods
     void grow(Vector v);
     void grow(Aabb bbox);
 

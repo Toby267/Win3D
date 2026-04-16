@@ -22,5 +22,6 @@ struct Index {
     size_t normal;
 } typedef Index;
 
+// definitions for the index buffer and vertex buffer
 typedef std::vector<Index> IndexBuffer;
 typedef std::vector<Vertex> VertexBuffer;

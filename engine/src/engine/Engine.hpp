@@ -4,15 +4,16 @@
 #include "engine/Window.hpp"
 #include "scene/core/Scene.hpp"
 
+// represents either the rasterization pipeline or ray tracing pipeline
 enum RenderType {
     RASTERIZER,
     RAY_TRACER
 };
 
 /**
- * Class representing the engine, that is used for rendering.
+ * Class representing the engine, that is used for rendering
  *
- * Each engine has its own window and scene.
+ * Each engine has its own window, scene, and bitmap, and uses either rasterization or ray tracing
  */
 class Engine {
 private:
@@ -25,13 +26,13 @@ private:
     int framesRendered = 0;
 
 public:
-    //constructors/destructor
+    // constructors/destructor
     Engine(int width, int height, RenderType renderType);
 
-    //getters/setters
+    // getters/setters
     Scene& getScene() { return scene; };
 
-    //public methods
+    // public methods
     void drawCall();
     void closeWindow();
 };

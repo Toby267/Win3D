@@ -5,29 +5,29 @@
 /**
  * Contains all data related to a vritual camera.
  *
- * The camera can be in any position facing any direction, with any field of view, depth of field, and screen dimensions
+ * The camera can be in any position facing any direction, with any field of view, depth of field, and screen and apperature dimensions
  */
 struct Camera {
-    //position/orientation
+    // position/orientation
     Vector position;
     Vector direction;
     Vector up;
 
-    //projection
+    // projection
     double apperatureWidth;
     double apperatureHeight;
     
     double fieldOfView;
 
-    //depth of field = farFocalDistance - nearFocalDistance
+    // depth of field = farFocalDistance - nearFocalDistance
     double nearFocalDistance;
     double farFocalDistance;
 
-    //viewport
+    // viewport
     int screenWidth;
     int screenHeight;
 
-    //methods
+    // methods
     Matrix tranformationMatrix() const;
     Matrix rotationMatrix() const;
     Matrix projectionMatrix() const;
