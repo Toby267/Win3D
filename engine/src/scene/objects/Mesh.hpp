@@ -4,7 +4,7 @@
 #include "scene/dataStructures/Aabb.hpp"
 #include "scene/core/SceneUtil.hpp"
 #include "scene/dataStructures/BvhNode.hpp"
-#include "scene/objects/Materials.hpp"
+#include "scene/materials/Materials.hpp"
 #include "util/Util.hpp"
 #include "scene/core/SceneUtil.hpp"
 

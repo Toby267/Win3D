@@ -1,6 +1,6 @@
 #pragma once
 
-#include "scene/objects//Materials.hpp"
+#include "scene/materials//Materials.hpp"
 #include "util/Util.hpp"
 
 // defines a ray as in: R(t) = O +tD

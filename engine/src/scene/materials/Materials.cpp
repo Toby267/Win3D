@@ -1,4 +1,4 @@
-#include "scene/objects/Materials.hpp"
+#include "scene/materials/Materials.hpp"
 #include "scene/objects/PointLight.hpp"
 #include "util/Util.hpp"
 #include <algorithm>

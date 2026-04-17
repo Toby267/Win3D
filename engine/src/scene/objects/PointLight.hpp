@@ -3,13 +3,14 @@
 #include "util/Util.hpp"
 
 // represents a single light source
-struct PointLight {
-private:
-    // original position
-    const Vector POSITION;
+class PointLight {
 public:
-    Vector position;
+    // original position
+    Vector POSITION;
     Colour colour;
+
+    // position used by the render for transformations
+    Vector position;
 
     // constructors/destructor
     PointLight(Vector position, Colour colour);

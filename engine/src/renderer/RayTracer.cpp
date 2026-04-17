@@ -1,7 +1,7 @@
 #include "renderer/Renderer.hpp"
 
 #include "renderer/Ray.hpp"
-#include "scene/objects/Materials.hpp"
+#include "scene/materials/Materials.hpp"
 #include "scene/objects/PointLight.hpp"
 #include "scene/core/Scene.hpp"
 #include "util/Util.hpp"
