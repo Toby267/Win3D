@@ -3,7 +3,7 @@
 #include "renderer/Ray.hpp"
 #include "scene/dataStructures/Aabb.hpp"
 #include "scene/core/SceneUtil.hpp"
-#include "scene/dataStructures/BvhNode.hpp"
+#include "scene/dataStructures/BVH.hpp"
 #include "scene/materials/Materials.hpp"
 #include "util/Util.hpp"
 #include "scene/core/SceneUtil.hpp"

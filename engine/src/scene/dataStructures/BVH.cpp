@@ -1,4 +1,4 @@
-#include "scene/dataStructures/BvhNode.hpp"
+#include "scene/dataStructures/BVH.hpp"
 #include "renderer/Ray.hpp"
 #include "scene/core/SceneUtil.hpp"
 #include "scene/dataStructures/Aabb.hpp"

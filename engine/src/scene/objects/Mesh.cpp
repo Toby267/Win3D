@@ -1,6 +1,6 @@
 #include "scene/objects/Mesh.hpp"
 #include "renderer/Ray.hpp"
-#include "scene/dataStructures/BvhNode.hpp"
+#include "scene/dataStructures/BVH.hpp"
 #include "scene/materials/Materials.hpp"
 #include "scene/core/SceneUtil.hpp"
 #include "util/Util.hpp"
