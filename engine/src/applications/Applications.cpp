@@ -6,8 +6,10 @@
 #include "util/Files.hpp"
 #include "scene/objects/Mesh.hpp"
 #include <chrono>
+#include <future>
 #include <iostream>
 #include <numbers>
+#include <thread>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------------ [ speedTestApp ] ----------------------------------------- * //
@@ -42,6 +44,10 @@ void Apps::speedTestApp(int width, int height, RenderType type, std::string mesh
             e->drawCall();
             return true;
         });
+
+        while (complete.wait_for(std::chrono::milliseconds(50)) != std::future_status::ready) {
+            std::this_thread::yield();
+        }
     }
 
     // calcs statistics
@@ -81,7 +87,10 @@ void Apps::bunnyApp(RenderType type) {
         return true;
     });
 
-    while (!complete.get());
+    while (complete.wait_for(std::chrono::milliseconds(50)) != std::future_status::ready) {
+        std::this_thread::yield();
+    }
+
     std::cout << "Press any key to close: ";
     std::cin.get();
     e->closeWindow();
@@ -111,7 +120,10 @@ void Apps::triangleApp(RenderType type) {
         return true;
     });
 
-    while (!complete.get());
+    while (complete.wait_for(std::chrono::milliseconds(50)) != std::future_status::ready) {
+        std::this_thread::yield();
+    }
+
     std::cout << "Press any key to close: ";
     std::cin.get();
     e->closeWindow();
@@ -156,7 +168,10 @@ void Apps::objectsApp(RenderType type) {
         return true;
     });
 
-    while (!complete.get());
+    while (complete.wait_for(std::chrono::milliseconds(50)) != std::future_status::ready) {
+        std::this_thread::yield();
+    }
+
     std::cout << "Press any key to close: ";
     std::cin.get();
     e->closeWindow();
