@@ -13,6 +13,9 @@ scenes:
 
 //Driver code; inputs are of the form <./bin/Win3D meshPath width height renderType> or <./bin/Win3D scene renderType> or <./bin/Win3D>
 int main(int argc, char *argv[]) {
+    std::cout << "Your desktop environment might mistakenly think this process is not responding while rendering.\n";
+    std::cout << "This is normal and you should just wait...\n\n";
+
     if (argc == 1) {
         // default scene
         Apps::bunnyApp(RAY_TRACER);
