@@ -15,8 +15,8 @@
 
 // runs a given scene for 10 frames calculating the frame rate and time period
 void Apps::speedTestApp(int width, int height, RenderType type, std::string meshPath) {    
-    Engine e{width, height, type};
-    Scene& scene = e.getScene();
+    Engine* e = new Engine{width, height, type};
+    Scene& scene = e->getScene();
 
     /* ----------------------------------------- scene ----------------------------------------- */
 
@@ -37,8 +37,11 @@ void Apps::speedTestApp(int width, int height, RenderType type, std::string mesh
     for (int i = 0; i < frames; i++) {
         alpha -= std::numbers::pi/16;
         obj->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
-        
-        e.drawCall();
+
+        std::future<bool> complete = std::async(std::launch::async, [e](){
+            e->drawCall();
+            return true;
+        });
     }
 
     // calcs statistics
@@ -49,7 +52,7 @@ void Apps::speedTestApp(int width, int height, RenderType type, std::string mesh
 
     std::cout << "Press any key to close: ";
     std::cin.get();
-    e.closeWindow();
+    e->closeWindow();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,8 +61,8 @@ void Apps::speedTestApp(int width, int height, RenderType type, std::string mesh
 
 // displays the bunny mesh with 86426 triangles, at 800x600 resolution, with two point lights
 void Apps::bunnyApp(RenderType type) {
-    Engine e{800, 600, type};
-    Scene& scene = e.getScene();
+    Engine* e = new Engine{800, 600, type};
+    Scene& scene = e->getScene();
 
     /* ----------------------------------------- scene ----------------------------------------- */
 
@@ -73,10 +76,15 @@ void Apps::bunnyApp(RenderType type) {
 
     /* --------------------------------------- rendering --------------------------------------- */
 
-    e.drawCall();
+    std::future<bool> complete = std::async(std::launch::async, [e](){
+        e->drawCall();
+        return true;
+    });
+
+    while (!complete.get());
     std::cout << "Press any key to close: ";
     std::cin.get();
-    e.closeWindow();
+    e->closeWindow();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,8 +93,8 @@ void Apps::bunnyApp(RenderType type) {
 
 // displays the triangle mesh, at 800x600 resolution, where each vertex is a red, green, and blue, and the colours are interpolated on the raster engine
 void Apps::triangleApp(RenderType type) {
-    Engine e{800, 600, type};
-    Scene& scene = e.getScene();
+    Engine* e = new Engine{800, 600, type};
+    Scene& scene = e->getScene();
 
     /* ----------------------------------------- scene ----------------------------------------- */
 
@@ -98,10 +106,15 @@ void Apps::triangleApp(RenderType type) {
 
     /* --------------------------------------- rendering --------------------------------------- */
 
-    e.drawCall();
+    std::future<bool> complete = std::async(std::launch::async, [e](){
+        e->drawCall();
+        return true;
+    });
+
+    while (!complete.get());
     std::cout << "Press any key to close: ";
     std::cin.get();
-    e.closeWindow();
+    e->closeWindow();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,8 +123,8 @@ void Apps::triangleApp(RenderType type) {
 
 // dispalys the head, teapot, and bunny meshes with a total of 54694 triangles, at 1000x500 resolution, with six point lights
 void Apps::objectsApp(RenderType type) {
-    Engine e{1000, 500, type};
-    Scene& scene = e.getScene();
+    Engine* e = new Engine{1000, 500, type};
+    Scene& scene = e->getScene();
 
     /* ----------------------------------------- scene ----------------------------------------- */
 
@@ -138,8 +151,13 @@ void Apps::objectsApp(RenderType type) {
 
     /* --------------------------------------- rendering --------------------------------------- */
 
-    e.drawCall();
+    std::future<bool> complete = std::async(std::launch::async, [e](){
+        e->drawCall();
+        return true;
+    });
+
+    while (!complete.get());
     std::cout << "Press any key to close: ";
     std::cin.get();
-    e.closeWindow();
+    e->closeWindow();
 }
