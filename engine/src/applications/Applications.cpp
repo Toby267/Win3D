@@ -94,8 +94,7 @@ void Apps::triangleApp(RenderType type) {
     triangle->setScale(Matrix::scale(250, 500, 200));
     triangle->setTranslation(Matrix::translate(0, -250, 1000));
 
-    scene.addLight(PointLight(Vector(1100, 0, 0), Colour{255, 55, 55}));
-    scene.addLight(PointLight(Vector(-1100, 0, 0), Colour{55, 255, 55}));
+    scene.addLight(PointLight(Vector(0, -170, 0), Colour{255, 255, 255} * 0.2));
 
     /* --------------------------------------- rendering --------------------------------------- */
 
