@@ -9,6 +9,7 @@ class Vector {
 private:
     double data[4]{};
     int length{4};
+
 public:
     // constructors/destructor
     Vector() = default;
@@ -117,6 +118,7 @@ public:
 class Colour {
 private:
     Vector data;
+
 public:
     // constructors/destructor
     Colour();

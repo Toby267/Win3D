@@ -194,20 +194,27 @@ Mesh* Mesh::triangle() {
     vertices.emplace_back( -1.000000, 0.000000, 1.000000, 1 );
     vertices.emplace_back( 0.000000, 1.000000, 1.000000, 1 );
     vertices.emplace_back( 1.000000, 0.000000, 1.000000, 1 );
+    vertices.emplace_back( 0.000000, 0.500000, 2.000000, 1 );
 
     colours.emplace_back(Colour::red());
     colours.emplace_back(Colour::green());
     colours.emplace_back(Colour::blue());
+    colours.emplace_back(Colour::white());
     
     normals.emplace_back( 0.0, 0.0, -0.1 );
     normals.emplace_back( 0.0, 0.0, -0.1 );
     normals.emplace_back( 0.0, 0.0, -0.1 );
+    normals.emplace_back( 0.0, 0.0, -0.1 );
 
     us.emplace_back(0.0); vs.emplace_back(0.0);
     us.emplace_back(0.0); vs.emplace_back(0.0);
     us.emplace_back(0.0); vs.emplace_back(0.0);
+    us.emplace_back(0.0); vs.emplace_back(0.0);
 
-    indexBuffer.emplace_back(Index{0, 0, 0, 0}); indexBuffer.emplace_back(Index{1, 1, 1, 1}); indexBuffer.emplace_back(Index{2, 2, 2, 2});//done
+    indexBuffer.emplace_back(Index{0, 0, 0, 0}); indexBuffer.emplace_back(Index{1, 1, 1, 1}); indexBuffer.emplace_back(Index{2, 2, 2, 2});
+    indexBuffer.emplace_back(Index{0, 0, 0, 0}); indexBuffer.emplace_back(Index{1, 1, 1, 1}); indexBuffer.emplace_back(Index{3, 3, 3, 3});
+    indexBuffer.emplace_back(Index{0, 0, 0, 0}); indexBuffer.emplace_back(Index{2, 2, 2, 2}); indexBuffer.emplace_back(Index{3, 3, 3, 3});
+    indexBuffer.emplace_back(Index{1, 1, 1, 1}); indexBuffer.emplace_back(Index{2, 2, 2, 2}); indexBuffer.emplace_back(Index{3, 3, 3, 3});
 
     for (int i = 0; i < normals.size(); i++)
         vertexBuffer.emplace_back(vertices[i], colours[i], normals[i], us[i], vs[i]);

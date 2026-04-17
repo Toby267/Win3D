@@ -1,4 +1,4 @@
-#include "util/WavefrontLoader.hpp"
+#include "util/Files.hpp"
 #include "scene/core/SceneUtil.hpp"
 #include "scene/objects/Mesh.hpp"
 #include "util/Util.hpp"
@@ -11,7 +11,7 @@
 #include <vector>
 
 // stores the current contents of the bitmap as a ppm file at the specified file locaiton. Does not create directories for the path
-void files::saveAsPPM(const Bitmap3D& bmap, std::string path) {
+void Files::writePPM(const Bitmap3D& bmap, std::string path) {
     // open file
     std::ofstream f(RESOURCES_PATH + path, std::ios::binary);
     assert(f);
@@ -38,7 +38,7 @@ void files::saveAsPPM(const Bitmap3D& bmap, std::string path) {
 }
 
 // reads a .obj file including its positions, normals and uv coordinates. assumes path to start from ./resources
-Mesh* files::loadWavefront(std::string path, Colour colour) {
+Mesh* Files::readWavefront(std::string path, Colour colour) {
     IndexBuffer indexBuffer{};
     VertexBuffer vertexBuffer;
 

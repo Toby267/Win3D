@@ -7,7 +7,7 @@
 /**
  * Namespace for all file handling functions
  */
-namespace files {
-    Mesh* loadWavefront(std::string path, Colour colour);
-    void saveAsPPM(const Bitmap3D& bmap, std::string path);
+namespace Files {
+    void writePPM(const Bitmap3D& bmap, std::string path);
+    Mesh* readWavefront(std::string path, Colour colour);
 }
