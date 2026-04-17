@@ -46,7 +46,7 @@ void Apps::speedTestApp(int width, int height, RenderType type, std::string mesh
         });
 
         while (complete.wait_for(std::chrono::milliseconds(50)) != std::future_status::ready) {
-            std::this_thread::yield();
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
 
@@ -88,7 +88,7 @@ void Apps::bunnyApp(RenderType type) {
     });
 
     while (complete.wait_for(std::chrono::milliseconds(50)) != std::future_status::ready) {
-        std::this_thread::yield();
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
     std::cout << "Press any key to close: ";
@@ -121,7 +121,7 @@ void Apps::triangleApp(RenderType type) {
     });
 
     while (complete.wait_for(std::chrono::milliseconds(50)) != std::future_status::ready) {
-        std::this_thread::yield();
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
     std::cout << "Press any key to close: ";
@@ -169,7 +169,7 @@ void Apps::objectsApp(RenderType type) {
     });
 
     while (complete.wait_for(std::chrono::milliseconds(50)) != std::future_status::ready) {
-        std::this_thread::yield();
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
     std::cout << "Press any key to close: ";
