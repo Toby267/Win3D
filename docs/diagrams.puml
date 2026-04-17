@@ -122,7 +122,6 @@ class Bitmap3D {
     +void drawPixel(int x, int y, int z, Colour colour)
     +void setPixel(int x, int y, Colour colour)
     +std::vector<unsigned char>& getFrameBuffer()
-    +void saveAsPPM(std::string path)
 }
 
 Engine *-- Window
