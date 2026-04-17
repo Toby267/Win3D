@@ -25,7 +25,7 @@ cd engine
 ./bin/Win3D <scene> <renderType>
 
 where:
-<scene> is the ID of a hardcoded scene form the following: bunny, triangle, 
-<meshPath> is the filepath of the mesh to be rendered in the resources folder ignoring ".obj"
+<scene> is the ID of a hardcoded scene form the following: bunny, triangle, objects
+<meshPath> is the filepath of the mesh to be rendered in the resources folder ignoring ".obj". e.g.: bunny_14404
 <width> and <height> are the width and height of the screen
 <renderType> is the pipeline to be rendered out of: "-t" for ray tracing and "-r" for rasterization
