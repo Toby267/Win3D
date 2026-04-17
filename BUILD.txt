@@ -14,7 +14,7 @@ go to settings.hpp to change the configuration
 To run:
 
 cd engine
-./bin/ChessEngine
+./bin/Win3D
 
 or
 cd engine
