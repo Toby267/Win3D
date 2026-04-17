@@ -20,7 +20,7 @@ void Apps::speedTestApp(int width, int height, RenderType type, std::string mesh
 
     /* ----------------------------------------- scene ----------------------------------------- */
 
-    Mesh* obj = scene.addObject(Wavefront::loadWavefront(meshPath + ".obj", Colour::white() * 0.6));
+    Mesh* obj = scene.addObject(files::loadWavefront(meshPath + ".obj", Colour::white() * 0.6));
     obj->setTranslation(Matrix::translate(0, 0, 1100));
 
     scene.addLight(PointLight(Vector(1100, 0, 0), Colour{255, 55, 55}));
@@ -63,7 +63,7 @@ void Apps::bunnyApp(RenderType type) {
 
     /* ----------------------------------------- scene ----------------------------------------- */
 
-    Mesh* bunny = scene.addObject(Wavefront::loadWavefront("bunny_86426.obj", Colour::white() * 0.6));
+    Mesh* bunny = scene.addObject(files::loadWavefront("bunny_86426.obj", Colour::white() * 0.6));
     bunny->setScale(Matrix::scale(200, 200, 200));
     bunny->setTranslation(Matrix::translate(-50, -100, 1000));
     bunny->setRotation(Matrix::rotation(0, -std::numbers::pi/8, -std::numbers::pi));
@@ -116,15 +116,15 @@ void Apps::objectsApp(RenderType type) {
 
     /* ----------------------------------------- scene ----------------------------------------- */
 
-    Mesh* head = scene.addObject(Wavefront::loadWavefront("head_17684.obj", Colour::white() * 0.6));
+    Mesh* head = scene.addObject(files::loadWavefront("head_17684.obj", Colour::white() * 0.6));
     head->setTranslation(Matrix::translate(-225, -60, 700));
     head->setRotation(Matrix::rotation(0, -std::numbers::pi/8, std::numbers::pi));
 
-    Mesh* teapot = scene.addObject(Wavefront::loadWavefront("teapot_15404.obj", Colour::white() * 0.6));
+    Mesh* teapot = scene.addObject(files::loadWavefront("teapot_15404.obj", Colour::white() * 0.6));
     teapot->setTranslation(Matrix::translate(25, -50, 900));
     teapot->setRotation(Matrix::rotation(0, -std::numbers::pi/8, std::numbers::pi));
 
-    Mesh* bunny = scene.addObject(Wavefront::loadWavefront("bunny_21606.obj", Colour::white() * 0.6));
+    Mesh* bunny = scene.addObject(files::loadWavefront("bunny_21606.obj", Colour::white() * 0.6));
     bunny->setTranslation(Matrix::translate(275, -50, 900));
     bunny->setRotation(Matrix::rotation(0, -std::numbers::pi/8, std::numbers::pi));
 

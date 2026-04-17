@@ -22,10 +22,11 @@ public:
 
     // getters/setters
     const std::vector<unsigned char>& getFrameBuffer() const { return frameBuffer; };
+    int getWidth() const { return width; }
+    int getHeight() const { return height; }
 
     // public methods
     void clear();
     void drawPixel(int x, int y, int z, Colour colour);
     void setPixel(int x, int y, Colour colour);
-    void saveAsPPM(std::string path);
 };

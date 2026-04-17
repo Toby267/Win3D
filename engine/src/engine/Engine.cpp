@@ -5,6 +5,8 @@
 #include "renderer/Renderer.hpp"
 #include "scene/core/Scene.hpp"
 #include "settings.hpp"
+#include <string>
+#include "util/WavefrontLoader.hpp"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------ [ CONSTRUCTORS/DESCTUCTOR ] ------------------------------------ * //
@@ -42,8 +44,7 @@ void Engine::drawCall() {
     window.update(bitmap.getFrameBuffer());
 
     #ifdef SAVE_IMAGE
-    #include <string>
-    bitmap.saveAsPPM("frame" + std::to_string(framesRendered) + ".ppm");
+    files::saveAsPPM(bitmap, "frame" + std::to_string(framesRendered) + ".ppm");
     #endif
 }
 

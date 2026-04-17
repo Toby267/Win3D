@@ -2,8 +2,6 @@
 
 #include <cassert>
 #include <cfloat>
-#include <fstream>
-#include <ios>
 #include <vector>
 
 #include "util/Util.hpp"
@@ -59,28 +57,4 @@ void Bitmap3D::setPixel(int x, int y, Colour c) {
     frameBuffer[i + 1] = c.g();
     frameBuffer[i + 2] = c.b();
     frameBuffer[i + 3] = c.a();
-}
-
-// stores the current contents of the bitmap as a ppm file at the specified file locaiton. Does not create directories for the path
-void Bitmap3D::saveAsPPM(std::string path) {
-    // open file
-    std::ofstream f(RESOURCES_PATH + path, std::ios::binary);
-    assert(f);
-
-    f << "P6\n";                            // format
-    f << width << ' ' << height << '\n';    // width and height
-    f << "255\n";                           // max colour value
-
-    // write data
-    for (int i = 0; i < width*height; i++) {
-        const char rgb[3] = {
-            (char)frameBuffer[4*i + 0],
-            (char)frameBuffer[4*i + 1],
-            (char)frameBuffer[4*i + 2]
-        };
-        f.write(rgb, 3);
-    }
-
-    // close
-    f.close();
 }

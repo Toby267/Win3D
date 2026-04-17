@@ -10,8 +10,35 @@
 #include <string>
 #include <vector>
 
+// stores the current contents of the bitmap as a ppm file at the specified file locaiton. Does not create directories for the path
+void files::saveAsPPM(const Bitmap3D& bmap, std::string path) {
+    // open file
+    std::ofstream f(RESOURCES_PATH + path, std::ios::binary);
+    assert(f);
+
+    int width = bmap.getWidth(), height = bmap.getHeight();
+    const std::vector<unsigned char>& frameBuffer = bmap.getFrameBuffer();
+
+    f << "P6\n";                            // format
+    f << width << ' ' << height << '\n';    // width and height
+    f << "255\n";                           // max colour value
+
+    // write data
+    for (int i = 0; i < width*height; i++) {
+        const char rgb[3] = {
+            (char)frameBuffer[4*i + 0],
+            (char)frameBuffer[4*i + 1],
+            (char)frameBuffer[4*i + 2]
+        };
+        f.write(rgb, 3);
+    }
+
+    // close
+    f.close();
+}
+
 // reads a .obj file including its positions, normals and uv coordinates. assumes path to start from ./resources
-Mesh* Wavefront::loadWavefront(std::string path, Colour colour) {
+Mesh* files::loadWavefront(std::string path, Colour colour) {
     IndexBuffer indexBuffer{};
     VertexBuffer vertexBuffer;
 
