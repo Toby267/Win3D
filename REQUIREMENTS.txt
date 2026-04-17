@@ -1,2 +1,9 @@
+To build:
 Cmake
 A C++ compiler
+
+For Raylib:
+libxrandr-dev
+libxinerama-dev
+libxcursor-dev
+libxi-dev
