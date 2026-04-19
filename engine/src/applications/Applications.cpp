@@ -6,10 +6,8 @@
 #include "util/Files.hpp"
 #include "scene/objects/Mesh.hpp"
 #include <chrono>
-#include <future>
 #include <iostream>
 #include <numbers>
-#include <thread>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // * ------------------------------------------ [ speedTestApp ] ----------------------------------------- * //
