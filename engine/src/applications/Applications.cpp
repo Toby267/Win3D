@@ -40,14 +40,7 @@ void Apps::speedTestApp(int width, int height, RenderType type, std::string mesh
         alpha -= std::numbers::pi/16;
         obj->setRotation(Matrix::rotation(0, -std::numbers::pi/8, alpha));
 
-        std::future<bool> complete = std::async(std::launch::async, [e](){
-            e->drawCall();
-            return true;
-        });
-
-        while (complete.wait_for(std::chrono::milliseconds(50)) != std::future_status::ready) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
+        e->drawCall();
     }
 
     // calcs statistics
@@ -82,15 +75,7 @@ void Apps::bunnyApp(RenderType type) {
 
     /* --------------------------------------- rendering --------------------------------------- */
 
-    std::future<bool> complete = std::async(std::launch::async, [e](){
-        e->drawCall();
-        return true;
-    });
-
-    while (complete.wait_for(std::chrono::milliseconds(50)) != std::future_status::ready) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-
+    e->drawCall();
     std::cout << "Press any key to close: ";
     std::cin.get();
     e->closeWindow();
@@ -115,15 +100,7 @@ void Apps::triangleApp(RenderType type) {
 
     /* --------------------------------------- rendering --------------------------------------- */
 
-    std::future<bool> complete = std::async(std::launch::async, [e](){
-        e->drawCall();
-        return true;
-    });
-
-    while (complete.wait_for(std::chrono::milliseconds(50)) != std::future_status::ready) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-
+    e->drawCall();
     std::cout << "Press any key to close: ";
     std::cin.get();
     e->closeWindow();
@@ -163,15 +140,7 @@ void Apps::objectsApp(RenderType type) {
 
     /* --------------------------------------- rendering --------------------------------------- */
 
-    std::future<bool> complete = std::async(std::launch::async, [e](){
-        e->drawCall();
-        return true;
-    });
-
-    while (complete.wait_for(std::chrono::milliseconds(50)) != std::future_status::ready) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-
+    e->drawCall();
     std::cout << "Press any key to close: ";
     std::cin.get();
     e->closeWindow();
