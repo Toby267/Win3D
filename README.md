@@ -8,4 +8,5 @@
 3D graphics renderer
 
 ![](./docs/renders/finalRender.png)
-![](./docs/renders/bunnyTracer.png)
+<!-- ![](./docs/renders/bunnyTracer.png) -->
+![](./docs/renders/anotherBunny.png)
